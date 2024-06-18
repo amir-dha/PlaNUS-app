@@ -43,15 +43,15 @@ const LoginScreen = () => {
             console.log(`Error code: ${error.code}`);
             console.error('Login error:', error); // Added error logging
             switch (error.code) {
-                case 'auth/invalid-credential':
-                    alert('Invalid email or password. Try again.');
-                    break;
-                case 'auth/wrong-password': 
-                    alert('Incorrect password. Please try again.');
-                    break;
                 case 'auth/user-not-found':
                     alert('The account does not exist.');
                     break;
+                case 'auth/invalid-credential':
+                    alert('Invalid email or password. Try again.');
+                    break;
+                // case 'auth/wrong-password': 
+                //     alert('Incorrect password. Please try again.');
+                    // break;
                 default:
                     alert(error.message);
             }
