@@ -3,15 +3,15 @@ import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'; 
-import LoginScreen from './Screens/LoginScreen';
-import WelcomeScreen from './Screens/WelcomeScreen';
+import LoginScreen from './Screens/Authentication Screens/LoginScreen';
+import WelcomeScreen from './Screens/Authentication Screens/WelcomeScreen';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import SignupScreen from './Screens/SignupScreen';
-import HomeScreen from './Screens/HomeScreen';
-import InformationScreen from './Screens/InformationScreen';
+import SignupScreen from './Screens/Authentication Screens/SignupScreen';
+import HomeScreen from './Screens/Home/HomeScreen';
+import InformationScreen from './Screens/Account/Settings/InformationScreen';
 import CalendarGridScreen from './Screens/Calendar Components/CalendarGridScreen';
-import AccountScreen from './Screens/AccountScreen';
+import AccountScreen from './Screens/Account/Settings/AccountScreen';
 import PlannerPage from './Screens/Calendar Components/PlannerPage'; // Import the PlannerPage
 import AddTaskEventScreen from './Screens/Calendar Components/AddTaskEvent';
 

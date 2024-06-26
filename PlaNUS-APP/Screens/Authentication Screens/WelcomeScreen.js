@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import React from 'react'; 
 import { useNavigation } from '@react-navigation/core';
 
-const logo = require('../assets/logo.png'); 
+const logo = require('../../assets/logo.png'); 
 
 const WelcomeScreen = () => {
 

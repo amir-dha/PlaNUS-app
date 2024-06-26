@@ -1,85 +1,323 @@
-// import React, { useState } from 'react';
-// import { View, Text, TextInput, TouchableOpacity, Switch, StyleSheet, Modal, Button } from 'react-native';
+
+// import React, { useState, useEffect } from 'react';
+// import { View, Text, TextInput, TouchableOpacity, Switch, StyleSheet, ScrollView } from 'react-native';
+// import { Ionicons } from '@expo/vector-icons';
+// import DateTimePicker from '@react-native-community/datetimepicker';
+// import { useNavigation, useRoute } from '@react-navigation/native';
+// import RepeatModal from './Calendar Modals/RepeatModal';
+// import NotificationModal from './Calendar Modals/NotificationModal';
+// import LocationModal from './Calendar Modals/LocationModal';
+// import venuesList from './Utils/venuesList';
 
 // const AddTaskEventScreen = () => {
+//   const route = useRoute();
+//   const navigation = useNavigation();
+//   const { isTaskInitial } = route.params;
+
+//   const [isTask, setIsTask] = useState(isTaskInitial);
 //   const [isAllDay, setIsAllDay] = useState(false);
 //   const [repeatModalVisible, setRepeatModalVisible] = useState(false);
 //   const [details, setDetails] = useState('');
+//   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
+//   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
+//   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
+//   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
+//   const [startDate, setStartDate] = useState(new Date());
+//   const [endDate, setEndDate] = useState(new Date());
+//   const [startTime, setStartTime] = useState(new Date());
+//   const [endTime, setEndTime] = useState(new Date());
+//   const [repeatOption, setRepeatOption] = useState('Does not repeat');
+//   const [notifications, setNotifications] = useState([]);
+//   const [notificationOptionsVisible, setNotificationOptionsVisible] = useState(false);
+//   const [selectedColor, setSelectedColor] = useState('#d1c4e9');
+//   const [colorPickerVisible, setColorPickerVisible] = useState(false);
+//   const [venues, setVenues] = useState([]);
+//   const [filteredVenues, setFilteredVenues] = useState([]);
+//   const [location, setLocation] = useState('');
+//   const [locationModalVisible, setLocationModalVisible] = useState(false);
 
 //   const handleToggleSwitch = () => setIsAllDay(previousState => !previousState);
+
+//   useEffect(() => {
+//     setVenues(venuesList);
+//   }, []);
+  
+
+//   const filterVenues = (input) => {
+//     if (input.length > 0) {
+//       const filtered = venues.filter(venue => venue.toLowerCase().startsWith(input.toLowerCase()));
+//       setFilteredVenues(filtered);
+//     } else {
+//       setFilteredVenues([]);
+//     }
+//   };
+
+//   const onStartDateChange = (event, selectedDate) => {
+//     const currentDate = selectedDate || startDate;
+//     setShowStartDatePicker(false);
+//     setStartDate(currentDate);
+//   };
+
+//   const onEndDateChange = (event, selectedDate) => {
+//     const currentDate = selectedDate || endDate;
+//     setShowEndDatePicker(false);
+//     setEndDate(currentDate);
+//   };
+
+//   const onStartTimeChange = (event, selectedTime) => {
+//     const currentTime = selectedTime || startTime;
+//     setShowStartTimePicker(false);
+//     setStartTime(currentTime);
+//   };
+
+//   const onEndTimeChange = (event, selectedTime) => {
+//     const currentTime = selectedTime || endTime;
+//     setShowEndTimePicker(false);
+//     setEndTime(currentTime);
+//   };
+
+//   const handleRepeatOption = (option) => {
+//     setRepeatOption(option);
+//     setRepeatModalVisible(false);
+//   };
+
+//   const addNotification = (notification) => {
+//     setNotifications([...notifications, notification]);
+//     setNotificationOptionsVisible(false);
+//   };
+
+//   const removeNotification = (index) => {
+//     const newNotifications = [...notifications];
+//     newNotifications.splice(index, 1);
+//     setNotifications(newNotifications);
+//   };
+
+//   const colorOptions = ['#C8D79E', '#FFFBCB', '#FFC498', '#F8A5A5', '#A7A0C3', '#BEEEEC'];
+
+//   const handleColorSelect = (color) => {
+//     setSelectedColor(color);
+//     setColorPickerVisible(false);
+//   };
+
+//   const handleDiscard = () => {
+//     // Go back to the previous screen
+//     navigation.goBack();
+//   };
+
+//   const handleLocationSelect = (venue) => {
+//     setLocation(venue);
+//     setLocationModalVisible(false);
+//   };
 
 //   return (
 //     <View style={styles.container}>
 //       <View style={styles.header}>
-//         <TouchableOpacity>
+//         <TouchableOpacity style={styles.headerButtonContainer} onPress={handleDiscard}>
 //           <Text style={styles.headerButton}>Discard</Text>
 //         </TouchableOpacity>
-//         <TouchableOpacity>
+//         <TouchableOpacity style={styles.headerButtonContainer}>
 //           <Text style={styles.headerButton}>Save</Text>
 //         </TouchableOpacity>
 //       </View>
-//       <TextInput
-//         style={styles.titleInput}
-//         placeholder="Add Title"
-//       />
-//       <View style={styles.toggleContainer}>
-//         <TouchableOpacity style={[styles.toggleButton, styles.selectedToggleButton]}>
-//           <Text style={[styles.toggleText, styles.selectedToggleText]}>Task</Text>
-//         </TouchableOpacity>
-//         <TouchableOpacity style={styles.toggleButton}>
-//           <Text style={styles.toggleText}>Event</Text>
-//         </TouchableOpacity>
-//       </View>
-//       <View style={styles.divider} />
-//       <View style={styles.switchContainer}>
-//         <Text style={styles.label}>All Day</Text>
-//         <Switch
-//           trackColor={{ false: "#767577", true: "#003882" }}
-//           thumbColor={isAllDay ? "#f4f3f4" : "#f4f3f4"}
-//           ios_backgroundColor="#3e3e3e"
-//           onValueChange={handleToggleSwitch}
-//           value={isAllDay}
-//         />
-//       </View>
-//       <View style={styles.dateTimeContainer}>
-//         <Text style={styles.label}>Due Date</Text>
+//       <ScrollView>
 //         <TextInput
-//           style={styles.input}
-//           placeholder="Sunday, 25 May 2024"
+//           style={styles.titleInput}
+//           placeholder="Add Title"
 //         />
-//         {!isAllDay && (
-//           <TextInput
-//             style={styles.input}
-//             placeholder="23:59"
-//           />
-//         )}
-//       </View>
-//       <TouchableOpacity onPress={() => setRepeatModalVisible(true)}>
-//         <Text style={styles.repeatText}>Does not repeat</Text>
-//       </TouchableOpacity>
-//       <TextInput
-//         style={styles.detailsInput}
-//         placeholder="Add details"
-//         value={details}
-//         onChangeText={setDetails}
-//       />
-//       <Modal
-//         visible={repeatModalVisible}
-//         transparent={true}
-//         animationType="slide"
-//         onRequestClose={() => setRepeatModalVisible(false)}
-//       >
-//         <View style={styles.modalOverlay}>
-//           <View style={styles.modalContainer}>
-//             <Button title="Does not repeat" onPress={() => setRepeatModalVisible(false)} />
-//             <Button title="Every day" onPress={() => setRepeatModalVisible(false)} />
-//             <Button title="Every week" onPress={() => setRepeatModalVisible(false)} />
-//             <Button title="Every month" onPress={() => setRepeatModalVisible(false)} />
-//             <Button title="Every year" onPress={() => setRepeatModalVisible(false)} />
-//             <Button title="Custom..." onPress={() => setRepeatModalVisible(false)} />
-//           </View>
+//         <View style={styles.toggleContainer}>
+//           <TouchableOpacity style={[styles.toggleButton, isTask && styles.selectedToggleButton]} onPress={() => setIsTask(true)}>
+//             <Text style={[styles.toggleText, isTask && styles.selectedToggleText]}>Task</Text>
+//           </TouchableOpacity>
+//           <TouchableOpacity style={[styles.toggleButton, !isTask && styles.selectedToggleButton]} onPress={() => setIsTask(false)}>
+//             <Text style={[styles.toggleText, !isTask && styles.selectedToggleText]}>Event</Text>
+//           </TouchableOpacity>
 //         </View>
-//       </Modal>
+//         <View style={styles.divider} />
+//         {isTask ? (
+//           <>
+//             <View style={styles.switchContainer}>
+//               <Text style={styles.label}>All Day</Text>
+//               <Switch
+//                 trackColor={{ false: "#767577", true: "#003882" }}
+//                 thumbColor={isAllDay ? "#f4f3f4" : "#f4f3f4"}
+//                 ios_backgroundColor="#3e3e3e"
+//                 onValueChange={handleToggleSwitch}
+//                 value={isAllDay}
+//               />
+//             </View>
+//             <View style={styles.dateTimeContainer}>
+//               <Text style={styles.label}>Due Date</Text>
+//               <View style={styles.dateTimeRow}>
+//                 <TouchableOpacity onPress={() => setShowStartDatePicker(true)}>
+//                   <Text style={styles.input}>{startDate.toDateString()}</Text>
+//                 </TouchableOpacity>
+//                 {showStartDatePicker && (
+//                   <DateTimePicker
+//                     value={startDate}
+//                     mode="date"
+//                     display="default"
+//                     onChange={onStartDateChange}
+//                   />
+//                 )}
+//                 {!isAllDay && (
+//                   <TouchableOpacity onPress={() => setShowStartTimePicker(true)}>
+//                     <Text style={styles.input}>{startTime.toLocaleTimeString()}</Text>
+//                   </TouchableOpacity>
+//                 )}
+//                 {showStartTimePicker && (
+//                   <DateTimePicker
+//                     value={startTime}
+//                     mode="time"
+//                     display="default"
+//                     onChange={onStartTimeChange}
+//                   />
+//                 )}
+//               </View>
+//             </View>
+//             <TouchableOpacity onPress={() => setRepeatModalVisible(true)}>
+//               <Text style={[styles.repeatText, styles.underline]}>{repeatOption}</Text>
+//             </TouchableOpacity>
+//             <View style={styles.divider} />
+//             <TextInput
+//               style={styles.detailsInput}
+//               placeholder="Add details"
+//               value={details}
+//               onChangeText={setDetails}
+//             />
+//           </>
+//         ) : (
+//           <>
+//             <View style={styles.switchContainer}>
+//               <Text style={styles.label}>All Day</Text>
+//               <Switch
+//                 trackColor={{ false: "#767577", true: "#003882" }}
+//                 thumbColor={isAllDay ? "#f4f3f4" : "#f4f3f4"}
+//                 ios_backgroundColor="#3e3e3e"
+//                 onValueChange={handleToggleSwitch}
+//                 value={isAllDay}
+//               />
+//             </View>
+//             <View style={styles.dateTimeContainer}>
+//               <Text style={styles.label}>Start Date</Text>
+//               <View style={styles.dateTimeRow}>
+//                 <TouchableOpacity onPress={() => setShowStartDatePicker(true)}>
+//                   <Text style={styles.input}>{startDate.toDateString()}</Text>
+//                 </TouchableOpacity>
+//                 {showStartDatePicker && (
+//                   <DateTimePicker
+//                     value={startDate}
+//                     mode="date"
+//                     display="default"
+//                     onChange={onStartDateChange}
+//                   />
+//                 )}
+//                 {!isAllDay && (
+//                   <TouchableOpacity onPress={() => setShowStartTimePicker(true)}>
+//                     <Text style={styles.input}>{startTime.toLocaleTimeString()}</Text>
+//                   </TouchableOpacity>
+//                 )}
+//                 {showStartTimePicker && (
+//                   <DateTimePicker
+//                     value={startTime}
+//                     mode="time"
+//                     display="default"
+//                     onChange={onStartTimeChange}
+//                   />
+//                 )}
+//               </View>
+//               <Text style={styles.label}>End Date</Text>
+//               <View style={styles.dateTimeRow}>
+//                 <TouchableOpacity onPress={() => setShowEndDatePicker(true)}>
+//                   <Text style={styles.input}>{endDate.toDateString()}</Text>
+//                 </TouchableOpacity>
+//                 {showEndDatePicker && (
+//                   <DateTimePicker
+//                     value={endDate}
+//                     mode="date"
+//                     display="default"
+//                     onChange={onEndDateChange}
+//                   />
+//                 )}
+//                 {!isAllDay && (
+//                   <TouchableOpacity onPress={() => setShowEndTimePicker(true)}>
+//                     <Text style={styles.input}>{endTime.toLocaleTimeString()}</Text>
+//                   </TouchableOpacity>
+//                 )}
+//                 {showEndTimePicker && (
+//                   <DateTimePicker
+//                     value={endTime}
+//                     mode="time"
+//                     display="default"
+//                     onChange={onEndTimeChange}
+//                   />
+//                 )}
+//               </View>
+//             </View>
+//             <TouchableOpacity onPress={() => setRepeatModalVisible(true)}>
+//               <Text style={[styles.repeatText, styles.underline]}>{repeatOption}</Text>
+//             </TouchableOpacity>
+//             <View style={styles.divider} />
+//             <TouchableOpacity onPress={() => setLocationModalVisible(true)}>
+//               <Text style={styles.label}>Add Location (NUS)</Text>
+//             </TouchableOpacity>
+//             <TextInput
+//               style={styles.detailsInput}
+//               placeholder="Add Location"
+//               value={location}
+//               onChangeText={setLocation}
+//             />
+//             <TextInput
+//               style={styles.detailsInput}
+//               placeholder="Add details"
+//               value={details}
+//               onChangeText={setDetails}
+//             />
+//             <View style={styles.divider} />
+//             <TouchableOpacity onPress={() => setNotificationOptionsVisible(true)}>
+//               <Text style={styles.notificationText}>Add Notification</Text>
+//             </TouchableOpacity>
+//             {notifications.map((notification, index) => (
+//               <View key={index} style={styles.notificationContainer}>
+//                 <Text style={styles.notificationText}>{notification}</Text>
+//                 <TouchableOpacity onPress={() => removeNotification(index)}>
+//                   <Ionicons name="close" size={24} color="black" />
+//                 </TouchableOpacity>
+//               </View>
+//             ))}
+//             <View style={styles.divider} />
+//             <View style={styles.colorSection}>
+//               <Text style={styles.colorText}>Colour</Text>
+//               <View style={[styles.selectedColor, { backgroundColor: selectedColor }]} />
+//             </View>
+//             <View style={styles.colorOptionsContainer}>
+//               {colorOptions.map((color, index) => (
+//                 <TouchableOpacity
+//                   key={index}
+//                   onPress={() => handleColorSelect(color)}
+//                   style={[styles.colorOption, { backgroundColor: color }]}
+//                 />
+//               ))}
+//             </View>
+//           </>
+//         )}
+//       </ScrollView>
+//       <RepeatModal
+//         visible={repeatModalVisible}
+//         onClose={() => setRepeatModalVisible(false)}
+//         onSelect={handleRepeatOption}
+//       />
+//       <NotificationModal
+//         visible={notificationOptionsVisible}
+//         onClose={() => setNotificationOptionsVisible(false)}
+//         onAdd={addNotification}
+//       />
+//       <LocationModal
+//         visible={locationModalVisible}
+//         onClose={() => setLocationModalVisible(false)}
+//         venues={filteredVenues}
+//         onFilter={filterVenues}
+//         onSelect={handleLocationSelect}
+//       />
 //     </View>
 //   );
 // };
@@ -93,12 +331,19 @@
 //   },
 //   header: {
 //     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     alignItems: 'centre',
+//     justifyContent: 'flex-end',
+//     alignItems: 'center',
+//   },
+//   headerButtonContainer: {
+//     backgroundColor: '#003882',
+//     borderRadius: 25,
+//     paddingHorizontal: 10,
+//     paddingVertical: 5,
+//     marginLeft: 10,
 //   },
 //   headerButton: {
 //     fontSize: 18,
-//     color: '#003882',
+//     color: 'white',
 //     fontFamily: 'Ubuntu-Bold',
 //   },
 //   titleInput: {
@@ -106,16 +351,16 @@
 //     color: '#003882',
 //     fontFamily: 'Ubuntu-Medium',
 //     marginTop: 20,
+//     borderBottomWidth: 0,
 //   },
 //   toggleContainer: {
 //     flexDirection: 'row',
-//     justifyContent: 'left',
+//     justifyContent: 'flex-start',
 //     alignItems: 'center',
 //     marginTop: 10,
-//     borderRadius: 25,
 //   },
 //   toggleButton: {
-//     width: 60,
+//     width: 80,
 //     paddingVertical: 7,
 //     backgroundColor: 'white',
 //     borderColor: '#003882',
@@ -139,31 +384,32 @@
 //   divider: {
 //     height: 1,
 //     backgroundColor: '#e0e0e0',
-//     marginVertical: 15,
+//     marginVertical: 10,
 //   },
 //   switchContainer: {
 //     flexDirection: 'row',
 //     justifyContent: 'space-between',
 //     alignItems: 'center',
 //     marginVertical: 5,
-//     marginBottom: 5,
 //   },
 //   label: {
 //     fontSize: 20,
 //     color: '#003882',
 //     fontFamily: 'Ubuntu-Medium',
-//     marginBottom: 5,
 //   },
 //   dateTimeContainer: {
-//     marginVertical: 20,
+//     marginVertical: 10,
+//   },
+//   dateTimeRow: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     alignItems: 'center',
+//     marginVertical: 10,
 //   },
 //   input: {
 //     fontSize: 20,
 //     color: '#003882',
 //     fontFamily: 'Ubuntu-Medium',
-//     borderBottomWidth: 1,
-//     borderBottomColor: '#e0e0e0',
-//     marginBottom: 15,
 //   },
 //   repeatText: {
 //     fontSize: 20,
@@ -171,58 +417,131 @@
 //     fontFamily: 'Ubuntu-Medium',
 //     marginVertical: 10,
 //   },
+//   underline: {
+//     textDecorationLine: 'underline',
+//   },
 //   detailsInput: {
 //     fontSize: 20,
 //     color: '#003882',
 //     fontFamily: 'Ubuntu-Medium',
 //     borderBottomWidth: 1,
 //     borderBottomColor: '#e0e0e0',
-//     marginTop: 20,
+//     marginTop: 10,
 //   },
-//   modalOverlay: {
-//     flex: 1,
-//     backgroundColor: 'rgba(0, 56, 130, 0.8)',
-//     justifyContent: 'center',
+//   notificationContainer: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
 //     alignItems: 'center',
 //   },
-//   modalContainer: {
-//     width: '80%',
-//     backgroundColor: '#fff',
-//     borderRadius: 10,
-//     padding: 20,
+//   notificationText: {
+//     fontSize: 20,
+//     color: '#003882',
+//     fontFamily: 'Ubuntu-Medium',
+//     marginVertical: 10,
+//   },
+//   colorSection: {
+//     flexDirection: 'row',
 //     alignItems: 'center',
+//   },
+//   colorText: {
+//     fontSize: 20,
+//     color: '#003882',
+//     fontFamily: 'Ubuntu-Medium',
+//     marginVertical: 10,
+//   },
+//   colorOptionsContainer: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-around',
+//     alignItems: 'center',
+//     marginTop: 10,
+//   },
+//   selectedColor: {
+//     width: 30,
+//     height: 30,
+//     borderRadius: 15,
+//     marginLeft: 10,
+//   },
+//   colorOption: {
+//     width: 40,
+//     height: 40,
+//     borderRadius: 20,
+//     marginVertical: 10,
 //   },
 // });
 
 // export default AddTaskEventScreen;
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Switch, StyleSheet, Modal, Button, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Switch, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import RepeatModal from './Calendar Modals/RepeatModal';
+import NotificationModal from './Calendar Modals/NotificationModal';
+import venuesList from './Utils/venuesList';
 
 const AddTaskEventScreen = () => {
-  const [isTask, setIsTask] = useState(true);
+  const route = useRoute();
+  const navigation = useNavigation();
+  const { isTaskInitial } = route.params;
+
+  const [isTask, setIsTask] = useState(isTaskInitial);
   const [isAllDay, setIsAllDay] = useState(false);
   const [repeatModalVisible, setRepeatModalVisible] = useState(false);
   const [details, setDetails] = useState('');
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState(new Date());
+  const [showStartDatePicker, setShowStartDatePicker] = useState(false);
+  const [showEndDatePicker, setShowEndDatePicker] = useState(false);
+  const [showStartTimePicker, setShowStartTimePicker] = useState(false);
+  const [showEndTimePicker, setShowEndTimePicker] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [startTime, setStartTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date());
   const [repeatOption, setRepeatOption] = useState('Does not repeat');
+  const [notifications, setNotifications] = useState([]);
+  const [notificationOptionsVisible, setNotificationOptionsVisible] = useState(false);
+  const [selectedColor, setSelectedColor] = useState('#d1c4e9');
+  const [colorPickerVisible, setColorPickerVisible] = useState(false);
+  const [venues, setVenues] = useState([]);
+  const [filteredVenues, setFilteredVenues] = useState([]);
+  const [location, setLocation] = useState('');
 
   const handleToggleSwitch = () => setIsAllDay(previousState => !previousState);
 
-  const onDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShowDatePicker(false);
-    setDate(currentDate);
+  useEffect(() => {
+    setVenues(venuesList);
+  }, []);
+
+  const filterVenues = (input) => {
+    if (input.length > 0) {
+      const filtered = venues.filter(venue => venue.toLowerCase().startsWith(input.toLowerCase()));
+      setFilteredVenues(filtered);
+    } else {
+      setFilteredVenues([]);
+    }
   };
 
-  const onTimeChange = (event, selectedTime) => {
-    const currentTime = selectedTime || time;
-    setShowTimePicker(false);
-    setTime(currentTime);
+  const onStartDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || startDate;
+    setShowStartDatePicker(false);
+    setStartDate(currentDate);
+  };
+
+  const onEndDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || endDate;
+    setShowEndDatePicker(false);
+    setEndDate(currentDate);
+  };
+
+  const onStartTimeChange = (event, selectedTime) => {
+    const currentTime = selectedTime || startTime;
+    setShowStartTimePicker(false);
+    setStartTime(currentTime);
+  };
+
+  const onEndTimeChange = (event, selectedTime) => {
+    const currentTime = selectedTime || endTime;
+    setShowEndTimePicker(false);
+    setEndTime(currentTime);
   };
 
   const handleRepeatOption = (option) => {
@@ -230,236 +549,410 @@ const AddTaskEventScreen = () => {
     setRepeatModalVisible(false);
   };
 
+  const addNotification = (notification) => {
+    setNotifications([...notifications, notification]);
+    setNotificationOptionsVisible(false);
+  };
+
+  const removeNotification = (index) => {
+    const newNotifications = [...notifications];
+    newNotifications.splice(index, 1);
+    setNotifications(newNotifications);
+  };
+
+  const colorOptions = ['#C8D79E', '#FFFBCB', '#FFC498', '#F8A5A5', '#A7A0C3', '#BEEEEC'];
+
+  const handleColorSelect = (color) => {
+    setSelectedColor(color);
+    setColorPickerVisible(false);
+  };
+
+  const handleDiscard = () => {
+    navigation.goBack();
+  };
+
+  const handleLocationSelect = (venue) => {
+    setLocation(venue);
+    setFilteredVenues([]);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.headerButtonContainer}>
+        <TouchableOpacity style={styles.headerButtonContainer} onPress={handleDiscard}>
           <Text style={styles.headerButton}>Discard</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.headerButtonContainer}>
           <Text style={styles.headerButton}>Save</Text>
         </TouchableOpacity>
       </View>
-      <TextInput
-        style={styles.titleInput}
-        placeholder="Add Title"
-      />
-      <View style={styles.toggleContainer}>
-        <TouchableOpacity style={[styles.toggleButton, isTask && styles.selectedToggleButton]} onPress={() => setIsTask(true)}>
-          <Text style={[styles.toggleText, isTask && styles.selectedToggleText]}>Task</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.toggleButton, !isTask && styles.selectedToggleButton]} onPress={() => setIsTask(false)}>
-          <Text style={[styles.toggleText, !isTask && styles.selectedToggleText]}>Event</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.divider} />
-      <View style={styles.switchContainer}>
-        <Text style={styles.label}>All Day</Text>
-        <Switch
-          trackColor={{ false: "#767577", true: "#003882" }}
-          thumbColor={isAllDay ? "#f4f3f4" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={handleToggleSwitch}
-          value={isAllDay}
+      <ScrollView>
+        <TextInput
+          style={styles.titleInput}
+          placeholder="Add Title"
         />
-      </View>
-      <View style={styles.dateTimeContainer}>
-        <Text style={styles.label}>Due Date</Text>
-        <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-          <Text style={styles.input}>{date.toDateString()}</Text>
-        </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display="default"
-            onChange={onDateChange}
-          />
-        )}
-        {!isAllDay && (
-          <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-            <Text style={styles.input}>{time.toLocaleTimeString()}</Text>
+        <View style={styles.toggleContainer}>
+          <TouchableOpacity style={[styles.toggleButton, isTask && styles.selectedToggleButton]} onPress={() => setIsTask(true)}>
+            <Text style={[styles.toggleText, isTask && styles.selectedToggleText]}>Task</Text>
           </TouchableOpacity>
-        )}
-        {showTimePicker && (
-          <DateTimePicker
-            value={time}
-            mode="time"
-            display="default"
-            onChange={onTimeChange}
-          />
-        )}
-      </View>
-      <TouchableOpacity onPress={() => setRepeatModalVisible(true)}>
-        <Text style={styles.repeatText}>{repeatOption}</Text>
-      </TouchableOpacity>
-      <TextInput
-        style={styles.detailsInput}
-        placeholder="Add details"
-        value={details}
-        onChangeText={setDetails}
-      />
-      <Modal
-        visible={repeatModalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={() => setRepeatModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <ScrollView>
-              <TouchableOpacity onPress={() => handleRepeatOption('Does not repeat')} style={styles.modalOption}>
-                <Text style={styles.modalOptionText}>Does not repeat</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleRepeatOption('Every day')} style={styles.modalOption}>
-                <Text style={styles.modalOptionText}>Every day</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleRepeatOption('Every week')} style={styles.modalOption}>
-                <Text style={styles.modalOptionText}>Every week</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleRepeatOption('Every month')} style={styles.modalOption}>
-                <Text style={styles.modalOptionText}>Every month</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleRepeatOption('Every year')} style={styles.modalOption}>
-                <Text style={styles.modalOptionText}>Every year</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleRepeatOption('Custom...')} style={styles.modalOption}>
-                <Text style={styles.modalOptionText}>Custom...</Text>
-              </TouchableOpacity>
-            </ScrollView>
-          </View>
+          <TouchableOpacity style={[styles.toggleButton, !isTask && styles.selectedToggleButton]} onPress={() => setIsTask(false)}>
+            <Text style={[styles.toggleText, !isTask && styles.selectedToggleText]}>Event</Text>
+          </TouchableOpacity>
         </View>
-      </Modal>
-    </View>
-  );
+        <View style={styles.divider} />
+        {isTask ? (
+          <>
+            <View style={styles.switchContainer}>
+              <Text style={styles.label}>All Day</Text>
+              <Switch
+                trackColor={{ false: "#767577", true: "#003882" }}
+                thumbColor={isAllDay ? "#f4f3f4" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={handleToggleSwitch}
+                value={isAllDay}
+              />
+            </View>
+            <View style={styles.dateTimeContainer}>
+              <Text style={styles.label}>Due Date</Text>
+              <View style={styles.dateTimeRow}>
+                <TouchableOpacity onPress={() => setShowStartDatePicker(true)}>
+                  <Text style={styles.input}>{startDate.toDateString()}</Text>
+                </TouchableOpacity>
+                {showStartDatePicker && (
+                  <DateTimePicker
+                    value={startDate}
+                    mode="date"
+                    display="default"
+                    onChange={onStartDateChange}
+                  />
+                )}
+                {!isAllDay && (
+                  <TouchableOpacity onPress={() => setShowStartTimePicker(true)}>
+                    <Text style={styles.input}>{startTime.toLocaleTimeString()}</Text>
+                  </TouchableOpacity>
+                )}
+                {showStartTimePicker && (
+                  <DateTimePicker
+                    value={startTime}
+                    mode="time"
+                    display="default"
+                    onChange={onStartTimeChange}
+                  />
+                )}
+              </View>
+            </View>
+            <TouchableOpacity onPress={() => setRepeatModalVisible(true)}>
+              <Text style={[styles.repeatText, styles.underline]}>{repeatOption}</Text>
+            </TouchableOpacity>
+            <View style={styles.divider} />
+            <TextInput
+              style={styles.detailsInput}
+              placeholder="Add details"
+              value={details}
+              onChangeText={setDetails}
+            />
+          </>
+        ) : (
+          <>
+            <View style={styles.switchContainer}>
+              <Text style={styles.label}>All Day</Text>
+              <Switch
+                trackColor={{ false: "#767577", true: "#003882" }}
+                thumbColor={isAllDay ? "#f4f3f4" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={handleToggleSwitch}
+                value={isAllDay}
+              />
+            </View>
+            <View style={styles.dateTimeContainer}>
+              <Text style={styles.label}>Start Date</Text>
+              <View style={styles.dateTimeRow}>
+                <TouchableOpacity onPress={() => setShowStartDatePicker(true)}>
+                  <Text style={styles.input}>{startDate.toDateString()}</Text>
+                </TouchableOpacity>
+                {showStartDatePicker && (
+                  <DateTimePicker
+                    value={startDate}
+                    mode="date"
+                    display="default"
+                    onChange={onStartDateChange}
+                  />
+                )}
+                {!isAllDay && (
+                  <TouchableOpacity onPress={() => setShowStartTimePicker(true)}>
+                    <Text style={styles.input}>{startTime.toLocaleTimeString()}</Text>
+                  </TouchableOpacity>
+                )}
+                {showStartTimePicker && (
+                  <DateTimePicker
+                    value={startTime}
+                    mode="time"
+                    display="default"
+                    onChange={onStartTimeChange}
+                  />
+                )}
+              </View>
+              <Text style={styles.label}>End Date</Text>
+              <View style={styles.dateTimeRow}>
+                <TouchableOpacity onPress={() => setShowEndDatePicker(true)}>
+                  <Text style={styles.input}>{endDate.toDateString()}</Text>
+                </TouchableOpacity>
+                {showEndDatePicker && (
+                  <DateTimePicker
+                    value={endDate}
+                    mode="date"
+                    display="default"
+                    onChange={onEndDateChange}
+                  />
+                )}
+                {!isAllDay && (
+                  <TouchableOpacity onPress={() => setShowEndTimePicker(true)}>
+                  <Text style={styles.input}>{endTime.toLocaleTimeString()}</Text>
+                </TouchableOpacity>
+              )}
+              {showEndTimePicker && (
+                <DateTimePicker
+                  value={endTime}
+                  mode="time"
+                  display="default"
+                  onChange={onEndTimeChange}
+                />
+              )}
+            </View>
+          </View>
+          <TouchableOpacity onPress={() => setRepeatModalVisible(true)}>
+            <Text style={[styles.repeatText, styles.underline]}>{repeatOption}</Text>
+          </TouchableOpacity>
+          <View style={styles.divider} />
+          <TextInput
+            style={styles.detailsInput}
+            placeholder="Add Location"
+            value={location}
+            onChangeText={(text) => {
+              setLocation(text);
+              filterVenues(text); // Filter the venues based on input
+            }}
+          />
+          {/* Dropdown List */}
+          {filteredVenues.length > 0 && (
+            <View style={styles.dropdown}>
+              {filteredVenues.map((venue, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => handleLocationSelect(venue)}
+                  style={styles.dropdownItem}
+                >
+                  <Text>{venue}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+          <TextInput
+            style={styles.detailsInput}
+            placeholder="Add details"
+            value={details}
+            onChangeText={setDetails}
+          />
+          <View style={styles.divider} />
+          <TouchableOpacity onPress={() => setNotificationOptionsVisible(true)}>
+            <Text style={styles.notificationText}>Add Notification</Text>
+          </TouchableOpacity>
+          {notifications.map((notification, index) => (
+            <View key={index} style={styles.notificationContainer}>
+              <Text style={styles.notificationText}>{notification}</Text>
+              <TouchableOpacity onPress={() => removeNotification(index)}>
+                <Ionicons name="close" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+          ))}
+          <View style={styles.divider} />
+          <View style={styles.colorSection}>
+            <Text style={styles.colorText}>Colour</Text>
+            <View style={[styles.selectedColor, { backgroundColor: selectedColor }]} />
+          </View>
+          <View style={styles.colorOptionsContainer}>
+            {colorOptions.map((color, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => handleColorSelect(color)}
+                style={[styles.colorOption, { backgroundColor: color }]}
+              />
+            ))}
+          </View>
+        </>
+      )}
+    </ScrollView>
+    <RepeatModal
+      visible={repeatModalVisible}
+      onClose={() => setRepeatModalVisible(false)}
+      onSelect={handleRepeatOption}
+    />
+    <NotificationModal
+      visible={notificationOptionsVisible}
+      onClose={() => setNotificationOptionsVisible(false)}
+      onAdd={addNotification}
+    />
+  </View>
+);
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    paddingTop: 40,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  headerButtonContainer: {
-    backgroundColor: '#003882',
-    borderRadius: 25,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginLeft: 10,
-  },
-  headerButton: {
-    fontSize: 18,
-    color: 'white',
-    fontFamily: 'Ubuntu-Bold',
-  },
-  titleInput: {
-    fontSize: 30,
-    color: '#003882',
-    fontFamily: 'Ubuntu-Medium',
-    marginTop: 20,
-    borderBottomWidth: 0,
-  },
-  toggleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  toggleButton: {
-    width: 80,
-    paddingVertical: 7,
-    backgroundColor: 'white',
-    borderColor: '#003882',
-    borderWidth: 1,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 5,
-  },
-  selectedToggleButton: {
-    backgroundColor: 'rgba(0, 56, 130, 0.40)',
-  },
-  toggleText: {
-    color: '#003882',
-    fontSize: 15,
-    fontFamily: 'Ubuntu-Medium',
-  },
-  selectedToggleText: {
-    fontWeight: '500',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#e0e0e0',
-    marginVertical: 15,
-  },
-  switchContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: 5,
-  },
-  label: {
-    fontSize: 20,
-    color: '#003882',
-    fontFamily: 'Ubuntu-Medium',
-  },
-  dateTimeContainer: {
-    marginVertical: 20,
-  },
-  input: {
-    fontSize: 20,
-    color: '#003882',
-    fontFamily: 'Ubuntu-Medium',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-    marginBottom: 15,
-  },
-  repeatText: {
-    fontSize: 20,
-    color: '#003882',
-    fontFamily: 'Ubuntu-Medium',
-    marginVertical: 10,
-  },
-  detailsInput: {
-    fontSize: 20,
-    color: '#003882',
-    fontFamily: 'Ubuntu-Medium',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-    marginTop: 20,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 56, 130, 0.8)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContainer: {
-    width: '80%',
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
-    alignItems: 'center',
-  },
-  modalOption: {
-    width: '100%',
-    padding: 15,
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  modalOptionText: {
-    fontSize: 18,
-    color: '#003882',
-    fontFamily: 'Ubuntu-Medium',
-  },
+container: {
+  flex: 1,
+  backgroundColor: 'white',
+  paddingHorizontal: 20,
+  paddingTop: 40,
+},
+header: {
+  flexDirection: 'row',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+},
+headerButtonContainer: {
+  backgroundColor: '#003882',
+  borderRadius: 25,
+  paddingHorizontal: 10,
+  paddingVertical: 5,
+  marginLeft: 10,
+},
+headerButton: {
+  fontSize: 15,
+  color: 'white',
+  fontFamily: 'Ubuntu-Bold',
+},
+titleInput: {
+  fontSize: 30,
+  color: '#003882',
+  fontFamily: 'Ubuntu-Medium',
+  marginTop: 20,
+  borderBottomWidth: 0,
+},
+toggleContainer: {
+  flexDirection: 'row',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
+  marginTop: 10,
+},
+toggleButton: {
+  width: 80,
+  paddingVertical: 7,
+  backgroundColor: 'white',
+  borderColor: '#003882',
+  borderWidth: 1,
+  borderRadius: 25,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginHorizontal: 5,
+},
+selectedToggleButton: {
+  backgroundColor: 'rgba(0, 56, 130, 0.40)',
+},
+toggleText: {
+  color: '#003882',
+  fontSize: 15,
+  fontFamily: 'Ubuntu-Medium',
+},
+selectedToggleText: {
+  fontWeight: '500',
+},
+divider: {
+  height: 1,
+  backgroundColor: '#e0e0e0',
+  marginVertical: 10,
+},
+switchContainer: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginVertical: 5,
+},
+label: {
+  fontSize: 21,
+  color: '#003882',
+  fontFamily: 'Ubuntu-Medium',
+},
+dateTimeContainer: {
+  marginVertical: 10,
+},
+dateTimeRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginVertical: 10,
+},
+input: {
+  fontSize: 20,
+  color: '#003882',
+  fontFamily: 'Ubuntu-Medium',
+},
+repeatText: {
+  fontSize: 21,
+  color: '#003882',
+  fontFamily: 'Ubuntu-Medium',
+  marginVertical: 10,
+},
+underline: {
+  textDecorationLine: 'underline',
+},
+detailsInput: {
+  fontSize: 20,
+  color: '#003882',
+  fontFamily: 'Ubuntu-Medium',
+  borderBottomWidth: 1,
+  borderBottomColor: '#e0e0e0',
+  marginTop: 10,
+},
+notificationContainer: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+},
+notificationText: {
+  fontSize: 20,
+  color: '#003882',
+  fontFamily: 'Ubuntu-Medium',
+  marginVertical: 10,
+},
+colorSection: {
+  flexDirection: 'row',
+  alignItems: 'center',
+},
+colorText: {
+  fontSize: 20,
+  color: '#003882',
+  fontFamily: 'Ubuntu-Medium',
+  marginVertical: 10,
+},
+colorOptionsContainer: {
+  flexDirection: 'row',
+  justifyContent: 'space-around',
+  alignItems: 'center',
+  marginTop: 10,
+},
+selectedColor: {
+  width: 30,
+  height: 30,
+  borderRadius: 15,
+  marginLeft: 10,
+},
+colorOption: {
+  width: 40,
+  height: 40,
+  borderRadius: 20,
+  marginVertical: 10,
+},
+dropdown: {
+  backgroundColor: 'white',
+  borderColor: '#ccc',
+  borderWidth: 1,
+  maxHeight: 150,
+  overflow: 'scroll',
+},
+dropdownItem: {
+  padding: 10,
+  borderBottomColor: '#ccc',
+  borderBottomWidth: 1,
+},
 });
 
 export default AddTaskEventScreen;
-

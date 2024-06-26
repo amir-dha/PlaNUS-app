@@ -1,7 +1,7 @@
 import { Modal, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { auth } from '../../firebase';
+import { auth } from '../../../firebase';
 import { signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/core';
 

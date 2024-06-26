@@ -1,11 +1,11 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { auth } from '../firebase';
+import { auth } from '../../firebase';
 import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/core';
 import { Ionicons } from '@expo/vector-icons';
 
-const logo = require('../assets/logo.png'); 
+const logo = require('../../assets/logo.png'); 
 
 const LoginScreen = () => {
     const [email, setEmail] = useState(''); 
