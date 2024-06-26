@@ -9,8 +9,8 @@ import AccountButtonModal from './Modals/AccountButtonModal';
 const HomeScreen = () => {
 
   const navigation = useNavigation(); 
-  const goToCalendar = () => {
-    navigation.navigate('Calendar'); 
+  const goToPlannerPage = () => {
+    navigation.navigate('Planner'); 
     setAccountModalVisible(false);
   };
   
@@ -39,7 +39,7 @@ const HomeScreen = () => {
         style={[styles.buttonContainer, {marginTop: 55}]}
         // underlayColor={'#003882'}
         // activeOpacity={0.5}
-        onPress={goToCalendar}>
+        onPress={goToPlannerPage}>
         <Text style={[styles.text, {color:'white'}]}>Your Schedule</Text>
       </TouchableOpacity>
 

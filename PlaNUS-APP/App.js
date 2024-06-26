@@ -10,8 +10,10 @@ import * as SplashScreen from 'expo-splash-screen';
 import SignupScreen from './Screens/SignupScreen';
 import HomeScreen from './Screens/HomeScreen';
 import InformationScreen from './Screens/InformationScreen';
-import CalendarGridScreen from './Screens/CalendarGridScreen';
+import CalendarGridScreen from './Screens/Calendar Components/CalendarGridScreen';
 import AccountScreen from './Screens/AccountScreen';
+import PlannerPage from './Screens/Calendar Components/PlannerPage'; // Import the PlannerPage
+import AddTaskEventScreen from './Screens/Calendar Components/AddTaskEvent';
 
 const Stack = createNativeStackNavigator(); 
 
@@ -61,8 +63,10 @@ function App() {
         <Stack.Screen options={{ headerShown: false }} name="Signup" component={SignupScreen} />
         <Stack.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
         <Stack.Screen options={{ headerShown: false }} name="Information" component={InformationScreen} />
-        <Stack.Screen options={{ headerShown: false }} name="Calendar" component={CalendarGridScreen} />
+        <Stack.Screen options={{ headerShown: false }} name="CalendarGrid" component={CalendarGridScreen} />
         <Stack.Screen options={{ headerShown: false }} name="Account" component={AccountScreen} />
+        <Stack.Screen options={{ headerShown: false }} name="Planner" component={PlannerPage} />
+        <Stack.Screen options={{ headerShown: false }} name="AddTaskEventScreen" component={AddTaskEventScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
