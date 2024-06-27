@@ -14,6 +14,7 @@ import CalendarGridScreen from './Screens/Calendar Components/CalendarGridScreen
 import AccountScreen from './Screens/Account/Settings/AccountScreen';
 import PlannerPage from './Screens/Calendar Components/PlannerPage'; // Import the PlannerPage
 import AddTaskEventScreen from './Screens/Calendar Components/AddTaskEvent';
+import EisenhowerMatrix from './Screens/EisenhowerMatrix/EisenhowerMatrix';
 
 const Stack = createNativeStackNavigator(); 
 
@@ -67,6 +68,7 @@ function App() {
         <Stack.Screen options={{ headerShown: false }} name="Account" component={AccountScreen} />
         <Stack.Screen options={{ headerShown: false }} name="Planner" component={PlannerPage} />
         <Stack.Screen options={{ headerShown: false }} name="AddTaskEventScreen" component={AddTaskEventScreen} />
+        <Stack.Screen options={{ headerShown: false }} name="EisenhowerMatrix" component={EisenhowerMatrix} />
       </Stack.Navigator>
     </NavigationContainer>
   );
