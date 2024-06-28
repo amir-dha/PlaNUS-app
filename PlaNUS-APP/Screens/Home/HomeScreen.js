@@ -55,7 +55,7 @@ const HomeScreen = () => {
         style={styles.buttonContainer}
         // underlayColor={'#003882'}
         // activeOpacity={0.5}
-        onPress={() => {}}>
+        onPress={() => navigation.navigate('EisenhowerMatrix')}>
         <Text style={[styles.text, {color:'white'}]}>Prioritize Your Task</Text>
       </TouchableOpacity>
 
