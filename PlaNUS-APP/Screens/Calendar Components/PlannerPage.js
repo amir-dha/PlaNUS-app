@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, SectionList, ScrollView, StatusBar, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -280,4 +279,3 @@ const styles = StyleSheet.create({
     fontFamily: 'Ubuntu-Medium',
   },
 });
-
