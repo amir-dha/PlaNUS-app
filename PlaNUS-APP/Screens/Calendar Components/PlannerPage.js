@@ -1,26 +1,38 @@
-
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, SectionList, ScrollView, StatusBar, Modal } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, SectionList, ScrollView, StatusBar, Modal, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { generateMonthDays } from './Utils/generateMonthDays';
 
+const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
 const PlannerPage = () => {
   const navigation = useNavigation();
+
+  const LIST_ITEM_HEIGHT = 40;
+
+  //currently selected date, initialised to the current date 
   const [selectedDate, setSelectedDate] = useState(new Date());
+  //array holding the days of the month 
   const [days, setDays] = useState([]);
+  //month 
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth()); 
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  //to toggle visibility of dropdown 
   const [showDropdown, setShowDropdown] = useState(false);
-  const [viewType, setViewType] = useState('list');
+  //navigating to Grid or List view 
+  const [viewType, setViewType] = useState('List');
+  //visibility of add event modal
   const [addEventModalVisible, setAddEventModalVisible] = useState(false);
 
   useEffect(() => {
-    setDays(generateMonthDays(selectedDate.getMonth(), selectedDate.getFullYear()));
-  }, [selectedDate]);
+    setDays(generateMonthDays(selectedMonth, selectedYear));
+  }, [selectedMonth, selectedYear]);
 
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
   const changeMonth = (month) => {
-    setSelectedDate(new Date(selectedDate.getFullYear(), month));
+    setSelectedMonth(month);
     setShowDropdown(false);
   };
 
@@ -29,96 +41,195 @@ const PlannerPage = () => {
     return new Date(date).toLocaleDateString('en-GB', options);
   };
 
+  //change to Grid view or list view 
+  const displayGrid = () => {
+    setViewType('Grid'); 
+  }
+  const displayList = () => {
+    setViewType('List');
+  }
+
+  //reference to the list of dates in list view 
+  const listViewRef = useRef(null);
+
+  //when a date is pressed in the grid, it should toggle to the list view of that specific date
+  const handleDatePress = (day) => {
+    const newDate = new Date(selectedYear, selectedMonth, day);
+    setSelectedDate(newDate);
+    setViewType('List'); 
+
+    //find the list and date index 
+    const dateIndex = days.findIndex(d => new Date(d).getDate() === day); 
+
+    //setTimeout delays execution to allow rendering before scrolling 
+    setTimeout(() => {
+      if(listViewRef.current && dateIndex !== -1) {
+        listViewRef.current.scrollToLocation({
+          sectionIndex: dateIndex,
+          itemIndex:0,
+          animated: true,
+        });
+      }
+    }, 100);
+  };
+
+  //rendering for the day in grid view
+  const renderDay = ({ item }) => (
+    <TouchableOpacity style={styles.dayContainer} onPress={() => handleDatePress(item.day)} disabled={!item.day}>
+      <Text>{item.day}</Text>
+      {item.tasks && item.tasks.map((task, index) => (
+        <View key={index} style={[styles.task, { backgroundColor: task.color }]}>
+          <Text style={styles.taskText}>{task.name}</Text>
+        </View>
+      ))}
+    </TouchableOpacity>
+  );
+
+  const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
+  const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+  const daysArray = [
+    ...Array.from({ length: firstDayOfMonth }, () => ({ day: null, tasks: [] })),
+    ...Array.from({ length: daysInMonth }, (_, i) => ({
+      day: i + 1,
+      tasks: [] // Populate this with tasks for the specific day
+    }))
+  ];
+
+  //example events hardcoded
   const events = days.map((day) => {
     const date = new Date(day);
-    if (date.getDate() === 26 && date.getMonth() === 5) {
-      return {
-        title: formattedDate(day),
-        data: [
-          { event: 'CS1231S Lecture', time: '14:00 - 16:00', location: 'E-Learning', type: 'event' },
-          { event: 'MA1521 Assignment 1', time: '23:59', type: 'task' }
-        ],
-      };
-    }
-    if (date.getDate() === 27 && date.getMonth() === 5) {
-      return {
-        title: formattedDate(day),
-        data: [
-          { event: 'CS1231S Lecture', time: '14:00 - 16:00', location: 'E-Learning', type: 'event' },
-          { event: 'MA1521 Assignment 1', time: '23:59', type: 'task' }
-        ],
-      };
-    }
+    const dayNumber = date.getDate();
     return {
       title: formattedDate(day),
-      data: [],
+      data: [
+        { event: `Event on ${dayNumber} ${formattedDate(day)}`, time: '14:00 - 16:00', location: 'E-Learning', type: 'event' }
+      ],
     };
   });
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
+      {/* header containing month and other feature buttons */}
       <View style={styles.header}>
+
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconButton}>
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="chevron-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.title}>{selectedDate.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</Text>
+
+        <Text style={styles.title}>{`${new Date(selectedYear, selectedMonth).toLocaleString('en-GB', { month: 'short' })} ${selectedYear}`}</Text>
+
         <TouchableOpacity onPress={toggleDropdown} style={styles.iconButton}>
           <Ionicons name={showDropdown ? "chevron-up" : "chevron-down"} size={24} color="white" />
         </TouchableOpacity>
+
         <TouchableOpacity onPress={() => setAddEventModalVisible(true)} style={styles.iconButton}>
           <Ionicons name="add" size={24} color="white" />
         </TouchableOpacity>
+
         <TouchableOpacity style={styles.iconButton}>
           <Ionicons name="menu" size={24} color="white" />
         </TouchableOpacity>
       </View>
 
+      {/* dropdown to show Grid/List views and Month selection  */}
       {showDropdown && (
         <View style={styles.dropdown}>
-          <View style={styles.toggleContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('CalendarGrid')}>
-              <Text style={[styles.toggleText, viewType === 'grid' && styles.selectedToggleText]}>GRID</Text>
+          <View style={styles.navigationContainer}>
+            <TouchableOpacity 
+              onPress={displayGrid}
+              style={[
+                styles.navigationButton, 
+                viewType === 'Grid' && styles.selectedView]}
+            >
+              <Text style={styles.navigationText}>Grid</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setViewType('list')}>
-              <Text style={[styles.toggleText, viewType === 'list' && styles.selectedToggleText]}>LIST</Text>
+
+            <TouchableOpacity 
+              onPress={displayList}
+              style={[
+                styles.navigationButton, 
+                viewType === 'List' && styles.selectedView]}
+            >
+              <Text style={styles.navigationText}>List</Text>
             </TouchableOpacity>
           </View>
+          
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, index) => (
-              <TouchableOpacity key={month} onPress={() => changeMonth(index)}>
-                <Text style={styles.monthText}>{month}</Text>
+              <TouchableOpacity 
+                key={month} 
+                onPress={() => changeMonth(index)}
+                style={[
+                  styles.monthButton, 
+                  selectedMonth === index && styles.selectedMonthButton
+                ]}
+              >
+                <Text style={[
+                  styles.monthText,
+                  selectedMonth === index && styles.selectedMonthButtonText
+                ]}>{month}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
       )}
 
-      <SectionList
-        sections={events}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => (
-          <View style={styles.eventContainer}>
-            <View style={styles.verticalLine} />
-            <View style={item.type === 'event' ? styles.eventItem : styles.taskItem}>
-              <View style={styles.eventTextContainer}>
-                <Text style={styles.eventText}>{item.event}</Text>
-                {item.location && <Text style={styles.locationText}>{item.location}</Text>}
+      {/* conditionally displays list or grid view */}
+      {viewType === 'List' ? (
+        <SectionList
+          ref={listViewRef}
+          sections={events}
+          keyExtractor={(item, index) => item + index}
+          getItemLayout={(data, index) => (
+            {length: LIST_ITEM_HEIGHT, offset: LIST_ITEM_HEIGHT * index, index}
+          )}
+          onScrollToIndexFailed={(info) => {
+            const wait = new Promise(resolve => setTimeout(resolve, 500)); 
+            wait.then(() => {
+              listViewRef.current?.scrollToLocation({
+                sectionIndex: 0, 
+                itemIndex: info.index, 
+                animated: true});
+            });
+          }}
+          renderItem={({ item }) => (
+            <View style={styles.eventContainer}>
+              <View style={styles.verticalLine} />
+              <View style={item.type === 'event' ? styles.eventItem : styles.taskItem}>
+                <View style={styles.eventTextContainer}>
+                  <Text style={styles.eventText}>{item.event}</Text>
+                  {item.location && <Text style={styles.locationText}>{item.location}</Text>}
+                </View>
+                <Text style={styles.eventTime}>{item.time}</Text>
               </View>
-              <Text style={styles.eventTime}>{item.time}</Text>
             </View>
+          )}
+          renderSectionHeader={({ section: { title } }) => (
+            <Text style={styles.sectionHeader}>{title}</Text>
+          )}
+          style={styles.list}
+        />
+      ) : (
+        <View style={styles.gridContainer}>
+          <View style={styles.daysOfWeekContainer}>
+            {daysOfWeek.map((day, index) => (
+              <Text key={index} style={styles.dayOfWeekText}>{day}</Text>
+            ))}
           </View>
-        )}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.sectionHeader}>{title}</Text>
-        )}
-        style={styles.list}
-      />
+          <FlatList
+            data={daysArray}
+            renderItem={renderDay}
+            keyExtractor={(item, index) => index.toString()}
+            numColumns={7}
+          />
+        </View>
+      )}
 
+      {/* modal to add any events to the calendar */}
       <Modal
         visible={addEventModalVisible}
         transparent={true}
-        animationType="fade"
+        animationType="none"
         onRequestClose={() => setAddEventModalVisible(false)}
       >
         <TouchableOpacity style={styles.modalOverlay} onPress={() => setAddEventModalVisible(false)}>
@@ -144,19 +255,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
+    marginTop: 47,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 10,
     paddingTop: StatusBar.currentHeight,
     backgroundColor: '#003882',
-    height: 70, // Adjusted height
+    height: 70,
   },
   title: {
     color: 'white',
     fontFamily: 'Ubuntu-Bold',
-    fontSize: 20,
-    marginRight: 60, // Adjusted margin
+    fontSize: 25,
+    marginRight: 60,
   },
   iconButton: {
     padding: 5,
@@ -168,28 +280,49 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   monthText: {
-    marginHorizontal: 5,
-    padding: 5,
-    borderRadius: 12,
-    backgroundColor: 'white',
-    borderColor: '#003882',
-    borderWidth: 1,
     fontFamily: 'Ubuntu-Medium',
   },
-  toggleContainer: {
+  monthButton: {
+    marginHorizontal: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    borderRadius:20,
+    borderWidth:1,
+    borderColor:'#003882',
+    backgroundColor:'white',
+  },
+  selectedMonthButton: {
+    backgroundColor: 'rgba(0, 56, 130, 0.2)',
+  },
+  selectedMonthButtonText: {
+    color: 'white',
+  },
+  navigationContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginBottom: 10,
+    borderRadius: 5,
   },
-  toggleText: {
-    fontSize: 20,
+  navigationButton: {
+    width: '50%',
+    backgroundColor: '#e2e2e2',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginHorizontal: 5,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#e4e4e4',
+    alignItems:'center',
+    justifyContent:'center',
+  },
+  navigationText: {
+    fontSize: 18,
     color: 'black',
     marginHorizontal: 20,
     fontFamily: 'Ubuntu-Medium',
   },
-  selectedToggleText: {
-    fontWeight: 'bold',
-    fontFamily: 'Ubuntu-Medium',
+  selectedView: {
+    backgroundColor: 'rgba(0, 56, 130, 0.2)',
   },
   list: {
     flex: 1,
@@ -278,6 +411,38 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#003882',
     fontFamily: 'Ubuntu-Medium',
+  },
+  dayContainer: {
+    width: '14%',
+    height: 100, 
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    backgroundColor: '#e2e2e2',
+    padding: 5,
+    margin: 1,
+  },
+  task: {
+    marginTop: 5,
+    padding: 2,
+    borderRadius: 5,
+  },
+  taskText: {
+    fontSize: 10,
+    fontFamily:'Ubuntu-Regular',
+    color: 'white',
+  },
+  gridContainer: {
+    flexGrow: 1,
+  },
+  daysOfWeekContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical:10,
+  },
+  dayOfWeekText: {
+    width: '14.28%', 
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
 

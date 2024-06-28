@@ -9,9 +9,14 @@ import AccountButtonModal from './Modals/AccountButtonModal';
 const HomeScreen = () => {
 
   const navigation = useNavigation(); 
+
   const goToPlannerPage = () => {
     navigation.navigate('Planner'); 
     setAccountModalVisible(false);
+  };
+
+  const goToHome = () => {
+    navigation.navigate('Home');
   };
   
   //to handle AccountButtonModal
@@ -22,9 +27,11 @@ const HomeScreen = () => {
       
       {/* toolbar with app logo, and account button */}
       <View style={styles.toolbar}>
-        <Text style={[styles.text, {fontSize:24, fontFamily:'Ubuntu-Bold'}]}>
-          PlaNUS
-        </Text>
+        <TouchableOpacity onPress={goToHome}>
+          <Text style={[styles.text, {fontSize:24, fontFamily:'Ubuntu-Bold'}]}>
+            PlaNUS
+          </Text>
+        </TouchableOpacity>
         {/* account button */}
         <TouchableOpacity onPress={() =>setAccountModalVisible(true)}>
           <FontAwesome5 name='user-circle' size={30} color='#003882'/>
