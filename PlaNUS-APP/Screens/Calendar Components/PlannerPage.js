@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, SectionList, ScrollView, StatusBar, Modal, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,8 @@ const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 const PlannerPage = () => {
   const navigation = useNavigation();
+
+  const LIST_ITEM_HEIGHT = 40;
 
   //currently selected date, initialised to the current date 
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -47,12 +49,29 @@ const PlannerPage = () => {
     setViewType('List');
   }
 
+  //reference to the list of dates in list view 
+  const listViewRef = useRef(null);
+
   //when a date is pressed in the grid, it should toggle to the list view of that specific date
   const handleDatePress = (day) => {
     const newDate = new Date(selectedYear, selectedMonth, day);
     setSelectedDate(newDate);
     setViewType('List'); 
-  }
+
+    //find the list and date index 
+    const dateIndex = days.findIndex(d => new Date(d).getDate() === day); 
+
+    //setTimeout delays execution to allow rendering before scrolling 
+    setTimeout(() => {
+      if(listViewRef.current && dateIndex !== -1) {
+        listViewRef.current.scrollToLocation({
+          sectionIndex: dateIndex,
+          itemIndex:0,
+          animated: true,
+        });
+      }
+    }, 100);
+  };
 
   //rendering for the day in grid view
   const renderDay = ({ item }) => (
@@ -158,8 +177,21 @@ const PlannerPage = () => {
       {/* conditionally displays list or grid view */}
       {viewType === 'List' ? (
         <SectionList
+          ref={listViewRef}
           sections={events}
           keyExtractor={(item, index) => item + index}
+          getItemLayout={(data, index) => (
+            {length: LIST_ITEM_HEIGHT, offset: LIST_ITEM_HEIGHT * index, index}
+          )}
+          onScrollToIndexFailed={(info) => {
+            const wait = new Promise(resolve => setTimeout(resolve, 500)); 
+            wait.then(() => {
+              listViewRef.current?.scrollToLocation({
+                sectionIndex: 0, 
+                itemIndex: info.index, 
+                animated: true});
+            });
+          }}
           renderItem={({ item }) => (
             <View style={styles.eventContainer}>
               <View style={styles.verticalLine} />
@@ -235,7 +267,7 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     fontFamily: 'Ubuntu-Bold',
-    fontSize: 20,
+    fontSize: 25,
     marginRight: 60,
   },
   iconButton: {
@@ -280,9 +312,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 2,
     borderColor: '#e4e4e4',
+    alignItems:'center',
+    justifyContent:'center',
   },
   navigationText: {
-    fontSize: 20,
+    fontSize: 18,
     color: 'black',
     marginHorizontal: 20,
     fontFamily: 'Ubuntu-Medium',
