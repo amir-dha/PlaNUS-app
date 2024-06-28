@@ -154,7 +154,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     paddingTop: 10,
     marginLeft: 35,
-    marginRight: 20
+    marginRight: 20,
+    marginTop:40,
   },
   horizontalLabel: {
     fontSize: 16,
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
   },
   quadrantsContainer: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingHorizontal: 8,
     marginLeft: 10,
   },
@@ -196,7 +197,7 @@ const styles = StyleSheet.create({
   quadrant: {
     flex: 1,
     height: 350,
-    margin: 10,
+    margin:10,
     borderRadius: 15,
     padding: 10,
   },
