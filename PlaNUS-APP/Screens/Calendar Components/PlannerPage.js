@@ -1,36 +1,32 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, SectionList, ScrollView, StatusBar, Modal, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons'; // Import FontAwesome5 for the user circle icon
 import { useNavigation } from '@react-navigation/native';
 import { generateMonthDays } from './Utils/generateMonthDays';
+import AccountButtonModal from '../Home/Modals/AccountButtonModal'; // Import the AccountButtonModal
 
 const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 const PlannerPage = () => {
   const navigation = useNavigation();
-
   const LIST_ITEM_HEIGHT = 40;
 
-  //currently selected date, initialised to the current date 
+  // currently selected date, initialized to the current date 
   const [selectedDate, setSelectedDate] = useState(new Date());
-  //array holding the days of the month 
   const [days, setDays] = useState([]);
-  //month 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth()); 
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  //to toggle visibility of dropdown 
   const [showDropdown, setShowDropdown] = useState(false);
-  //navigating to Grid or List view 
   const [viewType, setViewType] = useState('List');
-  //visibility of add event modal
   const [addEventModalVisible, setAddEventModalVisible] = useState(false);
+  const [accountModalVisible, setAccountModalVisible] = useState(false); // State for account modal visibility
 
   useEffect(() => {
     setDays(generateMonthDays(selectedMonth, selectedYear));
   }, [selectedMonth, selectedYear]);
 
   const toggleDropdown = () => setShowDropdown(!showDropdown);
-
   const changeMonth = (month) => {
     setSelectedMonth(month);
     setShowDropdown(false);
@@ -41,39 +37,32 @@ const PlannerPage = () => {
     return new Date(date).toLocaleDateString('en-GB', options);
   };
 
-  //change to Grid view or list view 
   const displayGrid = () => {
     setViewType('Grid'); 
-  }
+  };
   const displayList = () => {
     setViewType('List');
-  }
+  };
 
-  //reference to the list of dates in list view 
   const listViewRef = useRef(null);
 
-  //when a date is pressed in the grid, it should toggle to the list view of that specific date
   const handleDatePress = (day) => {
     const newDate = new Date(selectedYear, selectedMonth, day);
     setSelectedDate(newDate);
     setViewType('List'); 
 
-    //find the list and date index 
     const dateIndex = days.findIndex(d => new Date(d).getDate() === day); 
-
-    //setTimeout delays execution to allow rendering before scrolling 
     setTimeout(() => {
       if(listViewRef.current && dateIndex !== -1) {
         listViewRef.current.scrollToLocation({
           sectionIndex: dateIndex,
-          itemIndex:0,
+          itemIndex: 0,
           animated: true,
         });
       }
     }, 100);
   };
 
-  //rendering for the day in grid view
   const renderDay = ({ item }) => (
     <TouchableOpacity style={styles.dayContainer} onPress={() => handleDatePress(item.day)} disabled={!item.day}>
       <Text>{item.day}</Text>
@@ -95,7 +84,6 @@ const PlannerPage = () => {
     }))
   ];
 
-  //example events hardcoded
   const events = days.map((day) => {
     const date = new Date(day);
     const dayNumber = date.getDate();
@@ -109,9 +97,7 @@ const PlannerPage = () => {
 
   return (
     <View style={styles.container}>
-      {/* header containing month and other feature buttons */}
       <View style={styles.header}>
-
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconButton}>
           <Ionicons name="chevron-back" size={24} color="white" />
         </TouchableOpacity>
@@ -126,12 +112,11 @@ const PlannerPage = () => {
           <Ionicons name="add" size={24} color="white" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.iconButton}>
-          <Ionicons name="menu" size={24} color="white" />
+        <TouchableOpacity onPress={() => setAccountModalVisible(true)} style={styles.iconButton}>
+          <FontAwesome5 name='user-circle' size={24} color="white" />
         </TouchableOpacity>
       </View>
 
-      {/* dropdown to show Grid/List views and Month selection  */}
       {showDropdown && (
         <View style={styles.dropdown}>
           <View style={styles.navigationContainer}>
@@ -174,7 +159,6 @@ const PlannerPage = () => {
         </View>
       )}
 
-      {/* conditionally displays list or grid view */}
       {viewType === 'List' ? (
         <SectionList
           ref={listViewRef}
@@ -225,7 +209,6 @@ const PlannerPage = () => {
         </View>
       )}
 
-      {/* modal to add any events to the calendar */}
       <Modal
         visible={addEventModalVisible}
         transparent={true}
@@ -243,6 +226,10 @@ const PlannerPage = () => {
           </View>
         </TouchableOpacity>
       </Modal>
+
+      <AccountButtonModal
+        modalVisible={accountModalVisible} 
+        setModalVisible={setAccountModalVisible} />
     </View>
   );
 };
@@ -286,10 +273,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     paddingVertical: 5,
     paddingHorizontal: 20,
-    borderRadius:20,
-    borderWidth:1,
-    borderColor:'#003882',
-    backgroundColor:'white',
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#003882',
+    backgroundColor: 'white',
   },
   selectedMonthButton: {
     backgroundColor: 'rgba(0, 56, 130, 0.2)',
@@ -312,8 +299,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 2,
     borderColor: '#e4e4e4',
-    alignItems:'center',
-    justifyContent:'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   navigationText: {
     fontSize: 18,
@@ -428,7 +415,7 @@ const styles = StyleSheet.create({
   },
   taskText: {
     fontSize: 10,
-    fontFamily:'Ubuntu-Regular',
+    fontFamily: 'Ubuntu-Regular',
     color: 'white',
   },
   gridContainer: {
@@ -437,7 +424,7 @@ const styles = StyleSheet.create({
   daysOfWeekContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginVertical:10,
+    marginVertical: 10,
   },
   dayOfWeekText: {
     width: '14.28%', 
@@ -445,4 +432,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
 

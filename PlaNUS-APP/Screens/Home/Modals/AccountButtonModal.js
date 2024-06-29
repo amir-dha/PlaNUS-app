@@ -8,8 +8,8 @@ import { useNavigation } from '@react-navigation/core';
 const AccountButtonModal = ({modalVisible, setModalVisible}) => {
     const navigation = useNavigation(); 
     
-    const goToInformation = () => {
-        navigation.navigate('Information');
+    const goToSetting = () => {
+        navigation.navigate('Setting');
         setModalVisible(false);
     };
     const goToAccount = () => {
@@ -58,9 +58,9 @@ const AccountButtonModal = ({modalVisible, setModalVisible}) => {
 
                         <TouchableOpacity
                             style={styles.button}
-                            onPress={goToInformation}
+                            onPress={goToSetting}
                         >
-                            <Text style={styles.text}>Information</Text>
+                            <Text style={styles.text}>Setting</Text>
                         </TouchableOpacity>
 
                         <View style={styles.divider} />

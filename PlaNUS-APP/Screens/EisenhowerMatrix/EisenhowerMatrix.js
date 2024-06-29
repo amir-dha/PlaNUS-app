@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons'; // Import FontAwesome5 for the user circle icon
 import { useNavigation } from '@react-navigation/native';
 import { auth, db } from '../../firebase'; // adjust the path as needed
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import AccountButtonModal from '../Home/Modals/AccountButtonModal'; // Import the AccountButtonModal
 
 const EisenhowerMatrix = () => {
   const navigation = useNavigation();
@@ -14,6 +16,7 @@ const EisenhowerMatrix = () => {
     urgentNotImportant: '',
     notUrgentNotImportant: '',
   });
+  const [accountModalVisible, setAccountModalVisible] = useState(false); // State for account modal visibility
 
   useEffect(() => {
     if (user) {
@@ -49,6 +52,13 @@ const EisenhowerMatrix = () => {
     return saveOnExit;
   }, [navigation, tasks, user]);
 
+  // Save tasks when the component is unmounted
+  useEffect(() => {
+    return () => {
+      saveTasks();
+    };
+  }, [tasks, user]);
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -60,8 +70,8 @@ const EisenhowerMatrix = () => {
           <Ionicons name="chevron-back" size={24} color="white" />
         </TouchableOpacity>
         <Text style={styles.title}>Prioritize your Tasks</Text>
-        <TouchableOpacity style={styles.iconButton}>
-          <Ionicons name="menu" size={24} color="white" />
+        <TouchableOpacity style={styles.iconButton} onPress={() => setAccountModalVisible(true)}>
+          <FontAwesome5 name='user-circle' size={24} color="white" />
         </TouchableOpacity>
       </View>
       <View style={styles.labelsContainer}>
@@ -122,6 +132,10 @@ const EisenhowerMatrix = () => {
           </View>
         </View>
       </ScrollView>
+
+      <AccountButtonModal
+        modalVisible={accountModalVisible} 
+        setModalVisible={setAccountModalVisible} />
     </KeyboardAvoidingView>
   );
 };
