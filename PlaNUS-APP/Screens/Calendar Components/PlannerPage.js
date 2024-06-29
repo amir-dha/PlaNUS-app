@@ -17,6 +17,7 @@ const PlannerPage = () => {
   const [days, setDays] = useState([]);
   //month 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth()); 
+  //year
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   //to toggle visibility of dropdown 
   const [showDropdown, setShowDropdown] = useState(false);
