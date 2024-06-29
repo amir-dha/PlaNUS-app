@@ -85,6 +85,14 @@ const PlannerPage = () => {
     }))
   ];
 
+  const goToEvent = () => {
+    setAddEventModalVisible(false); 
+    navigation.navigate('AddTaskEventScreen', { isTaskInitial: true })
+  }
+  const goToTask = () => {
+    setAddEventModalVisible(false); 
+    navigation.navigate('AddTaskEventScreen', { isTaskInitial: false })
+  }
   const events = days.map((day) => {
     const date = new Date(day);
     const dayNumber = date.getDate();
@@ -218,10 +226,10 @@ const PlannerPage = () => {
       >
         <TouchableOpacity style={styles.modalOverlay} onPress={() => setAddEventModalVisible(false)}>
           <View style={styles.modalContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('AddTaskEventScreen', { isTaskInitial: true })} style={styles.modalOption}>
+            <TouchableOpacity onPress={goToTask} style={styles.modalOption}>
               <Text style={styles.modalOptionText}>TASK</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('AddTaskEventScreen', { isTaskInitial: false })} style={styles.modalOption}>
+            <TouchableOpacity onPress={goToEvent} style={styles.modalOption}>
               <Text style={styles.modalOptionText}>EVENT</Text>
             </TouchableOpacity>
           </View>
