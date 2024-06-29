@@ -59,11 +59,11 @@ const HomeScreen = () => {
       </View>
 
       <View style={styles.contentContainer}>
-        <Text style={[styles.text, { fontSize: 30, color: 'black', textAlign: 'center' }]}>
+        <Text style={[styles.text, styles.greetingText]}>
           {username ? `Hello ${username}!` : 'Hello!'}
         </Text>
 
-        <Text style={[styles.text, { fontSize: 45, color: 'black' }]}>
+        <Text style={[styles.text, styles.mainText]}>
           What's up?
         </Text>
 
@@ -122,11 +122,21 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 100,
     paddingHorizontal: 20,
   },
+  greetingText: {
+    fontSize: 30,
+    color: 'black',
+    textAlign: 'center',
+    marginBottom: 10, // Adjust this value as needed
+  },
+  mainText: {
+    fontSize: 45,
+    color: 'black',
+    marginBottom: 20, // Adjust this value as needed
+  },
   buttonContainer: {
-    width: 250,
+    width: 300,
     backgroundColor: '#003882',
     marginTop: 15,
     padding: 18,
