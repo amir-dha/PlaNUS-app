@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, SectionList, ScrollView, Stat
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
-import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
+import { collection, query, where, orderBy, onSnapshot } from "firebase/firestore";
 import { db, auth } from '../../firebase';
 import AccountButtonModal from '../Home/Modals/AccountButtonModal';
 
@@ -21,53 +21,78 @@ const PlannerPage = () => {
   const [viewType, setViewType] = useState('List');
   const [addEventModalVisible, setAddEventModalVisible] = useState(false);
   const [accountModalVisible, setAccountModalVisible] = useState(false); 
+  const [tasks, setTasks] = useState([]);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    const fetchTasksAndEvents = async () => {
-      const user = auth.currentUser;
-      if (!user) {
-        console.error("User not authenticated");
-        return;
+    const user = auth.currentUser;
+    if (!user) {
+      console.error("User not authenticated");
+      return;
+    }
+
+    const tasksQuery = query(collection(db, "tasks"), where("userId", "==", user.uid), orderBy("startTime"));
+    const eventsQuery = query(collection(db, "events"), where("userId", "==", user.uid), orderBy("startTime"));
+
+    const unsubscribeTasks = onSnapshot(tasksQuery, (snapshot) => {
+      if (!snapshot.empty) {
+        const tasksData = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, type: 'task' }));
+        setTasks(tasksData);
+      } else {
+        setTasks([]);
       }
+    });
 
-      const tasksQuery = query(collection(db, "tasks"), where("userId", "==", user.uid), orderBy("startTime"));
-      const eventsQuery = query(collection(db, "events"), where("userId", "==", user.uid), orderBy("startTime"));
-
-      const [tasksSnapshot, eventsSnapshot] = await Promise.all([getDocs(tasksQuery), getDocs(eventsQuery)]);
-
-      const dataByDate = {};
-
-      const processSnapshot = (snapshot, type) => {
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const dateKey = new Date(data.date.toDate()).toDateString();
-          if (!dataByDate[dateKey]) {
-            dataByDate[dateKey] = [];
-          }
-          dataByDate[dateKey].push({ ...data, type });
-        });
-      };
-
-      processSnapshot(tasksSnapshot, 'task');
-      processSnapshot(eventsSnapshot, 'event');
-
-      const allDays = [];
-      const date = new Date(selectedYear, selectedMonth, 1);
-      while (date.getMonth() === selectedMonth) {
-        allDays.push(new Date(date).toDateString());
-        date.setDate(date.getDate() + 1);
+    const unsubscribeEvents = onSnapshot(eventsQuery, (snapshot) => {
+      if (!snapshot.empty) {
+        const eventsData = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, type: 'event' }));
+        setEvents(eventsData);
+      } else {
+        setEvents([]);
       }
+    });
 
-      const sections = allDays.map(dateKey => ({
-        title: new Date(dateKey).toDateString(),
-        data: dataByDate[dateKey] || []
-      }));
-
-      setDays(sections);
+    return () => {
+      unsubscribeTasks();
+      unsubscribeEvents();
     };
-
-    fetchTasksAndEvents();
   }, [selectedMonth, selectedYear]);
+
+  useEffect(() => {
+    console.log("Tasks:", tasks);
+    console.log("Events:", events);
+  
+    const dataByDate = {};
+  
+    const combinedData = [...tasks, ...events];
+  
+    combinedData.forEach(item => {
+      const dateKey = new Date(item.date).toDateString();
+      if (!dataByDate[dateKey]) {
+        dataByDate[dateKey] = [];
+      }
+      dataByDate[dateKey].push(item);
+    });
+  
+    console.log("Data by Date:", dataByDate);
+  
+    const allDays = [];
+    const date = new Date(selectedYear, selectedMonth, 1);
+    while (date.getMonth() === selectedMonth) {
+      allDays.push(new Date(date).toDateString());
+      date.setDate(date.getDate() + 1);
+    }
+  
+    const sections = allDays.map(dateKey => ({
+      title: new Date(dateKey).toDateString(),
+      data: (dataByDate[dateKey] || []).sort((a, b) => new Date(a.startTime) - new Date(b.startTime))
+    }));
+  
+    // console.log("Sections:", sections);
+  
+    setDays(sections);
+  }, [tasks, events, selectedMonth, selectedYear]);
+  
 
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
@@ -101,6 +126,26 @@ const PlannerPage = () => {
     }, 100);
   };
 
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.taskEventButton}
+      onPress={() => handleEventPress(item)}
+    >
+      <View style={styles.eventContainer}>
+        <View style={styles.verticalLine} />
+        <View style={[item.type === 'event' ? styles.eventItem : styles.taskItem, { backgroundColor: item.color }]}>
+          <View style={styles.eventTextContainer}>
+            <Text style={styles.eventText}>{item.title}</Text>
+            {item.location && <Text style={styles.locationText}>{item.location}</Text>}
+          </View>
+          <Text style={styles.eventTime}>
+            {`${new Date(item.startTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} - ${new Date(item.endTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`}
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+
   const renderDay = ({ item }) => (
     <TouchableOpacity style={styles.dayContainer} onPress={() => handleDatePress(item.day)} disabled={!item.day}>
       <Text>{item.day}</Text>
@@ -130,6 +175,14 @@ const PlannerPage = () => {
     setAddEventModalVisible(false); 
     navigation.navigate('AddTaskEventScreen', { isTaskInitial: true })
   }
+
+  // Navigate to AddTaskEventScreen with item data to edit
+  const handleEventPress = (event) => {
+    navigation.navigate('AddTaskEventScreen', { 
+      isTaskInitial: event.type === 'task', 
+      eventData: event
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -199,7 +252,7 @@ const PlannerPage = () => {
         <SectionList
           ref={listViewRef}
           sections={days}
-          keyExtractor={(item, index) => item + index}
+          keyExtractor={(item, index) => item.id || index.toString()}
           getItemLayout={(data, index) => (
             {length: LIST_ITEM_HEIGHT, offset: LIST_ITEM_HEIGHT * index, index}
           )}
@@ -212,18 +265,7 @@ const PlannerPage = () => {
                 animated: true});
             });
           }}
-          renderItem={({ item }) => (
-            <View style={styles.eventContainer}>
-              <View style={styles.verticalLine} />
-              <View style={[item.type === 'event' ? styles.eventItem : styles.taskItem, { backgroundColor: item.color }]}>
-                <View style={styles.eventTextContainer}>
-                  <Text style={styles.eventText}>{item.title}</Text>
-                  {item.location && <Text style={styles.locationText}>{item.location}</Text>}
-                </View>
-                <Text style={styles.eventTime}>{`${new Date(item.startTime.toDate()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} - ${new Date(item.endTime.toDate()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`}</Text>
-              </View>
-            </View>
-          )}
+          renderItem={renderItem}
           renderSectionHeader={({ section: { title } }) => (
             <Text style={styles.sectionHeader}>{title}</Text>
           )}

@@ -1,39 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Switch, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Switch, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import RepeatModal from './Calendar Modals/RepeatModal';
 import NotificationModal from './Calendar Modals/NotificationModal';
 import venuesList from './Utils/venuesList';
-import { addDoc, collection } from 'firebase/firestore';
-import { db, auth } from '../../firebase'; 
+import { addDoc, collection, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { db, auth } from '../../firebase';
 
 const AddTaskEventScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const { isTaskInitial } = route.params;
+  const { isTaskInitial, eventData } = route.params;
 
-  const [isTask, setIsTask] = useState(isTaskInitial);
-  const [isAllDay, setIsAllDay] = useState(false);
+  const [isTask, setIsTask] = useState(isTaskInitial); //decides whether something added is a task or an event 
+  const [isAllDay, setIsAllDay] = useState(eventData ? eventData.isAllDay : false); //whether the t/e is all day 
   const [repeatModalVisible, setRepeatModalVisible] = useState(false);
-  const [details, setDetails] = useState('');
-  const [showStartDatePicker, setShowStartDatePicker] = useState(false);
+  const [title, setTitle] = useState(eventData ? eventData.title : '');//title field
+  const [details, setDetails] = useState(eventData ? eventData.details : ''); //detail field
+  const [showStartDatePicker, setShowStartDatePicker] = useState(false); 
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
-  const [repeatOption, setRepeatOption] = useState('Does not repeat');
-  const [notifications, setNotifications] = useState([]);
+  const [startDate, setStartDate] = useState(eventData ? new Date(eventData.date) : new Date()); //start date field
+  const [endDate, setEndDate] = useState(eventData ? new Date(eventData.date) : new Date());//end date field
+  const [startTime, setStartTime] = useState(eventData ? new Date(eventData.startTime) : new Date());//start time field
+  const [endTime, setEndTime] = useState(eventData ? new Date(eventData.endTime) : new Date());//endtime field
+  const [repeatOption, setRepeatOption] = useState(eventData ? eventData.repeatOption : 'Does not repeat'); 
+  const [notifications, setNotifications] = useState(eventData ? eventData.notifications : []);
   const [notificationOptionsVisible, setNotificationOptionsVisible] = useState(false);
-  const [selectedColor, setSelectedColor] = useState('#d1c4e9');
+  const [selectedColor, setSelectedColor] = useState(eventData ? eventData.color : '#d1c4e9'); 
   const [colorPickerVisible, setColorPickerVisible] = useState(false);
-  const [venues, setVenues] = useState([]);
+  const [venues, setVenues] = useState([]); 
   const [filteredVenues, setFilteredVenues] = useState([]);
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState(eventData ? eventData.location : ''); //location field
 
   const handleToggleSwitch = () => setIsAllDay(previousState => !previousState);
 
@@ -90,7 +91,6 @@ const AddTaskEventScreen = () => {
     setNotifications(newNotifications);
   };
 
-  //green, yellow, orange, pink, purple, blue
   const colorOptions = ['#C8D79E', '#FFFBCB', '#FFC498', '#F8A5A5', '#A7A0C3', '#BEEEEC'];
 
   const handleColorSelect = (color) => {
@@ -113,34 +113,67 @@ const AddTaskEventScreen = () => {
     if (!user) {
       console.error("User not authenticated");
       return;
-    };
+    }
 
-    console.log('Current User ID:', user.uid); // Log the user ID
-
-    const eventData = {
-      title: details,
+    const eventDataToSave = {
+      title: title,
+      details: details, 
       isTask: isTask,
       isAllDay: isAllDay,
-      startTime: startTime,
-      endTime: endTime,
+      startTime: startTime.toISOString(),
+      endTime: endTime.toISOString(),
       repeatOption: repeatOption,
       notifications: notifications,
       color: isTask ? '#e2e2e2' : selectedColor,
       location: location,
-      date: startDate,
+      date: startDate.toISOString(),
       userId: user.uid
     };
 
     try {
-      if (isTask) {
-        await addDoc(collection(db, "tasks"), eventData);
+      if (eventData && eventData.id) {
+        // If type has changed, delete from old collection and add to new
+        if (eventData.isTask !== isTask) {
+          const oldDocRef = doc(db, eventData.isTask ? "tasks" : "events", eventData.id);
+          await deleteDoc(oldDocRef);
+
+          const newCollection = isTask ? "tasks" : "events";
+          await addDoc(collection(db, newCollection), eventDataToSave);
+        } else {
+          // Update existing event/task
+          const docRef = doc(db, isTask ? "tasks" : "events", eventData.id);
+          await updateDoc(docRef, eventDataToSave);
+        }
       } else {
-        await addDoc(collection(db, "events"), eventData);
+        // Add new event/task
+        await addDoc(collection(db, isTask ? "tasks" : "events"), eventDataToSave);
       }
       navigation.goBack();
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error("Error saving document: ", error);
     }
+  };
+
+  const handleDelete = async () => {
+    if (eventData && eventData.id) {
+      try {
+        const docRef = doc(db, isTask ? "tasks" : "events", eventData.id);
+        await deleteDoc(docRef);
+        navigation.goBack();
+      } catch (error) {
+        console.error("Error deleting document: ", error);
+      }
+    } else {
+      Alert.alert("Error", "No event/task selected to delete.");
+    }
+  };
+
+  const switchToTask = () => {
+    setIsTask(true);
+  };
+
+  const switchToEvent = () => {
+    setIsTask(false);
   };
 
   return (
@@ -164,12 +197,20 @@ const AddTaskEventScreen = () => {
         <TextInput
           style={styles.titleInput}
           placeholder="Add Title"
+          value={title}
+          onChangeText={setTitle} // Separate title state
         />
         <View style={styles.toggleContainer}>
-          <TouchableOpacity style={[styles.toggleButton, isTask && styles.selectedToggleButton]} onPress={() => setIsTask(true)}>
+          <TouchableOpacity 
+            style={[styles.toggleButton, isTask && styles.selectedToggleButton]} 
+            onPress={switchToTask}
+          >
             <Text style={[styles.toggleText, isTask && styles.selectedToggleText]}>Task</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.toggleButton, !isTask && styles.selectedToggleButton]} onPress={() => setIsTask(false)}>
+          <TouchableOpacity 
+            style={[styles.toggleButton, !isTask && styles.selectedToggleButton]} 
+            onPress={switchToEvent}
+          >
             <Text style={[styles.toggleText, !isTask && styles.selectedToggleText]}>Event</Text>
           </TouchableOpacity>
         </View>
@@ -222,7 +263,7 @@ const AddTaskEventScreen = () => {
             <TextInput
               style={styles.detailsInput}
               placeholder="Add details"
-              value={details}
+              value={details} // Separate details state
               onChangeText={setDetails}
             />
           </>
@@ -324,7 +365,7 @@ const AddTaskEventScreen = () => {
           <TextInput
             style={styles.detailsInput}
             placeholder="Add details"
-            value={details}
+            value={details} // Separate details state
             onChangeText={setDetails}
           />
           <View style={styles.divider} />
@@ -355,178 +396,197 @@ const AddTaskEventScreen = () => {
           </View>
         </>
       )}
-    </ScrollView>
-    <RepeatModal
-      visible={repeatModalVisible}
-      onClose={() => setRepeatModalVisible(false)}
-      onSelect={handleRepeatOption}
-    />
-    <NotificationModal
-      visible={notificationOptionsVisible}
-      onClose={() => setNotificationOptionsVisible(false)}
-      onAdd={addNotification}
-    />
-  </View>
-);
+      </ScrollView>
+      {eventData && (
+        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+          <Text style={styles.deleteButtonText}>Delete</Text>
+        </TouchableOpacity>
+      )}
+      <RepeatModal
+        visible={repeatModalVisible}
+        onClose={() => setRepeatModalVisible(false)}
+        onSelect={handleRepeatOption}
+      />
+      <NotificationModal
+        visible={notificationOptionsVisible}
+        onClose={() => setNotificationOptionsVisible(false)}
+        onAdd={addNotification}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-container: {
-  flex: 1,
-  backgroundColor: 'white',
-  paddingHorizontal: 20,
-  paddingTop: 40,
-},
-header: {
-  flexDirection: 'row',
-  justifyContent: 'flex-end',
-  alignItems: 'center',
-},
-headerButtonContainer: {
-  backgroundColor: '#003882',
-  borderRadius: 25,
-  paddingHorizontal: 10,
-  paddingVertical: 5,
-  marginLeft: 10,
-},
-headerButton: {
-  fontSize: 15,
-  color: 'white',
-  fontFamily: 'Ubuntu-Bold',
-},
-titleInput: {
-  fontSize: 30,
-  color: '#003882',
-  fontFamily: 'Ubuntu-Medium',
-  marginTop: 20,
-  borderBottomWidth: 0,
-},
-toggleContainer: {
-  flexDirection: 'row',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
-  marginTop: 10,
-},
-toggleButton: {
-  width: 80,
-  paddingVertical: 7,
-  backgroundColor: 'white',
-  borderColor: '#003882',
-  borderWidth: 1,
-  borderRadius: 25,
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginHorizontal: 5,
-},
-selectedToggleButton: {
-  backgroundColor: 'rgba(0, 56, 130, 0.40)',
-},
-toggleText: {
-  color: '#003882',
-  fontSize: 15,
-  fontFamily: 'Ubuntu-Medium',
-},
-selectedToggleText: {
-  fontWeight: '500',
-},
-divider: {
-  height: 1,
-  backgroundColor: '#e0e0e0',
-  marginVertical: 10,
-},
-switchContainer: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginVertical: 5,
-},
-label: {
-  fontSize: 21,
-  color: '#003882',
-  fontFamily: 'Ubuntu-Medium',
-},
-dateTimeContainer: {
-  marginVertical: 10,
-},
-dateTimeRow: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginVertical: 10,
-},
-input: {
-  fontSize: 20,
-  color: '#003882',
-  fontFamily: 'Ubuntu-Medium',
-},
-repeatText: {
-  fontSize: 21,
-  color: '#003882',
-  fontFamily: 'Ubuntu-Medium',
-  marginVertical: 10,
-},
-underline: {
-  textDecorationLine: 'underline',
-},
-detailsInput: {
-  fontSize: 20,
-  color: '#003882',
-  fontFamily: 'Ubuntu-Medium',
-  borderBottomWidth: 1,
-  borderBottomColor: '#e0e0e0',
-  marginTop: 10,
-},
-notificationContainer: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-},
-notificationText: {
-  fontSize: 20,
-  color: '#003882',
-  fontFamily: 'Ubuntu-Medium',
-  marginVertical: 10,
-},
-colorSection: {
-  flexDirection: 'row',
-  alignItems: 'center',
-},
-colorText: {
-  fontSize: 20,
-  color: '#003882',
-  fontFamily: 'Ubuntu-Medium',
-  marginVertical: 10,
-},
-colorOptionsContainer: {
-  flexDirection: 'row',
-  justifyContent: 'space-around',
-  alignItems: 'center',
-  marginTop: 10,
-},
-selectedColor: {
-  width: 30,
-  height: 30,
-  borderRadius: 15,
-  marginLeft: 10,
-},
-colorOption: {
-  width: 40,
-  height: 40,
-  borderRadius: 20,
-  marginVertical: 10,
-},
-dropdown: {
-  backgroundColor: 'white',
-  borderColor: '#ccc',
-  borderWidth: 1,
-  maxHeight: 150,
-  overflow: 'scroll',
-},
-dropdownItem: {
-  padding: 10,
-  borderBottomColor: '#ccc',
-  borderBottomWidth: 1,
-},
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    paddingHorizontal: 20,
+    paddingTop: 40,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  headerButtonContainer: {
+    backgroundColor: '#003882',
+    borderRadius: 25,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginLeft: 10,
+  },
+  headerButton: {
+    fontSize: 15,
+    color: 'white',
+    fontFamily: 'Ubuntu-Bold',
+  },
+  titleInput: {
+    fontSize: 30,
+    color: '#003882',
+    fontFamily: 'Ubuntu-Medium',
+    marginTop: 20,
+    borderBottomWidth: 0,
+  },
+  toggleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  toggleButton: {
+    width: 80,
+    paddingVertical: 7,
+    backgroundColor: 'white',
+    borderColor: '#003882',
+    borderWidth: 1,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  selectedToggleButton: {
+    backgroundColor: 'rgba(0, 56, 130, 0.40)',
+  },
+  toggleText: {
+    color: '#003882',
+    fontSize: 15,
+    fontFamily: 'Ubuntu-Medium',
+  },
+  selectedToggleText: {
+    fontWeight: '500',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#e0e0e0',
+    marginVertical: 10,
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  label: {
+    fontSize: 21,
+    color: '#003882',
+    fontFamily: 'Ubuntu-Medium',
+  },
+  dateTimeContainer: {
+    marginVertical: 10,
+  },
+  dateTimeRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  input: {
+    fontSize: 20,
+    color: '#003882',
+    fontFamily: 'Ubuntu-Medium',
+  },
+  repeatText: {
+    fontSize: 21,
+    color: '#003882',
+    fontFamily: 'Ubuntu-Medium',
+    marginVertical: 10,
+  },
+  underline: {
+    textDecorationLine: 'underline',
+  },
+  detailsInput: {
+    fontSize: 20,
+    color: '#003882',
+    fontFamily: 'Ubuntu-Medium',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+    marginTop: 10,
+  },
+  notificationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  notificationText: {
+    fontSize: 20,
+    color: '#003882',
+    fontFamily: 'Ubuntu-Medium',
+    marginVertical: 10,
+  },
+  colorSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  colorText: {
+    fontSize: 20,
+    color: '#003882',
+    fontFamily: 'Ubuntu-Medium',
+    marginVertical: 10,
+  },
+  colorOptionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  selectedColor: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginLeft: 10,
+  },
+  colorOption: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginVertical: 10,
+  },
+  dropdown: {
+    backgroundColor: 'white',
+    borderColor: '#ccc',
+    borderWidth: 1,
+    maxHeight: 150,
+    overflow: 'scroll',
+  },
+  dropdownItem: {
+    padding: 10,
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+  },
+  deleteButton: {
+    backgroundColor: '#003882',
+    padding: 10,
+    borderRadius: 20,
+    borderColor:'#e2e2e2',
+    borderWidth:3,
+    alignItems: 'center',
+    marginVertical: 50,
+  },
+  deleteButtonText: {
+    color: 'white',
+    fontFamily: 'Ubuntu-Medium',
+    fontSize: 18,
+  },
 });
 
 export default AddTaskEventScreen;
