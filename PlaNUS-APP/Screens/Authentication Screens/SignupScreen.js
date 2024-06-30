@@ -398,11 +398,13 @@ const SignupScreen = () => {
 
       await sendEmailVerification(user);
       await setDoc(doc(db, 'users', user.uid), {
-        username,
-        email,
-        year: 1, // Default year or another value
-        image: null,
+        email: email,
+        year: '', // Default year, can be updated later
+        image: '', // Default image, can be updated later
+        tasks:[], //tasks and events are updated when users add them
+        events:[]
       });
+      console.log('User registered and data saved'); 
 
       await signOut(auth);
 
