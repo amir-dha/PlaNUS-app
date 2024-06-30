@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, SectionList, ScrollView, StatusBar, Modal, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons'; // Import FontAwesome5 for the user circle icon
+import { FontAwesome5 } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
 import { generateMonthDays } from './Utils/generateMonthDays';
-import AccountButtonModal from '../Home/Modals/AccountButtonModal'; // Import the AccountButtonModal
+import AccountButtonModal from '../Home/Modals/AccountButtonModal'; 
+import { collection, query, where, getDocs, addDoc, orderBy } from "firebase/firestore";
+import { db, auth } from '../../firebase';
+
 
 const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
@@ -23,11 +26,36 @@ const PlannerPage = () => {
   const [addEventModalVisible, setAddEventModalVisible] = useState(false);
   const [accountModalVisible, setAccountModalVisible] = useState(false); // State for account modal visibility
 
+  // useEffect(() => {
+  //   setDays(generateMonthDays(selectedMonth, selectedYear));
+  // }, [selectedMonth, selectedYear]);
+
   useEffect(() => {
-    setDays(generateMonthDays(selectedMonth, selectedYear));
+    const fetchTasksEvents = async () => {
+      const q = query(collection(db, "tasksEvents"), where("userId", "==", auth.currentUser.uid), orderBy("startTime"));
+      const querySnapshot = await getDocs(q);
+      const tasksEventsData = {};
+  
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const dateKey = formatDateKey(new Date(data.date));
+        if (!tasksEventsData[dateKey]) {
+          tasksEventsData[dateKey] = [];
+        }
+        tasksEventsData[dateKey].push(data);
+      });
+  
+      setDays(generateMonthDays(selectedMonth, selectedYear).map(day => {
+        const dateKey = formatDateKey(new Date(selectedYear, selectedMonth, day));
+        return { day, tasks: tasksEventsData[dateKey] || [] };
+      }));
+    };
+  
+    fetchTasksEvents();
   }, [selectedMonth, selectedYear]);
 
   const toggleDropdown = () => setShowDropdown(!showDropdown);
+  
   const changeMonth = (month) => {
     setSelectedMonth(month);
     setShowDropdown(false);

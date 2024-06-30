@@ -254,8 +254,11 @@ const SignupScreen = () => {
       await setDoc(doc(db, 'users', user.uid), {
         email: email,
         year: '', // Default year, can be updated later
-        image: '' // Default image, can be updated later
+        image: '', // Default image, can be updated later
+        tasks:[], //tasks and events are updated when users add them
+        events:[]
       });
+      console.log('User registered and data saved'); 
 
       navigation.navigate('Account'); // Navigate to the account page
     } catch (error) {
