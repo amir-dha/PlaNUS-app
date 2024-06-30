@@ -107,7 +107,41 @@ const AddTaskEventScreen = () => {
     setFilteredVenues([]);
   };
 
-  const saveTaskEvent = async () => {}
+  const saveTaskEvent = async () => {
+    const user = auth.currentUser;
+
+    if (!user) {
+      console.error("User not authenticated");
+      return;
+    };
+
+    console.log('Current User ID:', user.uid); // Log the user ID
+
+    const eventData = {
+      title: details,
+      isTask: isTask,
+      isAllDay: isAllDay,
+      startTime: startTime,
+      endTime: endTime,
+      repeatOption: repeatOption,
+      notifications: notifications,
+      color: isTask ? '#e2e2e2' : selectedColor,
+      location: location,
+      date: startDate,
+      userId: user.uid
+    };
+
+    try {
+      if (isTask) {
+        await addDoc(collection(db, "tasks"), eventData);
+      } else {
+        await addDoc(collection(db, "events"), eventData);
+      }
+      navigation.goBack();
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -121,7 +155,7 @@ const AddTaskEventScreen = () => {
 
         <TouchableOpacity 
           style={styles.headerButtonContainer}
-          onPress={() => {}} //need to update task array, add to list view and go back to PlannerPage. 
+          onPress={saveTaskEvent}
         >
           <Text style={styles.headerButton}>Save</Text>
         </TouchableOpacity>

@@ -3,11 +3,9 @@ import { View, StyleSheet, Text, TouchableOpacity, SectionList, ScrollView, Stat
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
-import { generateMonthDays } from './Utils/generateMonthDays';
-import AccountButtonModal from '../Home/Modals/AccountButtonModal'; 
-import { collection, query, where, getDocs, addDoc, orderBy } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { db, auth } from '../../firebase';
-
+import AccountButtonModal from '../Home/Modals/AccountButtonModal';
 
 const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
@@ -15,55 +13,66 @@ const PlannerPage = () => {
   const navigation = useNavigation();
   const LIST_ITEM_HEIGHT = 40;
 
-  // currently selected date, initialized to the current date 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [days, setDays] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth()); 
-  //year
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [showDropdown, setShowDropdown] = useState(false);
   const [viewType, setViewType] = useState('List');
   const [addEventModalVisible, setAddEventModalVisible] = useState(false);
-  const [accountModalVisible, setAccountModalVisible] = useState(false); // State for account modal visibility
-
-  // useEffect(() => {
-  //   setDays(generateMonthDays(selectedMonth, selectedYear));
-  // }, [selectedMonth, selectedYear]);
+  const [accountModalVisible, setAccountModalVisible] = useState(false); 
 
   useEffect(() => {
-    const fetchTasksEvents = async () => {
-      const q = query(collection(db, "tasksEvents"), where("userId", "==", auth.currentUser.uid), orderBy("startTime"));
-      const querySnapshot = await getDocs(q);
-      const tasksEventsData = {};
-  
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const dateKey = formatDateKey(new Date(data.date));
-        if (!tasksEventsData[dateKey]) {
-          tasksEventsData[dateKey] = [];
-        }
-        tasksEventsData[dateKey].push(data);
-      });
-  
-      setDays(generateMonthDays(selectedMonth, selectedYear).map(day => {
-        const dateKey = formatDateKey(new Date(selectedYear, selectedMonth, day));
-        return { day, tasks: tasksEventsData[dateKey] || [] };
+    const fetchTasksAndEvents = async () => {
+      const user = auth.currentUser;
+      if (!user) {
+        console.error("User not authenticated");
+        return;
+      }
+
+      const tasksQuery = query(collection(db, "tasks"), where("userId", "==", user.uid), orderBy("startTime"));
+      const eventsQuery = query(collection(db, "events"), where("userId", "==", user.uid), orderBy("startTime"));
+
+      const [tasksSnapshot, eventsSnapshot] = await Promise.all([getDocs(tasksQuery), getDocs(eventsQuery)]);
+
+      const dataByDate = {};
+
+      const processSnapshot = (snapshot, type) => {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const dateKey = new Date(data.date.toDate()).toDateString();
+          if (!dataByDate[dateKey]) {
+            dataByDate[dateKey] = [];
+          }
+          dataByDate[dateKey].push({ ...data, type });
+        });
+      };
+
+      processSnapshot(tasksSnapshot, 'task');
+      processSnapshot(eventsSnapshot, 'event');
+
+      const allDays = [];
+      const date = new Date(selectedYear, selectedMonth, 1);
+      while (date.getMonth() === selectedMonth) {
+        allDays.push(new Date(date).toDateString());
+        date.setDate(date.getDate() + 1);
+      }
+
+      const sections = allDays.map(dateKey => ({
+        title: new Date(dateKey).toDateString(),
+        data: dataByDate[dateKey] || []
       }));
+
+      setDays(sections);
     };
-  
-    fetchTasksEvents();
+
+    fetchTasksAndEvents();
   }, [selectedMonth, selectedYear]);
 
   const toggleDropdown = () => setShowDropdown(!showDropdown);
-  
+
   const changeMonth = (month) => {
     setSelectedMonth(month);
-    setShowDropdown(false);
-  };
-
-  const formattedDate = (date) => {
-    const options = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
-    return new Date(date).toLocaleDateString('en-GB', options);
   };
 
   const displayGrid = () => {
@@ -80,7 +89,7 @@ const PlannerPage = () => {
     setSelectedDate(newDate);
     setViewType('List'); 
 
-    const dateIndex = days.findIndex(d => new Date(d).getDate() === day); 
+    const dateIndex = days.findIndex(d => new Date(d.title).getDate() === day); 
     setTimeout(() => {
       if(listViewRef.current && dateIndex !== -1) {
         listViewRef.current.scrollToLocation({
@@ -109,28 +118,18 @@ const PlannerPage = () => {
     ...Array.from({ length: firstDayOfMonth }, () => ({ day: null, tasks: [] })),
     ...Array.from({ length: daysInMonth }, (_, i) => ({
       day: i + 1,
-      tasks: [] // Populate this with tasks for the specific day
+      tasks: []
     }))
   ];
 
   const goToEvent = () => {
     setAddEventModalVisible(false); 
-    navigation.navigate('AddTaskEventScreen', { isTaskInitial: true })
+    navigation.navigate('AddTaskEventScreen', { isTaskInitial: false })
   }
   const goToTask = () => {
     setAddEventModalVisible(false); 
-    navigation.navigate('AddTaskEventScreen', { isTaskInitial: false })
+    navigation.navigate('AddTaskEventScreen', { isTaskInitial: true })
   }
-  const events = days.map((day) => {
-    const date = new Date(day);
-    const dayNumber = date.getDate();
-    return {
-      title: formattedDate(day),
-      data: [
-        { event: `Event on ${dayNumber} ${formattedDate(day)}`, time: '14:00 - 16:00', location: 'E-Learning', type: 'event' }
-      ],
-    };
-  });
 
   return (
     <View style={styles.container}>
@@ -199,7 +198,7 @@ const PlannerPage = () => {
       {viewType === 'List' ? (
         <SectionList
           ref={listViewRef}
-          sections={events}
+          sections={days}
           keyExtractor={(item, index) => item + index}
           getItemLayout={(data, index) => (
             {length: LIST_ITEM_HEIGHT, offset: LIST_ITEM_HEIGHT * index, index}
@@ -216,12 +215,12 @@ const PlannerPage = () => {
           renderItem={({ item }) => (
             <View style={styles.eventContainer}>
               <View style={styles.verticalLine} />
-              <View style={item.type === 'event' ? styles.eventItem : styles.taskItem}>
+              <View style={[item.type === 'event' ? styles.eventItem : styles.taskItem, { backgroundColor: item.color }]}>
                 <View style={styles.eventTextContainer}>
-                  <Text style={styles.eventText}>{item.event}</Text>
+                  <Text style={styles.eventText}>{item.title}</Text>
                   {item.location && <Text style={styles.locationText}>{item.location}</Text>}
                 </View>
-                <Text style={styles.eventTime}>{item.time}</Text>
+                <Text style={styles.eventTime}>{`${new Date(item.startTime.toDate()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} - ${new Date(item.endTime.toDate()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`}</Text>
               </View>
             </View>
           )}
@@ -360,6 +359,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Ubuntu-Medium',
   },
   eventContainer: {
+    width:'100%',
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 5,
@@ -378,9 +378,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: '#e0f7fa',
-    borderRadius: 15,
+    borderRadius: 30,
     marginVertical: 5,
+    height:60,
   },
   taskItem: {
     flex: 1,
@@ -389,7 +389,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: '#ffe0b2',
     borderRadius: 15,
     marginVertical: 5,
   },
@@ -397,18 +396,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   eventText: {
-    fontSize: 16,
+    fontSize: 20,
     color: 'black',
     fontFamily: 'Ubuntu-Medium',
   },
   locationText: {
-    fontSize: 12,
+    fontSize: 15,
     color: 'grey',
     fontFamily: 'Ubuntu-Medium',
   },
   eventTime: {
     fontSize: 14,
-    color: '#888',
+    color: 'black',
     fontFamily: 'Ubuntu-Medium',
   },
   modalOverlay: {
@@ -469,5 +468,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-
