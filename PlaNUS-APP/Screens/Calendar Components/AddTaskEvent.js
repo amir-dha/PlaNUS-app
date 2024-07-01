@@ -56,8 +56,13 @@ const AddTaskEventScreen = () => {
     const currentDate = selectedDate || startDate;
     setShowStartDatePicker(false);
     setStartDate(currentDate);
+    if (isTask) {
+      setEndDate(currentDate);
+    }
     if (isAllDay) {
-      setEndTime(new Date(currentDate).setHours(23, 59, 59));
+      const newEndDate = new Date(currentDate);
+      newEndDate.setHours(23, 59, 59, 999);
+      setEndTime(newEndDate);
     }
   };
 
@@ -71,6 +76,11 @@ const AddTaskEventScreen = () => {
     const currentTime = selectedTime || startTime;
     setShowStartTimePicker(false);
     setStartTime(currentTime);
+    if (isAllDay) {
+      const newEndDate = new Date(startDate);
+      newEndDate.setHours(23, 59, 59, 999);
+      setEndTime(newEndDate);
+    }
   };
 
   const onEndTimeChange = (event, selectedTime) => {
@@ -119,20 +129,36 @@ const AddTaskEventScreen = () => {
         return;
     }
 
+    const startDateTime = new Date(startDate);
+    if (!isAllDay) {
+        startDateTime.setHours(startTime.getHours(), startTime.getMinutes());
+    } else {
+        startDateTime.setHours(0, 0, 0, 0);
+    }
+
+    const endDateTime = new Date(endDate);
+    if (!isAllDay) {
+        endDateTime.setHours(endTime.getHours(), endTime.getMinutes());
+    } else {
+        endDateTime.setHours(23, 59, 59, 999);
+    }
+
     const eventDataToSave = {
         title: title,
         details: details,
         isTask: isTask,
         isAllDay: isAllDay,
-        startTime: startTime.toISOString(),
-        endTime: endTime.toISOString(),
+        startTime: startDateTime.toISOString(),
+        endTime: endDateTime.toISOString(),
         repeatOption: repeatOption,
         notifications: notifications,
         color: isTask ? '#e2e2e2' : selectedColor,
         location: location,
-        date: startDate.toISOString(),
+        date: startDateTime.toISOString(),
         userId: user.uid
     };
+
+    console.log("Event data to save:", eventDataToSave);
 
     try {
         if (eventData && eventData.id) {
@@ -590,3 +616,4 @@ const styles = StyleSheet.create({
 });
 
 export default AddTaskEventScreen;
+

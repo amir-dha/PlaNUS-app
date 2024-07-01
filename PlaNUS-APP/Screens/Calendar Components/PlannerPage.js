@@ -118,25 +118,38 @@ const PlannerPage = () => {
   };
 
   const warningColor = (endTime) => {
+    console.log(`Calculating warning color for endTime: ${endTime}`);
+  
     let color = '';
     const currentTime = new Date();
     const taskEndTime = new Date(endTime);
-
+  
+    console.log(`Current time: ${currentTime}`);
+    console.log(`Task end time: ${taskEndTime}`);
+  
     const diffInMilliseconds = taskEndTime - currentTime;
     const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
-
+  
+    console.log(`Difference in milliseconds: ${diffInMilliseconds}`);
+    console.log(`Difference in hours: ${diffInHours}`);
+  
     if (diffInHours <= 0) {
       color = 'black';
+      console.log(`Due time has passed, color: ${color}`);
     } else if (diffInHours > 0 && diffInHours <= 24) {
       color = 'red';
+      console.log(`Due in 24 hours or less, color: ${color}`);
     } else if (diffInHours > 24 && diffInHours <= 72) {
       color = '#ff5b00';
+      console.log(`Due between 24 and 72 hours, color: ${color}`);
     } else {
       color = 'green';
+      console.log(`Due in more than 72 hours, color: ${color}`);
     }
-
+  
     return color;
   };
+  
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -147,7 +160,7 @@ const PlannerPage = () => {
         <View style={styles.verticalLine} />
         <View style={[item.type === 'event' ? styles.eventItem : styles.taskItem, { backgroundColor: item.color }]}>
           <View style={styles.eventTextContainer}>
-            {item.isTask ? (
+            {item.type === 'task' ? (
               <View style={styles.taskEventBlockContainer}>
                 <FontAwesome name='circle' size={15} color={warningColor(item.endTime)} style={styles.taskIcon} />
                 <Text style={styles.eventText}>{item.title}</Text>
