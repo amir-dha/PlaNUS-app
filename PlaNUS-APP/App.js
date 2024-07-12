@@ -27,7 +27,8 @@ function App() {
     await Font.loadAsync({
       'Ubuntu-Regular': require('./assets/Fonts/Ubuntu/Ubuntu-Regular.ttf'),
       'Ubuntu-Bold': require('./assets/Fonts/Ubuntu/Ubuntu-Bold.ttf'),
-      'Ubuntu-Medium': require('./assets/Fonts/Ubuntu/Ubuntu-Medium.ttf')
+      'Ubuntu-Medium': require('./assets/Fonts/Ubuntu/Ubuntu-Medium.ttf'),
+      'Ubunyu-Italic': require('./assets/Fonts/Ubuntu/Ubuntu-Italic.ttf')
     });
     setFontsLoaded(true); 
   }; 

@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -20,6 +21,8 @@ const AccountScreen = () => {
   const storage = getStorage();
   const user = auth.currentUser;
   const [originalData, setOriginalData] = useState({});
+
+  const supportEmail = "planusorbital24@gmail.com"; // Replace with your support email
 
   const fetchUserData = async () => {
     if (user) {
@@ -148,6 +151,14 @@ const AccountScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
+      <View style={styles.contactContainer}>
+        <Text style={styles.contactText}>
+          If you have any queries or wish to delete your account, please contact us at:
+        </Text>
+        <TouchableOpacity onPress={() => Linking.openURL(`mailto:${supportEmail}`)}>
+          <Text style={styles.contactEmail}>{supportEmail}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -226,6 +237,22 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     color: 'black',
     fontSize: 16,
+  },
+  contactContainer: {
+    paddingVertical: 20,
+    alignItems: 'center',
+  },
+  contactText: {
+    fontSize: 16,
+    color: 'black',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  contactEmail: {
+    fontSize: 16,
+    color: '#003882',
+    textAlign: 'center',
+    textDecorationLine: 'underline',
   },
 });
 
