@@ -1,8 +1,9 @@
+
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../../firebase';
 import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, updateProfile, signInWithEmailAndPassword, signOut, reload } from 'firebase/auth';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useFocusEffect } from '@react-navigation/core';
 import { Ionicons } from '@expo/vector-icons';
 import { doc, setDoc, deleteDoc } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,9 +16,25 @@ const SignupScreen = () => {
   const [username, setUsername] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
   const [resendAllowed, setResendAllowed] = useState(true);
-  const [resendTimer, setResendTimer] = useState(0);
+  const [resendTimer, setResendTimer] = useState(60);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const navigation = useNavigation();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Clear fields when the screen gains focus
+      setEmail('');
+      setUsername('');
+      setPassword('');
+      return () => {
+        // Optionally clear AsyncStorage when the screen loses focus
+        AsyncStorage.removeItem('email');
+        AsyncStorage.removeItem('username');
+        AsyncStorage.removeItem('password');
+      };
+    }, [])
+  );
 
   useEffect(() => {
     const loadStoredData = async () => {
@@ -39,7 +56,12 @@ const SignupScreen = () => {
         await reload(user); // Ensure we get the latest user state
         if (user.emailVerified) {
           console.log("User verified");
-          navigation.navigate("Login");
+          setEmail('');
+          setUsername('');
+          setPassword('');
+          await AsyncStorage.removeItem('email');
+          await AsyncStorage.removeItem('username');
+          await AsyncStorage.removeItem('password');
         } else {
           setCurrentUser(user);
         }
@@ -75,7 +97,7 @@ const SignupScreen = () => {
   }, [email, username, password]);
 
   const isValidEmail = email => {
-    const regex = /^e\d{7}@u\.nus\.edu$/;
+    const regex = /^[a-zA-Z0-9._%+-]+@u\.nus\.edu$/;
     return regex.test(email);
   };
 
@@ -110,6 +132,7 @@ const SignupScreen = () => {
       await sendEmailVerification(user);
       await setDoc(doc(db, 'users', user.uid), {
         email: email,
+        username: username,  // Save the username
         year: '', // Default year, can be updated later
         image: '', // Default image, can be updated later
       });
@@ -153,7 +176,7 @@ const SignupScreen = () => {
         } catch (error) {
           console.error("Error during account deletion process:", error);
         }
-      }, 30 * 60 * 1000); // 1 minute for testing; change to 30 * 60 * 1000 for 30 minutes
+      }, 30 * 60 * 1000); // 30 minutes
     } catch (error) {
       switch (error.code) {
         case 'auth/email-already-in-use':
@@ -223,20 +246,25 @@ const SignupScreen = () => {
           autoCapitalize='none'
         />
         <TextInput
-          placeholder='Email'
+          placeholder='Email ending with @u.nus.edu'
           value={email}
           onChangeText={text => setEmail(text)}
           style={styles.input}
           autoCapitalize='none'
         />
-        <TextInput
-          placeholder='Password'
-          value={password}
-          onChangeText={text => setPassword(text)}
-          style={styles.input}
-          autoCapitalize='none'
-          secureTextEntry
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            placeholder='Password'
+            value={password}
+            onChangeText={text => setPassword(text)}
+            style={styles.passwordInput}
+            autoCapitalize='none'
+            secureTextEntry={!passwordVisible}
+          />
+          <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)} style={styles.eyeIcon}>
+            <Ionicons name={passwordVisible ? 'eye-off' : 'eye'} size={24} color='black' />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.buttonContainer}>
@@ -296,6 +324,22 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     alignItems: 'center',
     fontFamily: 'Ubuntu-Regular',
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 25,
+    marginBottom: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+  },
+  passwordInput: {
+    flex: 1,
+    fontFamily: 'Ubuntu-Regular',
+  },
+  eyeIcon: {
+    marginLeft: 10,
   },
   buttonContainer: {
     width: '60%',
