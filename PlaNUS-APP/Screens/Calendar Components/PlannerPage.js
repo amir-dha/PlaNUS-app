@@ -1097,7 +1097,8 @@ const styles = StyleSheet.create({
   sectionDivider: {
     borderBottomColor: 'gray',
     borderBottomWidth: 1,
-    marginTop: 2,
+    marginTop: 10,
+    marginBottom: 10,
     alignSelf: 'stretch',
   },
   eventContainer: {
