@@ -3,11 +3,12 @@
 // import { Ionicons } from '@expo/vector-icons';
 // import { FontAwesome5, FontAwesome } from '@expo/vector-icons'; 
 // import { useNavigation } from '@react-navigation/native';
-// import { collection, query, where, orderBy, onSnapshot } from "firebase/firestore";
+// import { collection, query, orderBy, onSnapshot, doc } from "firebase/firestore";
 // import { db, auth } from '../../firebase';
 // import AccountButtonModal from '../Home/Modals/AccountButtonModal';
 
 // const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+// const years = [2023, 2024, 2025, 2026, 2027]; // Example range of years
 
 // const PlannerPage = () => {
 //   const navigation = useNavigation();
@@ -23,6 +24,7 @@
 //   const [accountModalVisible, setAccountModalVisible] = useState(false); 
 //   const [tasks, setTasks] = useState([]);
 //   const [events, setEvents] = useState([]);
+//   const scrollViewRef = useRef(null);
 
 //   useEffect(() => {
 //     const user = auth.currentUser;
@@ -31,8 +33,9 @@
 //       return;
 //     }
 
-//     const tasksQuery = query(collection(db, "tasks"), where("userId", "==", user.uid), orderBy("startTime"));
-//     const eventsQuery = query(collection(db, "events"), where("userId", "==", user.uid), orderBy("startTime"));
+//     const userDocRef = doc(db, 'users', user.uid);
+//     const tasksQuery = query(collection(userDocRef, 'tasks'), orderBy("startTime"));
+//     const eventsQuery = query(collection(userDocRef, 'events'), orderBy("startTime"));
 
 //     const unsubscribeTasks = onSnapshot(tasksQuery, (snapshot) => {
 //       if (!snapshot.empty) {
@@ -63,11 +66,23 @@
 //     const combinedData = [...tasks, ...events];
 
 //     combinedData.forEach(item => {
-//       const dateKey = new Date(item.date).toDateString();
-//       if (!dataByDate[dateKey]) {
-//         dataByDate[dateKey] = [];
+//       const startDate = new Date(item.startTime);
+//       const endDate = new Date(item.endTime);
+//       let currentDate = new Date(startDate);
+
+//       while (currentDate <= endDate) {
+//         const dateKey = currentDate.toDateString();
+//         if (!dataByDate[dateKey]) {
+//           dataByDate[dateKey] = [];
+//         }
+//         dataByDate[dateKey].push({
+//           ...item,
+//           isStartDate: currentDate.toDateString() === startDate.toDateString(),
+//           isEndDate: currentDate.toDateString() === endDate.toDateString(),
+//           dayNumber: Math.ceil((currentDate - startDate) / (1000 * 60 * 60 * 24)) + 1
+//         });
+//         currentDate.setDate(currentDate.getDate() + 1);
 //       }
-//       dataByDate[dateKey].push(item);
 //     });
 
 //     const allDays = [];
@@ -85,10 +100,22 @@
 //     setDays(sections);
 //   }, [tasks, events, selectedMonth, selectedYear]);
 
+//   const scrollToSelectedMonth = () => {
+//     if (scrollViewRef.current) {
+//       const scrollIndex = (selectedYear - years[0]) * 12 + selectedMonth;
+//       scrollViewRef.current.scrollTo({ x: scrollIndex * 80, animated: true });
+//     }
+//   };
+
+//   useEffect(() => {
+//     scrollToSelectedMonth();
+//   }, [showDropdown, selectedMonth, selectedYear]);
+
 //   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
-//   const changeMonth = (month) => {
+//   const changeMonth = (month, year) => {
 //     setSelectedMonth(month);
+//     setSelectedYear(year);
 //   };
 
 //   const displayGrid = () => {
@@ -105,7 +132,7 @@
 //     setSelectedDate(newDate);
 //     setViewType('List'); 
 
-//     const dateIndex = days.findIndex(d => new Date(d.title).getDate() === day); 
+//     const dateIndex = days.findIndex(d => new Date(d.title).getDate() === day && new Date(d.title).getMonth() === selectedMonth && new Date(d.title).getFullYear() === selectedYear);
 //     setTimeout(() => {
 //       if (listViewRef.current && dateIndex !== -1) {
 //         listViewRef.current.scrollToLocation({
@@ -118,38 +145,25 @@
 //   };
 
 //   const warningColor = (endTime) => {
-//     console.log(`Calculating warning color for endTime: ${endTime}`);
-  
 //     let color = '';
 //     const currentTime = new Date();
 //     const taskEndTime = new Date(endTime);
   
-//     console.log(`Current time: ${currentTime}`);
-//     console.log(`Task end time: ${taskEndTime}`);
-  
 //     const diffInMilliseconds = taskEndTime - currentTime;
 //     const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
   
-//     console.log(`Difference in milliseconds: ${diffInMilliseconds}`);
-//     console.log(`Difference in hours: ${diffInHours}`);
-  
 //     if (diffInHours <= 0) {
 //       color = 'black';
-//       console.log(`Due time has passed, color: ${color}`);
 //     } else if (diffInHours > 0 && diffInHours <= 24) {
 //       color = 'red';
-//       console.log(`Due in 24 hours or less, color: ${color}`);
 //     } else if (diffInHours > 24 && diffInHours <= 72) {
 //       color = '#ff5b00';
-//       console.log(`Due between 24 and 72 hours, color: ${color}`);
 //     } else {
 //       color = 'green';
-//       console.log(`Due in more than 72 hours, color: ${color}`);
 //     }
   
 //     return color;
 //   };
-  
 
 //   const renderItem = ({ item }) => (
 //     <TouchableOpacity
@@ -166,14 +180,16 @@
 //                 <Text style={styles.eventText}>{item.title}</Text>
 //               </View>
 //             ) : (
-//               <Text style={styles.eventText}>{item.title}</Text>
+//               <Text style={styles.eventText}>{item.title} (Day {item.dayNumber})</Text>
 //             )}
 //             {item.location && <Text style={styles.locationText}>{item.location}</Text>}
 //           </View>
 //           <Text style={styles.eventTime}>
 //             {item.isTask 
-//               ? item.isAllDay ? '' : `${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
-//               : `${new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+//               ? item.isAllDay ? '' : `${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`
+//               : item.isStartDate ? `${new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} - 11:59 PM`
+//               : item.isEndDate ? `12:00 AM - ${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`
+//               : `12:00 AM - 11:59 PM`
 //             }
 //           </Text>
 //         </View>
@@ -183,10 +199,18 @@
 
 //   const renderDay = ({ item }) => (
 //     <TouchableOpacity style={styles.dayContainer} onPress={() => handleDatePress(item.day)} disabled={!item.day}>
-//       <Text>{item.day}</Text>
+//       <View style={[styles.dateCircle, item.isCurrentDate && styles.currentDateCircle]}>
+//         <Text>{item.day}</Text>
+//       </View>
 //       {item.tasks && item.tasks.map((task, index) => (
-//         <View key={index} style={[styles.task, { backgroundColor: task.color }]}>
-//           <Text style={styles.taskText}>{task.name}</Text>
+//         <View key={index} style={styles.taskBlock}>
+//           <FontAwesome name='circle' size={10} color={warningColor(task.endTime)} style={styles.taskIcon} />
+//           <Text style={styles.taskBlockText} numberOfLines={1} ellipsizeMode="tail">{task.title}</Text>
+//         </View>
+//       ))}
+//       {item.events && item.events.map((event, index) => (
+//         <View key={index} style={[styles.eventDot, { backgroundColor: event.color }]}>
+//           <Text style={styles.eventDotText} numberOfLines={1} ellipsizeMode="tail">{event.title}</Text>
 //         </View>
 //       ))}
 //     </TouchableOpacity>
@@ -195,11 +219,16 @@
 //   const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
 //   const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
 //   const daysArray = [
-//     ...Array.from({ length: firstDayOfMonth }, () => ({ day: null, tasks: [] })),
-//     ...Array.from({ length: daysInMonth }, (_, i) => ({
-//       day: i + 1,
-//       tasks: []
-//     }))
+//     ...Array.from({ length: firstDayOfMonth }, () => ({ day: null, tasks: [], events: [] })),
+//     ...Array.from({ length: daysInMonth }, (_, i) => {
+//       const dateKey = new Date(selectedYear, selectedMonth, i + 1).toDateString();
+//       return {
+//         day: i + 1,
+//         isCurrentDate: new Date(selectedYear, selectedMonth, i + 1).toDateString() === new Date().toDateString(),
+//         tasks: (days.find(d => new Date(d.title).toDateString() === dateKey)?.data || []).filter(item => item.type === 'task'),
+//         events: (days.find(d => new Date(d.title).toDateString() === dateKey)?.data || []).filter(item => item.type === 'event')
+//       };
+//     })
 //   ];
 
 //   const goToEvent = () => {
@@ -258,15 +287,21 @@
 //             </TouchableOpacity>
 //           </View>
           
-//           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-//             {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, index) => (
-//               <TouchableOpacity 
-//                 key={month} 
-//                 onPress={() => changeMonth(index)}
-//                 style={[styles.monthButton, selectedMonth === index && styles.selectedMonthButton]}
-//               >
-//                 <Text style={[styles.monthText, selectedMonth === index && styles.selectedMonthButtonText]}>{month}</Text>
-//               </TouchableOpacity>
+//           <ScrollView horizontal showsHorizontalScrollIndicator={false} ref={scrollViewRef}>
+//             {years.map((year) => (
+//               ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, index) => (
+//                 <TouchableOpacity 
+//                   key={`${month}-${year}`} 
+//                   onPress={() => {
+//                     changeMonth(index, year);
+//                   }}
+//                   style={[styles.monthButton, selectedMonth === index && selectedYear === year && styles.selectedMonthButton]}
+//                 >
+//                   <Text style={[styles.monthText, selectedMonth === index && selectedYear === year && styles.selectedMonthButtonText]}>
+//                     {year === new Date().getFullYear() ? month : `${month} ${year}`}
+//                   </Text>
+//                 </TouchableOpacity>
+//               ))
 //             ))}
 //           </ScrollView>
 //         </View>
@@ -284,14 +319,17 @@
 //             const wait = new Promise(resolve => setTimeout(resolve, 500)); 
 //             wait.then(() => {
 //               listViewRef.current?.scrollToLocation({
-//                 sectionIndex: 0, 
-//                 itemIndex: info.index, 
+//                 sectionIndex: info.index,
+//                 itemIndex: 0,
 //                 animated: true});
 //             });
 //           }}
 //           renderItem={renderItem}
 //           renderSectionHeader={({ section: { title } }) => (
 //             <Text style={styles.sectionHeader}>{title}</Text>
+//           )}
+//           renderSectionFooter={() => (
+//             <View style={styles.sectionDivider} />
 //           )}
 //           style={styles.list}
 //         />
@@ -425,6 +463,12 @@
 //     color: '#003882',
 //     fontFamily: 'Ubuntu-Medium',
 //   },
+//   sectionDivider: {
+//     borderBottomColor: 'gray',
+//     borderBottomWidth: 1,
+//     marginTop: 2,
+//     alignSelf: 'stretch',
+//   },
 //   eventContainer: {
 //     width:'100%',
 //     flexDirection: 'row',
@@ -511,15 +555,40 @@
 //     padding: 5,
 //     margin: 1,
 //   },
-//   task: {
-//     marginTop: 5,
+//   dateCircle: {
+//     alignSelf: 'center',
 //     padding: 2,
-//     borderRadius: 5,
 //   },
-//   taskText: {
-//     fontSize: 10,
+//   currentDateCircle: {
+//     borderWidth: 2,
+//     borderColor: '#003882',
+//     borderRadius: 15,
+//   },
+//   taskBlock: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     marginTop: 2,
+//     backgroundColor: 'white',
+//     borderRadius: 3,
+//     paddingHorizontal: 2,
+//   },
+//   taskBlockText: {
+//     fontSize: 12,
 //     fontFamily: 'Ubuntu-Regular',
-//     color: 'white',
+//     color: 'black',
+//     flexShrink: 1,
+//   },
+//   eventDot: {
+//     marginTop: 2,
+//     padding: 2,
+//     borderRadius: 3,
+//     backgroundColor: 'gray', // default color, will be overridden by the event color
+//   },
+//   eventDotText: {
+//     fontSize: 12,
+//     fontFamily: 'Ubuntu-Regular',
+//     color: 'black',
+//     flexShrink: 1,
 //   },
 //   gridContainer: {
 //     flexGrow: 1,
@@ -539,7 +608,7 @@
 //     alignItems:'center',
 //   },
 //   taskIcon: {
-//     marginRight: 8,
+//     marginRight: 4,
 //   }
 // });
 import React, { useState, useEffect, useRef } from 'react';
@@ -547,11 +616,12 @@ import { View, StyleSheet, Text, TouchableOpacity, SectionList, ScrollView, Stat
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
-import { collection, query, where, orderBy, onSnapshot, doc } from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot, doc } from "firebase/firestore";
 import { db, auth } from '../../firebase';
 import AccountButtonModal from '../Home/Modals/AccountButtonModal';
 
 const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+const years = [2023, 2024, 2025, 2026, 2027]; // Example range of years
 
 const PlannerPage = () => {
   const navigation = useNavigation();
@@ -567,6 +637,8 @@ const PlannerPage = () => {
   const [accountModalVisible, setAccountModalVisible] = useState(false); 
   const [tasks, setTasks] = useState([]);
   const [events, setEvents] = useState([]);
+  const scrollViewRef = useRef(null);
+  const listViewRef = useRef(null);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -608,11 +680,23 @@ const PlannerPage = () => {
     const combinedData = [...tasks, ...events];
 
     combinedData.forEach(item => {
-      const dateKey = new Date(item.date).toDateString();
-      if (!dataByDate[dateKey]) {
-        dataByDate[dateKey] = [];
+      const startDate = new Date(item.startTime);
+      const endDate = new Date(item.endTime);
+      let currentDate = new Date(startDate);
+
+      while (currentDate <= endDate) {
+        const dateKey = currentDate.toDateString();
+        if (!dataByDate[dateKey]) {
+          dataByDate[dateKey] = [];
+        }
+        dataByDate[dateKey].push({
+          ...item,
+          isStartDate: currentDate.toDateString() === startDate.toDateString(),
+          isEndDate: currentDate.toDateString() === endDate.toDateString(),
+          dayNumber: Math.ceil((currentDate - startDate) / (1000 * 60 * 60 * 24)) + 1
+        });
+        currentDate.setDate(currentDate.getDate() + 1);
       }
-      dataByDate[dateKey].push(item);
     });
 
     const allDays = [];
@@ -630,10 +714,41 @@ const PlannerPage = () => {
     setDays(sections);
   }, [tasks, events, selectedMonth, selectedYear]);
 
+  const scrollToSelectedMonth = () => {
+    if (scrollViewRef.current) {
+      const scrollIndex = (selectedYear - years[0]) * 12 + selectedMonth;
+      scrollViewRef.current.scrollTo({ x: scrollIndex * 80, animated: true });
+    }
+  };
+
+  useEffect(() => {
+    scrollToSelectedMonth();
+  }, [showDropdown, selectedMonth, selectedYear]);
+
+  useEffect(() => {
+    if (viewType === 'List') {
+      scrollToCurrentDateInListView();
+    }
+  }, [viewType, days]);
+
+  const scrollToCurrentDateInListView = () => {
+    const currentDateIndex = days.findIndex(d => new Date(d.title).toDateString() === new Date().toDateString());
+    setTimeout(() => {
+      if (listViewRef.current && currentDateIndex !== -1) {
+        listViewRef.current.scrollToLocation({
+          sectionIndex: currentDateIndex,
+          itemIndex: 0,
+          animated: true,
+        });
+      }
+    }, 100);
+  };
+
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
-  const changeMonth = (month) => {
+  const changeMonth = (month, year) => {
     setSelectedMonth(month);
+    setSelectedYear(year);
   };
 
   const displayGrid = () => {
@@ -643,14 +758,12 @@ const PlannerPage = () => {
     setViewType('List');
   };
 
-  const listViewRef = useRef(null);
-
   const handleDatePress = (day) => {
     const newDate = new Date(selectedYear, selectedMonth, day);
     setSelectedDate(newDate);
     setViewType('List'); 
 
-    const dateIndex = days.findIndex(d => new Date(d.title).getDate() === day); 
+    const dateIndex = days.findIndex(d => new Date(d.title).getDate() === day && new Date(d.title).getMonth() === selectedMonth && new Date(d.title).getFullYear() === selectedYear);
     setTimeout(() => {
       if (listViewRef.current && dateIndex !== -1) {
         listViewRef.current.scrollToLocation({
@@ -663,38 +776,25 @@ const PlannerPage = () => {
   };
 
   const warningColor = (endTime) => {
-    console.log(`Calculating warning color for endTime: ${endTime}`);
-  
     let color = '';
     const currentTime = new Date();
     const taskEndTime = new Date(endTime);
   
-    console.log(`Current time: ${currentTime}`);
-    console.log(`Task end time: ${taskEndTime}`);
-  
     const diffInMilliseconds = taskEndTime - currentTime;
     const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
   
-    console.log(`Difference in milliseconds: ${diffInMilliseconds}`);
-    console.log(`Difference in hours: ${diffInHours}`);
-  
     if (diffInHours <= 0) {
       color = 'black';
-      console.log(`Due time has passed, color: ${color}`);
     } else if (diffInHours > 0 && diffInHours <= 24) {
       color = 'red';
-      console.log(`Due in 24 hours or less, color: ${color}`);
     } else if (diffInHours > 24 && diffInHours <= 72) {
       color = '#ff5b00';
-      console.log(`Due between 24 and 72 hours, color: ${color}`);
     } else {
       color = 'green';
-      console.log(`Due in more than 72 hours, color: ${color}`);
     }
   
     return color;
   };
-  
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -711,14 +811,16 @@ const PlannerPage = () => {
                 <Text style={styles.eventText}>{item.title}</Text>
               </View>
             ) : (
-              <Text style={styles.eventText}>{item.title}</Text>
+              <Text style={styles.eventText}>{item.title} (Day {item.dayNumber})</Text>
             )}
             {item.location && <Text style={styles.locationText}>{item.location}</Text>}
           </View>
           <Text style={styles.eventTime}>
             {item.isTask 
-              ? item.isAllDay ? '' : `${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
-              : `${new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+              ? item.isAllDay ? '' : `${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`
+              : item.isStartDate ? `${new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} - 11:59 PM`
+              : item.isEndDate ? `12:00 AM - ${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`
+              : `12:00 AM - 11:59 PM`
             }
           </Text>
         </View>
@@ -728,10 +830,18 @@ const PlannerPage = () => {
 
   const renderDay = ({ item }) => (
     <TouchableOpacity style={styles.dayContainer} onPress={() => handleDatePress(item.day)} disabled={!item.day}>
-      <Text>{item.day}</Text>
+      <View style={[styles.dateCircle, item.isCurrentDate && styles.currentDateCircle]}>
+        <Text>{item.day}</Text>
+      </View>
       {item.tasks && item.tasks.map((task, index) => (
-        <View key={index} style={[styles.task, { backgroundColor: task.color }]}>
-          <Text style={styles.taskText}>{task.name}</Text>
+        <View key={index} style={styles.taskBlock}>
+          <FontAwesome name='circle' size={10} color={warningColor(task.endTime)} style={styles.taskIcon} />
+          <Text style={styles.taskBlockText} numberOfLines={1} ellipsizeMode="tail">{task.title}</Text>
+        </View>
+      ))}
+      {item.events && item.events.map((event, index) => (
+        <View key={index} style={[styles.eventDot, { backgroundColor: event.color }]}>
+          <Text style={styles.eventDotText} numberOfLines={1} ellipsizeMode="tail">{event.title}</Text>
         </View>
       ))}
     </TouchableOpacity>
@@ -740,11 +850,16 @@ const PlannerPage = () => {
   const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
   const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
   const daysArray = [
-    ...Array.from({ length: firstDayOfMonth }, () => ({ day: null, tasks: [] })),
-    ...Array.from({ length: daysInMonth }, (_, i) => ({
-      day: i + 1,
-      tasks: []
-    }))
+    ...Array.from({ length: firstDayOfMonth }, () => ({ day: null, tasks: [], events: [] })),
+    ...Array.from({ length: daysInMonth }, (_, i) => {
+      const dateKey = new Date(selectedYear, selectedMonth, i + 1).toDateString();
+      return {
+        day: i + 1,
+        isCurrentDate: new Date(selectedYear, selectedMonth, i + 1).toDateString() === new Date().toDateString(),
+        tasks: (days.find(d => new Date(d.title).toDateString() === dateKey)?.data || []).filter(item => item.type === 'task'),
+        events: (days.find(d => new Date(d.title).toDateString() === dateKey)?.data || []).filter(item => item.type === 'event')
+      };
+    })
   ];
 
   const goToEvent = () => {
@@ -803,15 +918,21 @@ const PlannerPage = () => {
             </TouchableOpacity>
           </View>
           
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, index) => (
-              <TouchableOpacity 
-                key={month} 
-                onPress={() => changeMonth(index)}
-                style={[styles.monthButton, selectedMonth === index && styles.selectedMonthButton]}
-              >
-                <Text style={[styles.monthText, selectedMonth === index && styles.selectedMonthButtonText]}>{month}</Text>
-              </TouchableOpacity>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} ref={scrollViewRef}>
+            {years.map((year) => (
+              ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, index) => (
+                <TouchableOpacity 
+                  key={`${month}-${year}`} 
+                  onPress={() => {
+                    changeMonth(index, year);
+                  }}
+                  style={[styles.monthButton, selectedMonth === index && selectedYear === year && styles.selectedMonthButton]}
+                >
+                  <Text style={[styles.monthText, selectedMonth === index && selectedYear === year && styles.selectedMonthButtonText]}>
+                    {year === new Date().getFullYear() ? month : `${month} ${year}`}
+                  </Text>
+                </TouchableOpacity>
+              ))
             ))}
           </ScrollView>
         </View>
@@ -829,14 +950,17 @@ const PlannerPage = () => {
             const wait = new Promise(resolve => setTimeout(resolve, 500)); 
             wait.then(() => {
               listViewRef.current?.scrollToLocation({
-                sectionIndex: 0, 
-                itemIndex: info.index, 
+                sectionIndex: info.index,
+                itemIndex: 0,
                 animated: true});
             });
           }}
           renderItem={renderItem}
           renderSectionHeader={({ section: { title } }) => (
             <Text style={styles.sectionHeader}>{title}</Text>
+          )}
+          renderSectionFooter={() => (
+            <View style={styles.sectionDivider} />
           )}
           style={styles.list}
         />
@@ -970,6 +1094,12 @@ const styles = StyleSheet.create({
     color: '#003882',
     fontFamily: 'Ubuntu-Medium',
   },
+  sectionDivider: {
+    borderBottomColor: 'gray',
+    borderBottomWidth: 1,
+    marginTop: 2,
+    alignSelf: 'stretch',
+  },
   eventContainer: {
     width:'100%',
     flexDirection: 'row',
@@ -1056,15 +1186,40 @@ const styles = StyleSheet.create({
     padding: 5,
     margin: 1,
   },
-  task: {
-    marginTop: 5,
+  dateCircle: {
+    alignSelf: 'center',
     padding: 2,
-    borderRadius: 5,
   },
-  taskText: {
-    fontSize: 10,
+  currentDateCircle: {
+    borderWidth: 2,
+    borderColor: '#003882',
+    borderRadius: 15,
+  },
+  taskBlock: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 2,
+    backgroundColor: 'white',
+    borderRadius: 3,
+    paddingHorizontal: 2,
+  },
+  taskBlockText: {
+    fontSize: 12,
     fontFamily: 'Ubuntu-Regular',
-    color: 'white',
+    color: 'black',
+    flexShrink: 1,
+  },
+  eventDot: {
+    marginTop: 2,
+    padding: 2,
+    borderRadius: 3,
+    backgroundColor: 'gray', // default color, will be overridden by the event color
+  },
+  eventDotText: {
+    fontSize: 12,
+    fontFamily: 'Ubuntu-Regular',
+    color: 'black',
+    flexShrink: 1,
   },
   gridContainer: {
     flexGrow: 1,
@@ -1084,6 +1239,6 @@ const styles = StyleSheet.create({
     alignItems:'center',
   },
   taskIcon: {
-    marginRight: 8,
+    marginRight: 4,
   }
 });
