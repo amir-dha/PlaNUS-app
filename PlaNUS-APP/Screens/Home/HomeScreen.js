@@ -42,6 +42,10 @@ const HomeScreen = () => {
     navigation.navigate('Home');
   };
 
+  const gotoSemesterPlan = () => {
+    navigation.navigate('SemesterPlan');
+  }
+
   return (
     <View style={styles.container}>
 
@@ -70,19 +74,19 @@ const HomeScreen = () => {
         <TouchableOpacity
           style={styles.buttonContainer}
           onPress={goToPlannerPage}>
-          <Text style={[styles.text, { color: 'white' }]}>Your Schedule</Text>
+          <Text style={[styles.text, { color: 'white' }]}>My Schedule</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.buttonContainer}
-          onPress={() => { }}>
-          <Text style={[styles.text, { color: 'white' }]}>Future Semester Plan</Text>
+          onPress={gotoSemesterPlan}>
+          <Text style={[styles.text, { color: 'white' }]}>My Academic Plan</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.buttonContainer}
           onPress={() => navigation.navigate('EisenhowerMatrix')}>
-          <Text style={[styles.text, { color: 'white' }]}>Prioritize Your Task</Text>
+          <Text style={[styles.text, { color: 'white' }]}>Prioritize My Tasks</Text>
         </TouchableOpacity>
       </View>
 

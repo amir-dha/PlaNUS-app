@@ -14,6 +14,7 @@ import AccountScreen from './Screens/Account/Settings/AccountScreen';
 import PlannerPage from './Screens/Calendar Components/PlannerPage'; // Import the PlannerPage
 import AddTaskEventScreen from './Screens/Calendar Components/AddTaskEvent';
 import EisenhowerMatrix from './Screens/EisenhowerMatrix/EisenhowerMatrix';
+import SemesterPlan from './Screens/SemesterPlan/SemesterPlan';
 
 const Stack = createNativeStackNavigator(); 
 
@@ -27,7 +28,8 @@ function App() {
     await Font.loadAsync({
       'Ubuntu-Regular': require('./assets/Fonts/Ubuntu/Ubuntu-Regular.ttf'),
       'Ubuntu-Bold': require('./assets/Fonts/Ubuntu/Ubuntu-Bold.ttf'),
-      'Ubuntu-Medium': require('./assets/Fonts/Ubuntu/Ubuntu-Medium.ttf')
+      'Ubuntu-Medium': require('./assets/Fonts/Ubuntu/Ubuntu-Medium.ttf'),
+      'Ubunyu-Italic': require('./assets/Fonts/Ubuntu/Ubuntu-Italic.ttf')
     });
     setFontsLoaded(true); 
   }; 
@@ -67,6 +69,7 @@ function App() {
         <Stack.Screen options={{ headerShown: false }} name="Planner" component={PlannerPage} />
         <Stack.Screen options={{ headerShown: false }} name="AddTaskEventScreen" component={AddTaskEventScreen} />
         <Stack.Screen options={{ headerShown: false }} name="EisenhowerMatrix" component={EisenhowerMatrix} />
+        <Stack.Screen options={{ headerShown: false }} name="SemesterPlan" component={SemesterPlan} />
       </Stack.Navigator>
     </NavigationContainer>
   );

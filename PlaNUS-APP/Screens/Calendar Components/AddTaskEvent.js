@@ -161,11 +161,12 @@ const AddTaskEventScreen = () => {
     console.log("Event data to save:", eventDataToSave);
 
     try {
+        const userDocRef = doc(db, 'users', user.uid);
         if (eventData && eventData.id) {
-            const docRef = doc(db, isTask ? "tasks" : "events", eventData.id);
+            const docRef = doc(collection(userDocRef, isTask ? "tasks" : "events"), eventData.id);
             await updateDoc(docRef, eventDataToSave);
         } else {
-            await addDoc(collection(db, isTask ? "tasks" : "events"), eventDataToSave);
+            await addDoc(collection(userDocRef, isTask ? "tasks" : "events"), eventDataToSave);
         }
         navigation.goBack();
     } catch (error) {
@@ -176,7 +177,9 @@ const AddTaskEventScreen = () => {
   const handleDelete = async () => {
     if (eventData && eventData.id) {
       try {
-        const docRef = doc(db, isTask ? "tasks" : "events", eventData.id);
+        const user = auth.currentUser;
+        const userDocRef = doc(db, 'users', user.uid);
+        const docRef = doc(collection(userDocRef, isTask ? "tasks" : "events"), eventData.id);
         await deleteDoc(docRef);
         navigation.goBack();
       } catch (error) {
@@ -616,4 +619,3 @@ const styles = StyleSheet.create({
 });
 
 export default AddTaskEventScreen;
-
