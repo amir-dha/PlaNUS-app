@@ -1308,6 +1308,7 @@ import { addDoc, collection, doc, updateDoc, deleteDoc } from 'firebase/firestor
 import { db, auth } from '../../firebase';
 import * as Notifications from 'expo-notifications';
 import { FontAwesome } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddTaskEventScreen = () => {
   const route = useRoute();
@@ -1431,6 +1432,13 @@ const AddTaskEventScreen = () => {
   };
 
   const scheduleNotification = async (notificationTime, title, body, docId) => {
+    const settings = await AsyncStorage.getItem('settings');
+    const { notificationsEnabled } = JSON.parse(settings);
+    
+    if (!notificationsEnabled) {
+      return; // Don't schedule notifications if they are disabled
+    }
+  
     await Notifications.scheduleNotificationAsync({
       content: {
         title: title,
