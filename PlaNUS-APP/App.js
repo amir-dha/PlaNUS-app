@@ -104,6 +104,8 @@ import PlannerPage from './Screens/Calendar Components/PlannerPage';
 import AddTaskEventScreen from './Screens/Calendar Components/AddTaskEvent';
 import EisenhowerMatrix from './Screens/EisenhowerMatrix/EisenhowerMatrix';
 import SemesterPlan from './Screens/SemesterPlan/SemesterPlan';
+import CourseSelectScreen from './Screens/Calendar Components/CourseSelectScreen';
+import EditCourseSlotScreen from './Screens/Calendar Components/EditCourseSlotScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -200,6 +202,8 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name="AddTaskEventScreen" component={AddTaskEventScreen} />
         <Stack.Screen options={{ headerShown: false }} name="EisenhowerMatrix" component={EisenhowerMatrix} />
         <Stack.Screen options={{ headerShown: false }} name="SemesterPlan" component={SemesterPlan} />
+        <Stack.Screen options={{ headerShown: false }} name="CourseSelectScreen" component={CourseSelectScreen} />
+        <Stack.Screen options={{ headerShown: false }} name="EditCourseSlotScreen" component={EditCourseSlotScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

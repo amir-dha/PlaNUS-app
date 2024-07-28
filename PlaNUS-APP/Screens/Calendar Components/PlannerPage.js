@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, SectionList, ScrollView, StatusBar, Modal, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,8 +22,7 @@ const PlannerPage = () => {
   const [viewType, setViewType] = useState('List');
   const [addEventModalVisible, setAddEventModalVisible] = useState(false);
   const [accountModalVisible, setAccountModalVisible] = useState(false);
-  const [tasks, setTasks] = useState([]);
-  const [events, setEvents] = useState([]);
+  const [combinedData, setCombinedData] = useState([]);
   const scrollViewRef = useRef(null);
   const listViewRef = useRef(null);
 
@@ -38,53 +36,38 @@ const PlannerPage = () => {
     const userDocRef = doc(db, 'users', user.uid);
     const tasksQuery = query(collection(userDocRef, 'tasks'), orderBy("startTime"));
     const eventsQuery = query(collection(userDocRef, 'events'), orderBy("startTime"));
+    const coursesQuery = query(collection(userDocRef, 'courses'), orderBy("startTime"));
 
     const unsubscribeTasks = onSnapshot(tasksQuery, (snapshot) => {
-      if (!snapshot.empty) {
-        const tasksData = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, type: 'task' }));
-        setTasks(tasksData);
-      } else {
-        setTasks([]);
-      }
+      const tasksData = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, type: 'task' }));
+      setCombinedData(prevData => [...prevData.filter(item => item.type !== 'task'), ...tasksData]);
     });
 
     const unsubscribeEvents = onSnapshot(eventsQuery, (snapshot) => {
-      if (!snapshot.empty) {
-        const eventsData = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, type: 'event' }));
-        setEvents(eventsData);
-      } else {
-        setEvents([]);
-      }
+      const eventsData = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, type: 'event' }));
+      setCombinedData(prevData => [...prevData.filter(item => item.type !== 'event'), ...eventsData]);
+    });
+
+    const unsubscribeCourses = onSnapshot(coursesQuery, (snapshot) => {
+      const coursesData = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, type: 'course' }));
+      setCombinedData(prevData => [...prevData.filter(item => item.type !== 'course'), ...coursesData]);
     });
 
     return () => {
       unsubscribeTasks();
       unsubscribeEvents();
+      unsubscribeCourses();
     };
   }, [selectedMonth, selectedYear]);
 
   useEffect(() => {
     const dataByDate = {};
-    const combinedData = [...tasks, ...events];
-
     combinedData.forEach(item => {
-      const startDate = new Date(item.startTime);
-      const endDate = new Date(item.endTime);
-      let currentDate = new Date(startDate);
-
-      while (currentDate <= endDate) {
-        const dateKey = currentDate.toDateString();
-        if (!dataByDate[dateKey]) {
-          dataByDate[dateKey] = [];
-        }
-        dataByDate[dateKey].push({
-          ...item,
-          isStartDate: currentDate.toDateString() === startDate.toDateString(),
-          isEndDate: currentDate.toDateString() === endDate.toDateString(),
-          dayNumber: Math.ceil((currentDate - startDate) / (1000 * 60 * 60 * 24)) + 1
-        });
-        currentDate.setDate(currentDate.getDate() + 1);
+      const dateKey = new Date(item.startTime).toDateString();
+      if (!dataByDate[dateKey]) {
+        dataByDate[dateKey] = [];
       }
+      dataByDate[dateKey].push(item);
     });
 
     const allDays = [];
@@ -95,13 +78,13 @@ const PlannerPage = () => {
     }
 
     const sections = allDays.map(dateKey => ({
-      title: new Date(dateKey).toDateString(),
+      title: dateKey,
       data: (dataByDate[dateKey] || []).sort((a, b) => new Date(a.startTime) - new Date(b.startTime))
     }));
 
     console.log('Generated sections:', sections); // Log generated sections
     setDays(sections);
-  }, [tasks, events, selectedMonth, selectedYear]);
+  }, [combinedData, selectedMonth, selectedYear]);
 
   const scrollToSelectedMonth = () => {
     if (scrollViewRef.current) {
@@ -185,52 +168,43 @@ const PlannerPage = () => {
     return color;
   };
 
-  const renderItem = ({ item }) => {
-    const isMultiDayEvent = new Date(item.startTime).toDateString() !== new Date(item.endTime).toDateString();
-
-    const formatTime = (time) => new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-
-    const displayTime = (item) => {
-      if (item.isTask) {
-        return item.isAllDay ? '' : formatTime(item.endTime);
-      }
-      if (item.isStartDate && item.isEndDate) {
-        return `${formatTime(item.startTime)} - ${formatTime(item.endTime)}`;
-      }
-      if (item.isStartDate) {
-        return `${formatTime(item.startTime)} - 11:59 PM`;
-      }
-      if (item.isEndDate) {
-        return `12:00 AM - ${formatTime(item.endTime)}`;
-      }
-      return `12:00 AM - 11:59 PM`;
-    };
-
-    return (
-      <TouchableOpacity
-        style={styles.taskEventButton}
-        onPress={() => handleEventPress(item)}
-      >
-        <View style={styles.eventContainer}>
-          <View style={styles.verticalLine} />
-          <View style={[item.type === 'event' ? styles.eventItem : styles.taskItem, { backgroundColor: item.color }]}>
-            <View style={styles.eventTextContainer}>
-              {item.type === 'task' ? (
-                <View style={styles.taskEventBlockContainer}>
-                  <FontAwesome name='circle' size={15} color={warningColor(item.endTime)} style={styles.taskIcon} />
-                  <Text style={styles.eventText}>{item.title}</Text>
-                </View>
-              ) : (
-                <Text style={styles.eventText}>{item.title} {isMultiDayEvent && `(Day ${item.dayNumber})`}</Text>
-              )}
-              {item.location && <Text style={styles.locationText}>{item.location}</Text>}
-            </View>
-            <Text style={styles.eventTime}>{displayTime(item)}</Text>
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.taskEventButton}
+      onPress={() => handleEventPress(item)}
+    >
+      <View style={styles.eventContainer}>
+        <View style={styles.verticalLine} />
+        <View style={[
+          item.type === 'event' ? styles.eventItem :
+          item.type === 'course' ? [styles.courseItem, { borderColor: item.color }] : styles.taskItem, 
+          { backgroundColor: item.type === 'course' ? '#e2e2e2' : item.color }
+        ]}>
+          <View style={styles.eventTextContainer}>
+            {item.type === 'task' ? (
+              <View style={styles.taskEventBlockContainer}>
+                <FontAwesome name='circle' size={15} color={warningColor(item.endTime)} style={styles.taskIcon} />
+                <Text style={styles.eventText}>{item.title}</Text>
+              </View>
+            ) : (
+              <Text style={styles.eventText}>{item.title}</Text>
+            )}
+            {item.location && <Text style={styles.locationText}>{item.location}</Text>}
           </View>
+          <Text style={styles.eventTime}>
+            {item.type === 'course'
+              ? `${new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} - ${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`
+              : item.isTask
+                ? item.isAllDay ? '' : `${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`
+                : item.isStartDate ? `${new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} - 11:59 PM`
+                  : item.isEndDate ? `12:00 AM - ${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`
+                    : `12:00 AM - 11:59 PM`
+          }
+          </Text>
         </View>
-      </TouchableOpacity>
-    );
-  };
+      </View>
+    </TouchableOpacity>
+  );
 
   const renderDay = ({ item }) => (
     <TouchableOpacity style={styles.dayContainer} onPress={() => handleDatePress(item.day)} disabled={!item.day}>
@@ -248,20 +222,26 @@ const PlannerPage = () => {
           <Text style={styles.eventDotText} numberOfLines={1} ellipsizeMode="tail">{event.title}</Text>
         </View>
       ))}
+      {item.courses && item.courses.map((course, index) => (
+        <View key={index} style={[styles.courseBlock, { borderColor: course.color }]}>
+          <Text style={styles.courseBlockText} numberOfLines={1} ellipsizeMode="tail">{course.title}</Text>
+        </View>
+      ))}
     </TouchableOpacity>
   );
 
   const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
   const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
   const daysArray = [
-    ...Array.from({ length: firstDayOfMonth }, () => ({ day: null, tasks: [], events: [] })),
+    ...Array.from({ length: firstDayOfMonth }, () => ({ day: null, tasks: [], events: [], courses: [] })),
     ...Array.from({ length: daysInMonth }, (_, i) => {
       const dateKey = new Date(selectedYear, selectedMonth, i + 1).toDateString();
       return {
         day: i + 1,
         isCurrentDate: new Date(selectedYear, selectedMonth, i + 1).toDateString() === new Date().toDateString(),
         tasks: (days.find(d => new Date(d.title).toDateString() === dateKey)?.data || []).filter(item => item.type === 'task'),
-        events: (days.find(d => new Date(d.title).toDateString() === dateKey)?.data || []).filter(item => item.type === 'event')
+        events: (days.find(d => new Date(d.title).toDateString() === dateKey)?.data || []).filter(item => item.type === 'event'),
+        courses: (days.find(d => new Date(d.title).toDateString() === dateKey)?.data || []).filter(item => item.type === 'course')
       };
     })
   ];
@@ -275,11 +255,20 @@ const PlannerPage = () => {
     navigation.navigate('AddTaskEventScreen', { isTaskInitial: true });
   };
 
+  const goToCourse = () => {
+    setAddEventModalVisible(false);
+    navigation.navigate('CourseSelectScreen');
+  };
+
   const handleEventPress = (event) => {
-    navigation.navigate('AddTaskEventScreen', {
-      isTaskInitial: event.type === 'task',
-      eventData: event
-    });
+    if (event.type === 'course') {
+      navigation.navigate('EditCourseSlotScreen', { courseData: event });
+    } else {
+      navigation.navigate('AddTaskEventScreen', {
+        isTaskInitial: event.type === 'task',
+        eventData: event
+      });
+    }
   };
 
   return (
@@ -398,6 +387,9 @@ const PlannerPage = () => {
             </TouchableOpacity>
             <TouchableOpacity onPress={goToEvent} style={styles.modalOption}>
               <Text style={styles.modalOptionText}>EVENT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={goToCourse} style={styles.modalOption}>
+              <Text style={styles.modalOptionText}>COURSE</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
@@ -530,6 +522,19 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     height: 60,
   },
+  courseItem: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 15,
+    marginVertical: 5,
+    backgroundColor: '#e2e2e2', // Same background color as task items
+    borderWidth: 2,
+    borderColor: 'black', // Default border color, will be overridden by the course color
+  },
   taskItem: {
     flex: 1,
     flexDirection: 'row',
@@ -622,6 +627,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
   },
   eventDotText: {
+    fontSize: 12,
+    fontFamily: 'Ubuntu-Regular',
+    color: 'black',
+    flexShrink: 1,
+  },
+  courseBlock: {
+    marginTop: 2,
+    backgroundColor: '#e2e2e2', // Same background color as task items
+    borderRadius: 3,
+    paddingHorizontal: 2,
+    borderWidth: 2,
+  },
+  courseBlockText: {
     fontSize: 12,
     fontFamily: 'Ubuntu-Regular',
     color: 'black',
