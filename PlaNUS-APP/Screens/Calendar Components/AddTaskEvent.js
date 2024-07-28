@@ -784,7 +784,7 @@ const styles = StyleSheet.create({
   },
   taskIcon: {
     marginRight: 8,
-  },
+  }
 });
 
 export default AddTaskEventScreen;
