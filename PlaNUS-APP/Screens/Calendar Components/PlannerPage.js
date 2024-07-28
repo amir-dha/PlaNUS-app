@@ -82,6 +82,7 @@ const PlannerPage = () => {
       data: (dataByDate[dateKey] || []).sort((a, b) => new Date(a.startTime) - new Date(b.startTime))
     }));
 
+    console.log('Generated sections:', sections); // Log generated sections
     setDays(sections);
   }, [combinedData, selectedMonth, selectedYear]);
 
@@ -623,7 +624,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
     padding: 2,
     borderRadius: 3,
-    backgroundColor: 'gray', // default color, will be overridden by the event color
+    backgroundColor: 'gray',
   },
   eventDotText: {
     fontSize: 12,
@@ -663,6 +664,5 @@ const styles = StyleSheet.create({
   },
   taskIcon: {
     marginRight: 4,
-  }
+  },
 });
-
