@@ -1,20 +1,77 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Modal, TouchableWithoutFeedback } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const RepeatModal = ({ visible, onClose, onSelect }) => {
+  const [showStartDatePicker, setShowStartDatePicker] = useState(false);
+  const [showEndDatePicker, setShowEndDatePicker] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [selectedOption, setSelectedOption] = useState('Does not repeat');
+
+  const handleStartDateChange = (event, date) => {
+    const selectedDate = date || startDate;
+    setShowStartDatePicker(false);
+    setStartDate(selectedDate);
+  };
+
+  const handleEndDateChange = (event, date) => {
+    const selectedDate = date || endDate;
+    setShowEndDatePicker(false);
+    setEndDate(selectedDate);
+  };
+
+  const handleSelectOption = (option) => {
+    setSelectedOption(option);
+  };
+
+  const handleSave = () => {
+    onSelect(selectedOption, startDate, endDate);
+    onClose();
+  };
+
   return (
     <Modal visible={visible} transparent={true} animationType="slide" onRequestClose={onClose}>
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <ScrollView>
-              {['Does not repeat', 'Every day', 'Every week', 'Every month', 'Every year'].map(option => (
-                <TouchableOpacity key={option} onPress={() => onSelect(option)} style={styles.modalOption}>
-                  <Text style={styles.modalOptionText}>{option}</Text>
+          <TouchableWithoutFeedback>
+            <View style={styles.modalContainer}>
+              <ScrollView>
+                {['Does not repeat', 'Every day', 'Every week', 'Every month', 'Every year'].map(option => (
+                  <TouchableOpacity key={option} onPress={() => handleSelectOption(option)} style={styles.modalOption}>
+                    <Text style={styles.modalOptionText}>{option}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+              <View style={styles.datePickerContainer}>
+                <TouchableOpacity onPress={() => setShowStartDatePicker(true)} style={styles.datePickerButton}>
+                  <Text style={styles.datePickerText}>Start Date: {startDate.toDateString()}</Text>
                 </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
+                {showStartDatePicker && (
+                  <DateTimePicker
+                    value={startDate}
+                    mode="date"
+                    display="default"
+                    onChange={handleStartDateChange}
+                  />
+                )}
+                <TouchableOpacity onPress={() => setShowEndDatePicker(true)} style={styles.datePickerButton}>
+                  <Text style={styles.datePickerText}>End Date: {endDate.toDateString()}</Text>
+                </TouchableOpacity>
+                {showEndDatePicker && (
+                  <DateTimePicker
+                    value={endDate}
+                    mode="date"
+                    display="default"
+                    onChange={handleEndDateChange}
+                  />
+                )}
+              </View>
+              <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
+                <Text style={styles.saveButtonText}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
       </TouchableWithoutFeedback>
     </Modal>
@@ -45,6 +102,32 @@ const styles = StyleSheet.create({
   modalOptionText: {
     fontSize: 18,
     color: '#003882',
+  },
+  datePickerContainer: {
+    marginTop: 20,
+    width: '100%',
+    alignItems: 'center',
+  },
+  datePickerButton: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#003882',
+    borderRadius: 5,
+    marginVertical: 5,
+  },
+  datePickerText: {
+    fontSize: 16,
+    color: '#003882',
+  },
+  saveButton: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: '#003882',
+    borderRadius: 5,
+  },
+  saveButtonText: {
+    color: '#fff',
+    fontSize: 18,
   },
 });
 
