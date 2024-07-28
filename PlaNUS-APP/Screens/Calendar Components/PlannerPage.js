@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, SectionList, ScrollView, StatusBar, Modal, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,6 +24,8 @@ const PlannerPage = () => {
   const [addEventModalVisible, setAddEventModalVisible] = useState(false);
   const [accountModalVisible, setAccountModalVisible] = useState(false);
   const [combinedData, setCombinedData] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [events, setEvents] = useState([]);
   const scrollViewRef = useRef(null);
   const listViewRef = useRef(null);
 
@@ -63,11 +66,39 @@ const PlannerPage = () => {
   useEffect(() => {
     const dataByDate = {};
     combinedData.forEach(item => {
-      const dateKey = new Date(item.startTime).toDateString();
-      if (!dataByDate[dateKey]) {
-        dataByDate[dateKey] = [];
+      const startDate = new Date(item.startTime);
+      const endDate = new Date(item.endTime);
+      
+      if (startDate.toDateString() !== endDate.toDateString()) {
+        // Multi-day event
+        let current = new Date(startDate);
+        while (current <= endDate) {
+          const dateKey = current.toDateString();
+          if (!dataByDate[dateKey]) {
+            dataByDate[dateKey] = [];
+          }
+          const newItem = { ...item };
+          if (current.toDateString() === startDate.toDateString()) {
+            newItem.startTime = item.startTime;
+            newItem.endTime = new Date(current).setHours(23, 59, 59, 999);
+          } else if (current.toDateString() === endDate.toDateString()) {
+            newItem.startTime = new Date(current).setHours(0, 0, 0, 0);
+            newItem.endTime = item.endTime;
+          } else {
+            newItem.startTime = new Date(current).setHours(0, 0, 0, 0);
+            newItem.endTime = new Date(current).setHours(23, 59, 59, 999);
+          }
+          dataByDate[dateKey].push(newItem);
+          current.setDate(current.getDate() + 1);
+        }
+      } else {
+        // Single-day event
+        const dateKey = startDate.toDateString();
+        if (!dataByDate[dateKey]) {
+          dataByDate[dateKey] = [];
+        }
+        dataByDate[dateKey].push(item);
       }
-      dataByDate[dateKey].push(item);
     });
 
     const allDays = [];
@@ -82,7 +113,6 @@ const PlannerPage = () => {
       data: (dataByDate[dateKey] || []).sort((a, b) => new Date(a.startTime) - new Date(b.startTime))
     }));
 
-    console.log('Generated sections:', sections); // Log generated sections
     setDays(sections);
   }, [combinedData, selectedMonth, selectedYear]);
 
@@ -168,43 +198,69 @@ const PlannerPage = () => {
     return color;
   };
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.taskEventButton}
-      onPress={() => handleEventPress(item)}
-    >
-      <View style={styles.eventContainer}>
-        <View style={styles.verticalLine} />
-        <View style={[
-          item.type === 'event' ? styles.eventItem :
-          item.type === 'course' ? [styles.courseItem, { borderColor: item.color }] : styles.taskItem, 
-          { backgroundColor: item.type === 'course' ? '#e2e2e2' : item.color }
-        ]}>
-          <View style={styles.eventTextContainer}>
-            {item.type === 'task' ? (
-              <View style={styles.taskEventBlockContainer}>
-                <FontAwesome name='circle' size={15} color={warningColor(item.endTime)} style={styles.taskIcon} />
-                <Text style={styles.eventText}>{item.title}</Text>
-              </View>
-            ) : (
-              <Text style={styles.eventText}>{item.title}</Text>
-            )}
-            {item.location && <Text style={styles.locationText}>{item.location}</Text>}
+  const formatTime = (time) => new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+
+  const displayTime = (item) => {
+    const start = new Date(item.startTime);
+    const end = new Date(item.endTime);
+
+    if (item.type === 'course') {
+      return `${formatTime(item.startTime)} - ${formatTime(item.endTime)}`;
+    }
+    if (item.isTask) {
+      return item.isAllDay ? '' : formatTime(item.endTime);
+    }
+
+    if (start.toDateString() === end.toDateString()) {
+      return `${formatTime(start)} - ${formatTime(end)}`;
+    } else {
+      if (item.isStartDate && item.isEndDate) {
+        return `${formatTime(start)} - ${formatTime(end)}`;
+      }
+      if (item.isStartDate) {
+        return `${formatTime(start)} - 11:59 PM`;
+      }
+      if (new Date(item.startTime).toDateString() === new Date(item.endTime).toDateString()) {
+        return `${formatTime(item.startTime)} - ${formatTime(end)}`;
+      }
+      return `12:00 AM - 11:59 PM`;
+    }
+  };
+
+  const renderItem = ({ item }) => {
+    const isMultiDayEvent = new Date(item.startTime).toDateString() !== new Date(item.endTime).toDateString();
+  
+    return (
+      <TouchableOpacity
+        style={styles.taskEventButton}
+        onPress={() => handleEventPress(item)}
+      >
+        <View style={styles.eventContainer}>
+          <View style={styles.verticalLine} />
+          <View style={[
+            item.type === 'event' ? styles.eventItem :
+            item.type === 'course' ? [styles.courseItem, { borderColor: item.color }] : styles.taskItem, 
+            { backgroundColor: item.type === 'course' ? '#e2e2e2' : item.color }
+          ]}>
+            <View style={styles.eventTextContainer}>
+              {item.type === 'task' ? (
+                <View style={styles.taskEventBlockContainer}>
+                  <FontAwesome name='circle' size={15} color={warningColor(item.endTime)} style={styles.taskIcon} />
+                  <Text style={styles.eventText}>{item.title}</Text>
+                </View>
+              ) : (
+                <Text style={styles.eventText}>
+                  {item.title} {isMultiDayEvent && item.type === 'event' && `(Day ${item.dayNumber})`}
+                </Text>
+              )}
+              {item.location && <Text style={styles.locationText}>{item.location}</Text>}
+            </View>
+            <Text style={styles.eventTime}>{displayTime(item)}</Text>
           </View>
-          <Text style={styles.eventTime}>
-            {item.type === 'course'
-              ? `${new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} - ${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`
-              : item.isTask
-                ? item.isAllDay ? '' : `${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`
-                : item.isStartDate ? `${new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} - 11:59 PM`
-                  : item.isEndDate ? `12:00 AM - ${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`
-                    : `12:00 AM - 11:59 PM`
-          }
-          </Text>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   const renderDay = ({ item }) => (
     <TouchableOpacity style={styles.dayContainer} onPress={() => handleDatePress(item.day)} disabled={!item.day}>
