@@ -701,6 +701,8 @@ const PlannerPage = () => {
   const [addEventModalVisible, setAddEventModalVisible] = useState(false);
   const [accountModalVisible, setAccountModalVisible] = useState(false);
   const [combinedData, setCombinedData] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [events, setEvents] = useState([]);
   const scrollViewRef = useRef(null);
   const listViewRef = useRef(null);
 
@@ -895,8 +897,8 @@ const PlannerPage = () => {
       if (item.isStartDate) {
         return `${formatTime(start)} - 11:59 PM`;
       }
-      if (item.isEndDate) {
-        return `12:00 AM - ${formatTime(end)}`;
+      if (new Date(item.startTime).toDateString() === new Date(item.endTime).toDateString()) {
+        return `${formatTime(item.startTime)} - ${formatTime(end)}`;
       }
       return `12:00 AM - 11:59 PM`;
     }
@@ -1251,7 +1253,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 30,
     marginVertical: 5,
-    height:  60,
+    height: 60,
   },
   courseItem: {
     flex: 1,
