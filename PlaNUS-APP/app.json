@@ -21,6 +21,10 @@
       },
       "permissions": [
         "INTERNET"
+      ],
+      "package": "com.nidhi.patil.PlaNUSAPP"
+      "permissions": [
+        "INTERNET"
       ]
     },
     "web": {
@@ -33,6 +37,18 @@
       "eas": {
         "projectId": "a8a7cc38-ec53-4093-9405-0a95a21a7302"
       }
+    }
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "30540bdd-1c89-4dfd-968c-35cdf3469d94"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/30540bdd-1c89-4dfd-968c-35cdf3469d94"
     }
   }
 }
