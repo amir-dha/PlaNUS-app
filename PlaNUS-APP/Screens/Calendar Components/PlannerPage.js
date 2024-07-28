@@ -1,7 +1,3 @@
-<<<<<<<<< Temporary merge branch 1
-
-=========
->>>>>>>>> Temporary merge branch 2
 import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, SectionList, ScrollView, StatusBar, Modal, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -26,12 +22,9 @@ const PlannerPage = () => {
   const [viewType, setViewType] = useState('List');
   const [addEventModalVisible, setAddEventModalVisible] = useState(false);
   const [accountModalVisible, setAccountModalVisible] = useState(false);
-<<<<<<<<< Temporary merge branch 1
+  const [combinedData, setCombinedData] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [events, setEvents] = useState([]);
-=========
-  const [combinedData, setCombinedData] = useState([]);
->>>>>>>>> Temporary merge branch 2
   const scrollViewRef = useRef(null);
   const listViewRef = useRef(null);
 
@@ -214,7 +207,11 @@ const PlannerPage = () => {
       >
         <View style={styles.eventContainer}>
           <View style={styles.verticalLine} />
-          <View style={[item.type === 'event' ? styles.eventItem : styles.taskItem, { backgroundColor: item.color }]}>
+          <View style={[
+            item.type === 'event' ? styles.eventItem :
+            item.type === 'course' ? [styles.courseItem, { borderColor: item.color }] : styles.taskItem,
+            { backgroundColor: item.type === 'course' ? '#e2e2e2' : item.color }
+          ]}>
             <View style={styles.eventTextContainer}>
               {item.type === 'task' ? (
                 <View style={styles.taskEventBlockContainer}>
@@ -222,47 +219,14 @@ const PlannerPage = () => {
                   <Text style={styles.eventText}>{item.title}</Text>
                 </View>
               ) : (
-                <Text style={styles.eventText}>{item.title} {isMultiDayEvent && `(Day ${item.dayNumber})`}</Text>
+                <Text style={styles.eventText}>
+                  {item.title} {isMultiDayEvent && item.type === 'event' && `(Day ${item.dayNumber})`}
+                </Text>
               )}
               {item.location && <Text style={styles.locationText}>{item.location}</Text>}
             </View>
             <Text style={styles.eventTime}>{displayTime(item)}</Text>
           </View>
-=========
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.taskEventButton}
-      onPress={() => handleEventPress(item)}
-    >
-      <View style={styles.eventContainer}>
-        <View style={styles.verticalLine} />
-        <View style={[
-          item.type === 'event' ? styles.eventItem :
-          item.type === 'course' ? [styles.courseItem, { borderColor: item.color }] : styles.taskItem, 
-          { backgroundColor: item.type === 'course' ? '#e2e2e2' : item.color }
-        ]}>
-          <View style={styles.eventTextContainer}>
-            {item.type === 'task' ? (
-              <View style={styles.taskEventBlockContainer}>
-                <FontAwesome name='circle' size={15} color={warningColor(item.endTime)} style={styles.taskIcon} />
-                <Text style={styles.eventText}>{item.title}</Text>
-              </View>
-            ) : (
-              <Text style={styles.eventText}>{item.title}</Text>
-            )}
-            {item.location && <Text style={styles.locationText}>{item.location}</Text>}
-          </View>
-          <Text style={styles.eventTime}>
-            {item.type === 'course'
-              ? `${new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} - ${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`
-              : item.isTask
-                ? item.isAllDay ? '' : `${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`
-                : item.isStartDate ? `${new Date(item.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} - 11:59 PM`
-                  : item.isEndDate ? `12:00 AM - ${new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`
-                    : `12:00 AM - 11:59 PM`
-          }
-          </Text>
->>>>>>>>> Temporary merge branch 2
         </View>
       </TouchableOpacity>
     );
@@ -583,8 +547,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginVertical: 5,
     height: 60,
-<<<<<<<<< Temporary merge branch 1
-=========
   },
   courseItem: {
     flex: 1,
