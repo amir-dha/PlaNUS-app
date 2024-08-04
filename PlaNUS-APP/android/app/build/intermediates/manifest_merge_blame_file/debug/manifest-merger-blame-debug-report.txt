@@ -1,0 +1,741 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.nidhi.patil.PlaNUSAPP"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="23"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+11-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:38:3-75
+11-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:38:20-73
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:35:3-64
+12-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:35:20-62
+13    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+13-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:36:3-77
+13-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:36:20-75
+14    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+14-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:37:3-68
+14-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:37:20-66
+15    <uses-permission android:name="android.permission.VIBRATE" />
+15-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:39:3-63
+15-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:39:20-61
+16    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+16-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:40:3-78
+16-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:40:20-76
+17
+18    <queries>
+18-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:41:3-47:13
+19        <intent>
+19-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:42:5-46:14
+20            <action android:name="android.intent.action.VIEW" />
+20-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:43:7-58
+20-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:43:15-56
+21
+22            <category android:name="android.intent.category.BROWSABLE" />
+22-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:44:7-67
+22-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:44:17-65
+23
+24            <data android:scheme="https" />
+24-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:45:7-37
+24-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:45:13-35
+25        </intent>
+26        <!-- Query open documents -->
+27        <intent>
+27-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:9-17:18
+28            <action android:name="android.intent.action.OPEN_DOCUMENT_TREE" />
+28-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:16:13-79
+28-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:16:21-76
+29        </intent>
+30        <intent>
+30-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:17:9-21:18
+31
+32            <!-- Required for picking images from the camera roll if targeting API 30 -->
+33            <action android:name="android.media.action.IMAGE_CAPTURE" />
+33-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:20:13-73
+33-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:20:21-70
+34        </intent>
+35        <intent>
+35-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:22:9-26:18
+36
+37            <!-- Required for picking images from the camera if targeting API 30 -->
+38            <action android:name="android.media.action.ACTION_VIDEO_CAPTURE" />
+38-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:25:13-80
+38-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:25:21-77
+39        </intent>
+40        <intent>
+40-->[com.github.CanHub:Android-Image-Cropper:4.3.1] C:\Users\ravic\.gradle\caches\transforms-4\bec2767e46e7f2f36baa70ad9f04504c\transformed\jetified-Android-Image-Cropper-4.3.1\AndroidManifest.xml:10:9-16:18
+41            <action android:name="android.intent.action.GET_CONTENT" />
+41-->[com.github.CanHub:Android-Image-Cropper:4.3.1] C:\Users\ravic\.gradle\caches\transforms-4\bec2767e46e7f2f36baa70ad9f04504c\transformed\jetified-Android-Image-Cropper-4.3.1\AndroidManifest.xml:11:13-72
+41-->[com.github.CanHub:Android-Image-Cropper:4.3.1] C:\Users\ravic\.gradle\caches\transforms-4\bec2767e46e7f2f36baa70ad9f04504c\transformed\jetified-Android-Image-Cropper-4.3.1\AndroidManifest.xml:11:21-69
+42
+43            <category android:name="android.intent.category.OPENABLE" />
+43-->[com.github.CanHub:Android-Image-Cropper:4.3.1] C:\Users\ravic\.gradle\caches\transforms-4\bec2767e46e7f2f36baa70ad9f04504c\transformed\jetified-Android-Image-Cropper-4.3.1\AndroidManifest.xml:13:13-73
+43-->[com.github.CanHub:Android-Image-Cropper:4.3.1] C:\Users\ravic\.gradle\caches\transforms-4\bec2767e46e7f2f36baa70ad9f04504c\transformed\jetified-Android-Image-Cropper-4.3.1\AndroidManifest.xml:13:23-70
+44
+45            <data android:mimeType="*/*" />
+45-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:45:7-37
+46        </intent>
+47    </queries>
+48
+49    <uses-permission android:name="android.permission.WAKE_LOCK" />
+49-->[:react-native-firebase_storage] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\storage\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:5-68
+49-->[:react-native-firebase_storage] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\storage\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:22-65
+50    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Required for picking images from camera directly -->
+50-->[:react-native-firebase_storage] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\storage\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-79
+50-->[:react-native-firebase_storage] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\storage\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:22-76
+51    <uses-permission android:name="android.permission.CAMERA" />
+51-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:5-65
+51-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:22-62
+52    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+52-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:5-76
+52-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:22-73
+53    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+53-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:14:5-75
+53-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:14:22-72
+54    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+54-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-81
+54-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:22-78
+55    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Required by older versions of Google Play services to create IID tokens -->
+55-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:5-77
+55-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:22-74
+56    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+56-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:26:5-82
+56-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:26:22-79
+57
+58    <permission
+58-->[androidx.core:core:1.12.0] C:\Users\ravic\.gradle\caches\transforms-4\08d4fd6b5afc6d4746a3e3c6c24dba61\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+59        android:name="com.nidhi.patil.PlaNUSAPP.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+59-->[androidx.core:core:1.12.0] C:\Users\ravic\.gradle\caches\transforms-4\08d4fd6b5afc6d4746a3e3c6c24dba61\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+60        android:protectionLevel="signature" />
+60-->[androidx.core:core:1.12.0] C:\Users\ravic\.gradle\caches\transforms-4\08d4fd6b5afc6d4746a3e3c6c24dba61\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+61
+62    <uses-permission android:name="com.nidhi.patil.PlaNUSAPP.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+62-->[androidx.core:core:1.12.0] C:\Users\ravic\.gradle\caches\transforms-4\08d4fd6b5afc6d4746a3e3c6c24dba61\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+62-->[androidx.core:core:1.12.0] C:\Users\ravic\.gradle\caches\transforms-4\08d4fd6b5afc6d4746a3e3c6c24dba61\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+63    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" /> <!-- for android -->
+63-->[com.android.installreferrer:installreferrer:2.2] C:\Users\ravic\.gradle\caches\transforms-4\eaec69d83f4dfb64817b9625e5dd35b2\transformed\jetified-installreferrer-2.2\AndroidManifest.xml:9:5-110
+63-->[com.android.installreferrer:installreferrer:2.2] C:\Users\ravic\.gradle\caches\transforms-4\eaec69d83f4dfb64817b9625e5dd35b2\transformed\jetified-installreferrer-2.2\AndroidManifest.xml:9:22-107
+64    <!-- <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/> -->
+65    <!-- <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS"/> -->
+66    <!-- <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" /> -->
+67    <!-- <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" /> -->
+68    <!-- for Samsung -->
+69    <uses-permission android:name="com.sec.android.provider.badge.permission.READ" />
+69-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:19:5-86
+69-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:19:22-83
+70    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" /> <!-- for htc -->
+70-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:20:5-87
+70-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:20:22-84
+71    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS" />
+71-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:23:5-81
+71-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:23:22-78
+72    <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT" /> <!-- for sony -->
+72-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:24:5-83
+72-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:24:22-80
+73    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
+73-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:27:5-88
+73-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:27:22-85
+74    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE" /> <!-- for apex -->
+74-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:28:5-92
+74-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:28:22-89
+75    <uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT" /> <!-- for solid -->
+75-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:31:5-84
+75-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:31:22-81
+76    <uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE" /> <!-- for huawei -->
+76-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:34:5-83
+76-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:34:22-80
+77    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
+77-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:37:5-91
+77-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:37:22-88
+78    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" />
+78-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:38:5-92
+78-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:38:22-89
+79    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS" /> <!-- for ZUK -->
+79-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:39:5-93
+79-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:39:22-90
+80    <uses-permission android:name="android.permission.READ_APP_BADGE" /> <!-- for OPPO -->
+80-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:42:5-73
+80-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:42:22-70
+81    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
+81-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:45:5-82
+81-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:45:22-79
+82    <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS" /> <!-- for EvMe -->
+82-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:46:5-83
+82-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:46:22-80
+83    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_READ" />
+83-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:49:5-88
+83-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:49:22-85
+84    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE" />
+84-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:50:5-89
+84-->[me.leolin:ShortcutBadger:1.1.22] C:\Users\ravic\.gradle\caches\transforms-4\3bda06d5916a8fdad0197d800edc4f9a\transformed\jetified-ShortcutBadger-1.1.22\AndroidManifest.xml:50:22-86
+85
+86    <application
+86-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:48:3-65:17
+87        android:name="com.planusapp.MainApplication"
+87-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:48:16-47
+88        android:allowBackup="true"
+88-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:48:162-188
+89        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+89-->[androidx.core:core:1.12.0] C:\Users\ravic\.gradle\caches\transforms-4\08d4fd6b5afc6d4746a3e3c6c24dba61\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
+90        android:debuggable="true"
+91        android:extractNativeLibs="false"
+92        android:icon="@mipmap/ic_launcher"
+92-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:48:81-115
+93        android:label="@string/app_name"
+93-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:48:48-80
+94        android:roundIcon="@mipmap/ic_launcher_round"
+94-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:48:116-161
+95        android:theme="@style/AppTheme"
+95-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:48:189-220
+96        android:usesCleartextTraffic="true" >
+96-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\debug\AndroidManifest.xml:6:18-53
+97        <meta-data
+97-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:49:5-83
+98            android:name="expo.modules.updates.ENABLED"
+98-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:49:16-59
+99            android:value="false" />
+99-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:49:60-81
+100        <meta-data
+100-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:50:5-105
+101            android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH"
+101-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:50:16-80
+102            android:value="ALWAYS" />
+102-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:50:81-103
+103        <meta-data
+103-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:51:5-99
+104            android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS"
+104-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:51:16-79
+105            android:value="0" />
+105-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:51:80-97
+106
+107        <activity
+107-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:52:5-63:16
+108            android:name="com.planusapp.MainActivity"
+108-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:52:15-43
+109            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|uiMode"
+109-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:52:44-134
+110            android:exported="true"
+110-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:52:256-279
+111            android:launchMode="singleTask"
+111-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:52:135-166
+112            android:screenOrientation="unspecified"
+112-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:52:280-319
+113            android:theme="@style/Theme.App.SplashScreen"
+113-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:52:210-255
+114            android:windowSoftInputMode="adjustResize" >
+114-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:52:167-209
+115            <intent-filter>
+115-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:53:7-56:23
+116                <action android:name="android.intent.action.MAIN" />
+116-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:54:9-60
+116-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:54:17-58
+117
+118                <category android:name="android.intent.category.LAUNCHER" />
+118-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:55:9-68
+118-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:55:19-66
+119            </intent-filter>
+120            <intent-filter>
+120-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:57:7-62:23
+121                <action android:name="android.intent.action.VIEW" />
+121-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:43:7-58
+121-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:43:15-56
+122
+123                <category android:name="android.intent.category.DEFAULT" />
+123-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:59:9-67
+123-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:59:19-65
+124                <category android:name="android.intent.category.BROWSABLE" />
+124-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:44:7-67
+124-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:44:17-65
+125
+126                <data android:scheme="com.nidhi.patil.PlaNUSAPP" />
+126-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:45:7-37
+126-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:45:13-35
+127            </intent-filter>
+128        </activity>
+129        <activity
+129-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:64:5-106
+130            android:name="com.facebook.react.devsupport.DevSettingsActivity"
+130-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:64:15-79
+131            android:exported="false" />
+131-->C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\android\app\src\main\AndroidManifest.xml:64:80-104
+132
+133        <meta-data
+133-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:9-11:36
+134            android:name="app_data_collection_default_enabled"
+134-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:10:13-63
+135            android:value="true" />
+135-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-33
+136
+137        <service
+137-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:9-21:19
+138            android:name="com.google.firebase.components.ComponentDiscoveryService"
+138-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-84
+139            android:directBootAware="true"
+139-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-43
+140            android:exported="false" >
+140-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:16:13-37
+141            <meta-data
+141-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:18:13-20:85
+142                android:name="com.google.firebase.components:io.invertase.firebase.app.ReactNativeFirebaseAppRegistrar"
+142-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:19:17-120
+143                android:value="com.google.firebase.components.ComponentRegistrar" />
+143-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:20:17-82
+144            <meta-data
+144-->[com.google.firebase:firebase-firestore:25.0.0] C:\Users\ravic\.gradle\caches\transforms-4\b17c17f08916adcc0191adc0704a7cd6\transformed\jetified-firebase-firestore-25.0.0\AndroidManifest.xml:17:13-19:85
+145                android:name="com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar"
+145-->[com.google.firebase:firebase-firestore:25.0.0] C:\Users\ravic\.gradle\caches\transforms-4\b17c17f08916adcc0191adc0704a7cd6\transformed\jetified-firebase-firestore-25.0.0\AndroidManifest.xml:18:17-122
+146                android:value="com.google.firebase.components.ComponentRegistrar" />
+146-->[com.google.firebase:firebase-firestore:25.0.0] C:\Users\ravic\.gradle\caches\transforms-4\b17c17f08916adcc0191adc0704a7cd6\transformed\jetified-firebase-firestore-25.0.0\AndroidManifest.xml:19:17-82
+147            <meta-data
+147-->[com.google.firebase:firebase-firestore:25.0.0] C:\Users\ravic\.gradle\caches\transforms-4\b17c17f08916adcc0191adc0704a7cd6\transformed\jetified-firebase-firestore-25.0.0\AndroidManifest.xml:20:13-22:85
+148                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+148-->[com.google.firebase:firebase-firestore:25.0.0] C:\Users\ravic\.gradle\caches\transforms-4\b17c17f08916adcc0191adc0704a7cd6\transformed\jetified-firebase-firestore-25.0.0\AndroidManifest.xml:21:17-111
+149                android:value="com.google.firebase.components.ComponentRegistrar" />
+149-->[com.google.firebase:firebase-firestore:25.0.0] C:\Users\ravic\.gradle\caches\transforms-4\b17c17f08916adcc0191adc0704a7cd6\transformed\jetified-firebase-firestore-25.0.0\AndroidManifest.xml:22:17-82
+150            <meta-data
+150-->[com.google.firebase:firebase-storage:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\fefaf1652d90ce4b7bbe7b350371de3f\transformed\jetified-firebase-storage-21.0.0\AndroidManifest.xml:30:13-32:85
+151                android:name="com.google.firebase.components:com.google.firebase.storage.FirebaseStorageKtxRegistrar"
+151-->[com.google.firebase:firebase-storage:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\fefaf1652d90ce4b7bbe7b350371de3f\transformed\jetified-firebase-storage-21.0.0\AndroidManifest.xml:31:17-118
+152                android:value="com.google.firebase.components.ComponentRegistrar" />
+152-->[com.google.firebase:firebase-storage:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\fefaf1652d90ce4b7bbe7b350371de3f\transformed\jetified-firebase-storage-21.0.0\AndroidManifest.xml:32:17-82
+153            <meta-data
+153-->[com.google.firebase:firebase-storage:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\fefaf1652d90ce4b7bbe7b350371de3f\transformed\jetified-firebase-storage-21.0.0\AndroidManifest.xml:33:13-35:85
+154                android:name="com.google.firebase.components:com.google.firebase.storage.StorageRegistrar"
+154-->[com.google.firebase:firebase-storage:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\fefaf1652d90ce4b7bbe7b350371de3f\transformed\jetified-firebase-storage-21.0.0\AndroidManifest.xml:34:17-107
+155                android:value="com.google.firebase.components.ComponentRegistrar" />
+155-->[com.google.firebase:firebase-storage:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\fefaf1652d90ce4b7bbe7b350371de3f\transformed\jetified-firebase-storage-21.0.0\AndroidManifest.xml:35:17-82
+156            <meta-data
+156-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:57:13-59:85
+157                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingKtxRegistrar"
+157-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:58:17-122
+158                android:value="com.google.firebase.components.ComponentRegistrar" />
+158-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:59:17-82
+159            <meta-data
+159-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:60:13-62:85
+160                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+160-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:61:17-119
+161                android:value="com.google.firebase.components.ComponentRegistrar" />
+161-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:62:17-82
+162            <meta-data
+162-->[com.google.firebase:firebase-appcheck:18.0.0] C:\Users\ravic\.gradle\caches\transforms-4\c32c40bcb35f21a63f85423f318e332c\transformed\jetified-firebase-appcheck-18.0.0\AndroidManifest.xml:25:13-27:85
+163                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckKtxRegistrar"
+163-->[com.google.firebase:firebase-appcheck:18.0.0] C:\Users\ravic\.gradle\caches\transforms-4\c32c40bcb35f21a63f85423f318e332c\transformed\jetified-firebase-appcheck-18.0.0\AndroidManifest.xml:26:17-120
+164                android:value="com.google.firebase.components.ComponentRegistrar" />
+164-->[com.google.firebase:firebase-appcheck:18.0.0] C:\Users\ravic\.gradle\caches\transforms-4\c32c40bcb35f21a63f85423f318e332c\transformed\jetified-firebase-appcheck-18.0.0\AndroidManifest.xml:27:17-82
+165            <meta-data
+165-->[com.google.firebase:firebase-appcheck:18.0.0] C:\Users\ravic\.gradle\caches\transforms-4\c32c40bcb35f21a63f85423f318e332c\transformed\jetified-firebase-appcheck-18.0.0\AndroidManifest.xml:28:13-30:85
+166                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckRegistrar"
+166-->[com.google.firebase:firebase-appcheck:18.0.0] C:\Users\ravic\.gradle\caches\transforms-4\c32c40bcb35f21a63f85423f318e332c\transformed\jetified-firebase-appcheck-18.0.0\AndroidManifest.xml:29:17-117
+167                android:value="com.google.firebase.components.ComponentRegistrar" />
+167-->[com.google.firebase:firebase-appcheck:18.0.0] C:\Users\ravic\.gradle\caches\transforms-4\c32c40bcb35f21a63f85423f318e332c\transformed\jetified-firebase-appcheck-18.0.0\AndroidManifest.xml:30:17-82
+168            <meta-data
+168-->[com.google.firebase:firebase-installations:18.0.0] C:\Users\ravic\.gradle\caches\transforms-4\4b25c38fd435f59f88d3f7b26a50e1d7\transformed\jetified-firebase-installations-18.0.0\AndroidManifest.xml:15:13-17:85
+169                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar"
+169-->[com.google.firebase:firebase-installations:18.0.0] C:\Users\ravic\.gradle\caches\transforms-4\4b25c38fd435f59f88d3f7b26a50e1d7\transformed\jetified-firebase-installations-18.0.0\AndroidManifest.xml:16:17-130
+170                android:value="com.google.firebase.components.ComponentRegistrar" />
+170-->[com.google.firebase:firebase-installations:18.0.0] C:\Users\ravic\.gradle\caches\transforms-4\4b25c38fd435f59f88d3f7b26a50e1d7\transformed\jetified-firebase-installations-18.0.0\AndroidManifest.xml:17:17-82
+171            <meta-data
+171-->[com.google.firebase:firebase-installations:18.0.0] C:\Users\ravic\.gradle\caches\transforms-4\4b25c38fd435f59f88d3f7b26a50e1d7\transformed\jetified-firebase-installations-18.0.0\AndroidManifest.xml:18:13-20:85
+172                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+172-->[com.google.firebase:firebase-installations:18.0.0] C:\Users\ravic\.gradle\caches\transforms-4\4b25c38fd435f59f88d3f7b26a50e1d7\transformed\jetified-firebase-installations-18.0.0\AndroidManifest.xml:19:17-127
+173                android:value="com.google.firebase.components.ComponentRegistrar" />
+173-->[com.google.firebase:firebase-installations:18.0.0] C:\Users\ravic\.gradle\caches\transforms-4\4b25c38fd435f59f88d3f7b26a50e1d7\transformed\jetified-firebase-installations-18.0.0\AndroidManifest.xml:20:17-82
+174            <meta-data
+174-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\a55027b72821fd7851cc5922b54b953b\transformed\jetified-firebase-common-ktx-21.0.0\AndroidManifest.xml:12:13-14:85
+175                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+175-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\a55027b72821fd7851cc5922b54b953b\transformed\jetified-firebase-common-ktx-21.0.0\AndroidManifest.xml:13:17-116
+176                android:value="com.google.firebase.components.ComponentRegistrar" />
+176-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\a55027b72821fd7851cc5922b54b953b\transformed\jetified-firebase-common-ktx-21.0.0\AndroidManifest.xml:14:17-82
+177            <meta-data
+177-->[com.google.firebase:firebase-common:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\d253d12eef7cd58eb0c61ffa3154c639\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:35:13-37:85
+178                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+178-->[com.google.firebase:firebase-common:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\d253d12eef7cd58eb0c61ffa3154c639\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:36:17-109
+179                android:value="com.google.firebase.components.ComponentRegistrar" />
+179-->[com.google.firebase:firebase-common:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\d253d12eef7cd58eb0c61ffa3154c639\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:37:17-82
+180            <meta-data
+180-->[com.google.firebase:firebase-datatransport:18.2.0] C:\Users\ravic\.gradle\caches\transforms-4\90ba121d77b529c9423491a9c558676b\transformed\jetified-firebase-datatransport-18.2.0\AndroidManifest.xml:25:13-27:85
+181                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+181-->[com.google.firebase:firebase-datatransport:18.2.0] C:\Users\ravic\.gradle\caches\transforms-4\90ba121d77b529c9423491a9c558676b\transformed\jetified-firebase-datatransport-18.2.0\AndroidManifest.xml:26:17-115
+182                android:value="com.google.firebase.components.ComponentRegistrar" />
+182-->[com.google.firebase:firebase-datatransport:18.2.0] C:\Users\ravic\.gradle\caches\transforms-4\90ba121d77b529c9423491a9c558676b\transformed\jetified-firebase-datatransport-18.2.0\AndroidManifest.xml:27:17-82
+183        </service>
+184
+185        <provider
+185-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:23:9-27:38
+186            android:name="io.invertase.firebase.app.ReactNativeFirebaseAppInitProvider"
+186-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:24:13-88
+187            android:authorities="com.nidhi.patil.PlaNUSAPP.reactnativefirebaseappinitprovider"
+187-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:25:13-86
+188            android:exported="false"
+188-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:26:13-37
+189            android:initOrder="99" />
+189-->[:react-native-firebase_app] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:27:13-35
+190        <provider
+190-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:21:9-30:20
+191            android:name="expo.modules.filesystem.FileSystemFileProvider"
+191-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:22:13-74
+192            android:authorities="com.nidhi.patil.PlaNUSAPP.FileSystemFileProvider"
+192-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:23:13-74
+193            android:exported="false"
+193-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:24:13-37
+194            android:grantUriPermissions="true" >
+194-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:25:13-47
+195            <meta-data
+195-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:27:13-29:70
+196                android:name="android.support.FILE_PROVIDER_PATHS"
+196-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:28:17-67
+197                android:resource="@xml/file_system_provider_paths" />
+197-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:29:17-67
+198        </provider>
+199
+200        <service
+200-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:30:9-42:19
+201            android:name="com.google.android.gms.metadata.ModuleDependencies"
+201-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:31:13-78
+202            android:enabled="false"
+202-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:32:13-36
+203            android:exported="false" >
+203-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:33:13-37
+204            <intent-filter>
+204-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:35:13-37:29
+205                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+205-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:36:17-94
+205-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:36:25-91
+206            </intent-filter>
+207
+208            <meta-data
+208-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:39:13-41:36
+209                android:name="photopicker_activity:0:required"
+209-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:40:17-63
+210                android:value="" />
+210-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:41:17-33
+211        </service>
+212
+213        <activity
+213-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:44:9-46:59
+214            android:name="com.canhub.cropper.CropImageActivity"
+214-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:45:13-64
+215            android:exported="true"
+215-->[com.github.CanHub:Android-Image-Cropper:4.3.1] C:\Users\ravic\.gradle\caches\transforms-4\bec2767e46e7f2f36baa70ad9f04504c\transformed\jetified-Android-Image-Cropper-4.3.1\AndroidManifest.xml:35:13-36
+216            android:theme="@style/Base.Theme.AppCompat" /> <!-- https://developer.android.com/guide/topics/manifest/provider-element.html -->
+216-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:46:13-56
+217        <provider
+217-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:48:9-56:20
+218            android:name="expo.modules.imagepicker.fileprovider.ImagePickerFileProvider"
+218-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:49:13-89
+219            android:authorities="com.nidhi.patil.PlaNUSAPP.ImagePickerFileProvider"
+219-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:50:13-75
+220            android:exported="false"
+220-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:51:13-37
+221            android:grantUriPermissions="true" >
+221-->[:expo-image-picker] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:52:13-47
+222            <meta-data
+222-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:27:13-29:70
+223                android:name="android.support.FILE_PROVIDER_PATHS"
+223-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:28:17-67
+224                android:resource="@xml/image_picker_provider_paths" />
+224-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:29:17-67
+225        </provider>
+226
+227        <service
+227-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:9-17:19
+228            android:name="expo.modules.notifications.service.ExpoFirebaseMessagingService"
+228-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-91
+229            android:exported="false" >
+229-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-37
+230            <intent-filter android:priority="-1" >
+230-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-16:29
+230-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:14:28-49
+231                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+231-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:17-78
+231-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:25-75
+232            </intent-filter>
+233        </service>
+234
+235        <receiver
+235-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:19:9-31:20
+236            android:name="expo.modules.notifications.service.NotificationsService"
+236-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:20:13-83
+237            android:enabled="true"
+237-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:21:13-35
+238            android:exported="false" >
+238-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:22:13-37
+239            <intent-filter android:priority="-1" >
+239-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:23:13-30:29
+239-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:23:28-49
+240                <action android:name="expo.modules.notifications.NOTIFICATION_EVENT" />
+240-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:24:17-88
+240-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:24:25-85
+241                <action android:name="android.intent.action.BOOT_COMPLETED" />
+241-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:25:17-79
+241-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:25:25-76
+242                <action android:name="android.intent.action.REBOOT" />
+242-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:26:17-71
+242-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:26:25-68
+243                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+243-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:27:17-82
+243-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:27:25-79
+244                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+244-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:28:17-82
+244-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:28:25-79
+245                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+245-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:29:17-84
+245-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:29:25-81
+246            </intent-filter>
+247        </receiver>
+248
+249        <activity
+249-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:33:9-40:75
+250            android:name="expo.modules.notifications.service.NotificationForwarderActivity"
+250-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:34:13-92
+251            android:excludeFromRecents="true"
+251-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:35:13-46
+252            android:exported="false"
+252-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:36:13-37
+253            android:launchMode="standard"
+253-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:37:13-42
+254            android:noHistory="true"
+254-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:38:13-37
+255            android:taskAffinity=""
+255-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:39:13-36
+256            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+256-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:40:13-72
+257
+258        <meta-data
+258-->[:expo-modules-core] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:9-11:89
+259            android:name="org.unimodules.core.AppLoader#react-native-headless"
+259-->[:expo-modules-core] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:10:13-79
+260            android:value="expo.modules.adapters.react.apploader.RNHeadlessAppLoader" />
+260-->[:expo-modules-core] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-86
+261        <meta-data
+261-->[:expo-modules-core] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:12:9-15:45
+262            android:name="com.facebook.soloader.enabled"
+262-->[:expo-modules-core] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-57
+263            android:value="true" />
+263-->[:expo-modules-core] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-modules-core\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-33
+264
+265        <provider
+265-->[com.github.CanHub:Android-Image-Cropper:4.3.1] C:\Users\ravic\.gradle\caches\transforms-4\bec2767e46e7f2f36baa70ad9f04504c\transformed\jetified-Android-Image-Cropper-4.3.1\AndroidManifest.xml:23:9-31:20
+266            android:name="com.canhub.cropper.CropFileProvider"
+266-->[com.github.CanHub:Android-Image-Cropper:4.3.1] C:\Users\ravic\.gradle\caches\transforms-4\bec2767e46e7f2f36baa70ad9f04504c\transformed\jetified-Android-Image-Cropper-4.3.1\AndroidManifest.xml:24:13-63
+267            android:authorities="com.nidhi.patil.PlaNUSAPP.cropper.fileprovider"
+267-->[com.github.CanHub:Android-Image-Cropper:4.3.1] C:\Users\ravic\.gradle\caches\transforms-4\bec2767e46e7f2f36baa70ad9f04504c\transformed\jetified-Android-Image-Cropper-4.3.1\AndroidManifest.xml:25:13-72
+268            android:exported="false"
+268-->[com.github.CanHub:Android-Image-Cropper:4.3.1] C:\Users\ravic\.gradle\caches\transforms-4\bec2767e46e7f2f36baa70ad9f04504c\transformed\jetified-Android-Image-Cropper-4.3.1\AndroidManifest.xml:26:13-37
+269            android:grantUriPermissions="true" >
+269-->[com.github.CanHub:Android-Image-Cropper:4.3.1] C:\Users\ravic\.gradle\caches\transforms-4\bec2767e46e7f2f36baa70ad9f04504c\transformed\jetified-Android-Image-Cropper-4.3.1\AndroidManifest.xml:27:13-47
+270            <meta-data
+270-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:27:13-29:70
+271                android:name="android.support.FILE_PROVIDER_PATHS"
+271-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:28:17-67
+272                android:resource="@xml/library_file_paths" />
+272-->[:expo-file-system] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-file-system\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:29:17-67
+273        </provider>
+274
+275        <receiver
+275-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:29:9-40:20
+276            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+276-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:30:13-78
+277            android:exported="true"
+277-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:31:13-36
+278            android:permission="com.google.android.c2dm.permission.SEND" >
+278-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:32:13-73
+279            <intent-filter>
+279-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:33:13-35:29
+280                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+280-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:34:17-81
+280-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:34:25-78
+281            </intent-filter>
+282
+283            <meta-data
+283-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:37:13-39:40
+284                android:name="com.google.android.gms.cloudmessaging.FINISHED_AFTER_HANDLED"
+284-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:38:17-92
+285                android:value="true" />
+285-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:39:17-37
+286        </receiver>
+287        <!--
+288             FirebaseMessagingService performs security checks at runtime,
+289             but set to not exported to explicitly avoid allowing another app to call it.
+290        -->
+291        <service
+291-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:46:9-53:19
+292            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+292-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:47:13-82
+293            android:directBootAware="true"
+293-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:48:13-43
+294            android:exported="false" >
+294-->[com.google.firebase:firebase-messaging:24.0.0] C:\Users\ravic\.gradle\caches\transforms-4\775f9d734d4483b6ffe16a8fe99ab406\transformed\jetified-firebase-messaging-24.0.0\AndroidManifest.xml:49:13-37
+295            <intent-filter android:priority="-500" >
+295-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-16:29
+295-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:14:28-49
+296                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+296-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:17-78
+296-->[:expo-notifications] C:\Projects\PlaNUS_APP\PlaNUS-app\PlaNUS-APP\node_modules\expo-notifications\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:25-75
+297            </intent-filter>
+298        </service>
+299
+300        <provider
+300-->[com.google.firebase:firebase-common:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\d253d12eef7cd58eb0c61ffa3154c639\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:23:9-28:39
+301            android:name="com.google.firebase.provider.FirebaseInitProvider"
+301-->[com.google.firebase:firebase-common:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\d253d12eef7cd58eb0c61ffa3154c639\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:24:13-77
+302            android:authorities="com.nidhi.patil.PlaNUSAPP.firebaseinitprovider"
+302-->[com.google.firebase:firebase-common:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\d253d12eef7cd58eb0c61ffa3154c639\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:25:13-72
+303            android:directBootAware="true"
+303-->[com.google.firebase:firebase-common:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\d253d12eef7cd58eb0c61ffa3154c639\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:26:13-43
+304            android:exported="false"
+304-->[com.google.firebase:firebase-common:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\d253d12eef7cd58eb0c61ffa3154c639\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:27:13-37
+305            android:initOrder="100" />
+305-->[com.google.firebase:firebase-common:21.0.0] C:\Users\ravic\.gradle\caches\transforms-4\d253d12eef7cd58eb0c61ffa3154c639\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:28:13-36
+306
+307        <activity
+307-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ravic\.gradle\caches\transforms-4\84622a091004bc45b69aa30e8be47409\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:23:9-27:75
+308            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+308-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ravic\.gradle\caches\transforms-4\84622a091004bc45b69aa30e8be47409\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:24:13-93
+309            android:excludeFromRecents="true"
+309-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ravic\.gradle\caches\transforms-4\84622a091004bc45b69aa30e8be47409\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:25:13-46
+310            android:exported="false"
+310-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ravic\.gradle\caches\transforms-4\84622a091004bc45b69aa30e8be47409\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:26:13-37
+311            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+311-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ravic\.gradle\caches\transforms-4\84622a091004bc45b69aa30e8be47409\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:27:13-72
+312        <!--
+313            Service handling Google Sign-In user revocation. For apps that do not integrate with
+314            Google Sign-In, this service will never be started.
+315        -->
+316        <service
+316-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ravic\.gradle\caches\transforms-4\84622a091004bc45b69aa30e8be47409\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:33:9-37:51
+317            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+317-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ravic\.gradle\caches\transforms-4\84622a091004bc45b69aa30e8be47409\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:34:13-89
+318            android:exported="true"
+318-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ravic\.gradle\caches\transforms-4\84622a091004bc45b69aa30e8be47409\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:35:13-36
+319            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+319-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ravic\.gradle\caches\transforms-4\84622a091004bc45b69aa30e8be47409\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:36:13-107
+320            android:visibleToInstantApps="true" />
+320-->[com.google.android.gms:play-services-auth:21.1.1] C:\Users\ravic\.gradle\caches\transforms-4\84622a091004bc45b69aa30e8be47409\transformed\jetified-play-services-auth-21.1.1\AndroidManifest.xml:37:13-48
+321
+322        <activity
+322-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\ravic\.gradle\caches\transforms-4\902c0a9a4de37ce337317fd503531873\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:20:9-22:45
+323            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+323-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\ravic\.gradle\caches\transforms-4\902c0a9a4de37ce337317fd503531873\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:20:19-85
+324            android:exported="false"
+324-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\ravic\.gradle\caches\transforms-4\902c0a9a4de37ce337317fd503531873\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:22:19-43
+325            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+325-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\ravic\.gradle\caches\transforms-4\902c0a9a4de37ce337317fd503531873\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:21:19-78
+326
+327        <provider
+327-->[androidx.emoji2:emoji2:1.2.0] C:\Users\ravic\.gradle\caches\transforms-4\f3965d029a827d61102befef75a63e63\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+328            android:name="androidx.startup.InitializationProvider"
+328-->[androidx.emoji2:emoji2:1.2.0] C:\Users\ravic\.gradle\caches\transforms-4\f3965d029a827d61102befef75a63e63\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+329            android:authorities="com.nidhi.patil.PlaNUSAPP.androidx-startup"
+329-->[androidx.emoji2:emoji2:1.2.0] C:\Users\ravic\.gradle\caches\transforms-4\f3965d029a827d61102befef75a63e63\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+330            android:exported="false" >
+330-->[androidx.emoji2:emoji2:1.2.0] C:\Users\ravic\.gradle\caches\transforms-4\f3965d029a827d61102befef75a63e63\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+331            <meta-data
+331-->[androidx.emoji2:emoji2:1.2.0] C:\Users\ravic\.gradle\caches\transforms-4\f3965d029a827d61102befef75a63e63\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+332                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+332-->[androidx.emoji2:emoji2:1.2.0] C:\Users\ravic\.gradle\caches\transforms-4\f3965d029a827d61102befef75a63e63\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+333                android:value="androidx.startup" />
+333-->[androidx.emoji2:emoji2:1.2.0] C:\Users\ravic\.gradle\caches\transforms-4\f3965d029a827d61102befef75a63e63\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+334            <meta-data
+334-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\ravic\.gradle\caches\transforms-4\3105abbb691d1c3c4f4f15d74780f066\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
+335                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+335-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\ravic\.gradle\caches\transforms-4\3105abbb691d1c3c4f4f15d74780f066\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
+336                android:value="androidx.startup" />
+336-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\ravic\.gradle\caches\transforms-4\3105abbb691d1c3c4f4f15d74780f066\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
+337            <meta-data
+337-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+338                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+338-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+339                android:value="androidx.startup" />
+339-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+340        </provider>
+341
+342        <meta-data
+342-->[com.google.android.gms:play-services-basement:18.3.0] C:\Users\ravic\.gradle\caches\transforms-4\9eefb7b4d97426ae532dd872565bb282\transformed\jetified-play-services-basement-18.3.0\AndroidManifest.xml:21:9-23:69
+343            android:name="com.google.android.gms.version"
+343-->[com.google.android.gms:play-services-basement:18.3.0] C:\Users\ravic\.gradle\caches\transforms-4\9eefb7b4d97426ae532dd872565bb282\transformed\jetified-play-services-basement-18.3.0\AndroidManifest.xml:22:13-58
+344            android:value="@integer/google_play_services_version" />
+344-->[com.google.android.gms:play-services-basement:18.3.0] C:\Users\ravic\.gradle\caches\transforms-4\9eefb7b4d97426ae532dd872565bb282\transformed\jetified-play-services-basement-18.3.0\AndroidManifest.xml:23:13-66
+345
+346        <receiver
+346-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+347            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+347-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+348            android:directBootAware="false"
+348-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+349            android:enabled="true"
+349-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+350            android:exported="true"
+350-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+351            android:permission="android.permission.DUMP" >
+351-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+352            <intent-filter>
+352-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+353                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+353-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+353-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+354            </intent-filter>
+355            <intent-filter>
+355-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+356                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+356-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+356-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+357            </intent-filter>
+358            <intent-filter>
+358-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+359                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+359-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+359-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+360            </intent-filter>
+361            <intent-filter>
+361-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+362                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+362-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+362-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\ravic\.gradle\caches\transforms-4\691ab351629333a4d26a96fcc0d379da\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+363            </intent-filter>
+364        </receiver>
+365
+366        <service
+366-->[androidx.room:room-runtime:2.6.1] C:\Users\ravic\.gradle\caches\transforms-4\921278dcde38fdc081f092c99c2174a1\transformed\room-runtime-2.6.1\AndroidManifest.xml:24:9-28:63
+367            android:name="androidx.room.MultiInstanceInvalidationService"
+367-->[androidx.room:room-runtime:2.6.1] C:\Users\ravic\.gradle\caches\transforms-4\921278dcde38fdc081f092c99c2174a1\transformed\room-runtime-2.6.1\AndroidManifest.xml:25:13-74
+368            android:directBootAware="true"
+368-->[androidx.room:room-runtime:2.6.1] C:\Users\ravic\.gradle\caches\transforms-4\921278dcde38fdc081f092c99c2174a1\transformed\room-runtime-2.6.1\AndroidManifest.xml:26:13-43
+369            android:exported="false" />
+369-->[androidx.room:room-runtime:2.6.1] C:\Users\ravic\.gradle\caches\transforms-4\921278dcde38fdc081f092c99c2174a1\transformed\room-runtime-2.6.1\AndroidManifest.xml:27:13-37
+370        <service
+370-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\ravic\.gradle\caches\transforms-4\9fc7028c78247fc5fd86c2c66705f570\transformed\jetified-transport-backend-cct-3.1.9\AndroidManifest.xml:28:9-34:19
+371            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+371-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\ravic\.gradle\caches\transforms-4\9fc7028c78247fc5fd86c2c66705f570\transformed\jetified-transport-backend-cct-3.1.9\AndroidManifest.xml:29:13-103
+372            android:exported="false" >
+372-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\ravic\.gradle\caches\transforms-4\9fc7028c78247fc5fd86c2c66705f570\transformed\jetified-transport-backend-cct-3.1.9\AndroidManifest.xml:30:13-37
+373            <meta-data
+373-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\ravic\.gradle\caches\transforms-4\9fc7028c78247fc5fd86c2c66705f570\transformed\jetified-transport-backend-cct-3.1.9\AndroidManifest.xml:31:13-33:39
+374                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+374-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\ravic\.gradle\caches\transforms-4\9fc7028c78247fc5fd86c2c66705f570\transformed\jetified-transport-backend-cct-3.1.9\AndroidManifest.xml:32:17-94
+375                android:value="cct" />
+375-->[com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\ravic\.gradle\caches\transforms-4\9fc7028c78247fc5fd86c2c66705f570\transformed\jetified-transport-backend-cct-3.1.9\AndroidManifest.xml:33:17-36
+376        </service>
+377        <service
+377-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\ravic\.gradle\caches\transforms-4\09f38a7469c7cf597c073c940067e3fb\transformed\jetified-transport-runtime-3.1.9\AndroidManifest.xml:26:9-30:19
+378            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+378-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\ravic\.gradle\caches\transforms-4\09f38a7469c7cf597c073c940067e3fb\transformed\jetified-transport-runtime-3.1.9\AndroidManifest.xml:27:13-117
+379            android:exported="false"
+379-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\ravic\.gradle\caches\transforms-4\09f38a7469c7cf597c073c940067e3fb\transformed\jetified-transport-runtime-3.1.9\AndroidManifest.xml:28:13-37
+380            android:permission="android.permission.BIND_JOB_SERVICE" >
+380-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\ravic\.gradle\caches\transforms-4\09f38a7469c7cf597c073c940067e3fb\transformed\jetified-transport-runtime-3.1.9\AndroidManifest.xml:29:13-69
+381        </service>
+382
+383        <receiver
+383-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\ravic\.gradle\caches\transforms-4\09f38a7469c7cf597c073c940067e3fb\transformed\jetified-transport-runtime-3.1.9\AndroidManifest.xml:32:9-34:40
+384            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+384-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\ravic\.gradle\caches\transforms-4\09f38a7469c7cf597c073c940067e3fb\transformed\jetified-transport-runtime-3.1.9\AndroidManifest.xml:33:13-132
+385            android:exported="false" />
+385-->[com.google.android.datatransport:transport-runtime:3.1.9] C:\Users\ravic\.gradle\caches\transforms-4\09f38a7469c7cf597c073c940067e3fb\transformed\jetified-transport-runtime-3.1.9\AndroidManifest.xml:34:13-37
+386    </application>
+387
+388</manifest>
