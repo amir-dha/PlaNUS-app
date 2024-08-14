@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Linking, KeyboardAvoidingView, Platform } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { getAuth, updateProfile } from 'firebase/auth';
@@ -16,6 +15,14 @@ const AccountScreen = () => {
   const [year, setYear] = useState('');
   const [image, setImage] = useState(null);
   const [initializing, setInitializing] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState([
+    { label: 'Year 1', value: '1' },
+    { label: 'Year 2', value: '2' },
+    { label: 'Year 3', value: '3' },
+    { label: 'Year 4', value: '4' },
+    { label: 'Year 5', value: '5' },
+  ]);
   const auth = getAuth();
   const db = getFirestore();
   const storage = getStorage();
@@ -107,8 +114,11 @@ const AccountScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.formContainer}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <View style={styles.contentContainer}>
         <TouchableOpacity onPress={handleImagePick}>
           {image ? (
             <Image source={{ uri: image }} style={styles.profileImage} />
@@ -131,25 +141,24 @@ const AccountScreen = () => {
           editable={false} // Make email field read-only
         />
         <Text style={styles.label}>Year</Text>
-        <Picker
-          selectedValue={year}
-          style={styles.picker}
-          onValueChange={(itemValue) => setYear(itemValue)}
-        >
-          <Picker.Item label="1" value="1" />
-          <Picker.Item label="2" value="2" />
-          <Picker.Item label="3" value="3" />
-          <Picker.Item label="4" value="4" />
-          <Picker.Item label="5" value="5" />
-        </Picker>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.saveButton} onPress={handleUpdate}>
-            <Text style={styles.saveButtonText}>Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
-            <Text style={styles.cancelButtonText}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
+        <DropDownPicker
+          open={open}
+          value={year}
+          items={items}
+          setOpen={setOpen}
+          setValue={setYear}
+          setItems={setItems}
+          containerStyle={{ marginBottom: 20, width: '100%' }}
+          style={styles.dropdown}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.saveButton} onPress={handleUpdate}>
+          <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
+          <Text style={styles.cancelButtonText}>Cancel</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.contactContainer}>
         <Text style={styles.contactText}>
@@ -159,7 +168,7 @@ const AccountScreen = () => {
           <Text style={styles.contactEmail}>{supportEmail}</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -168,6 +177,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: 'white',
+    justifyContent: 'space-between',
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
   profileImage: {
     width: 100,
@@ -186,10 +200,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  formContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   label: {
     fontSize: 16,
     marginBottom: 8,
@@ -201,16 +211,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 8,
     marginBottom: 16,
+    width: '100%',
   },
-  picker: {
+  dropdown: {
     height: 40,
     borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 16,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 20, // Add margin at the bottom for spacing above contact text
+    width: '100%',
   },
   saveButton: {
     backgroundColor: '#003882',
@@ -239,8 +251,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   contactContainer: {
-    paddingVertical: 20,
     alignItems: 'center',
+    paddingBottom: 20,
   },
   contactText: {
     fontSize: 16,

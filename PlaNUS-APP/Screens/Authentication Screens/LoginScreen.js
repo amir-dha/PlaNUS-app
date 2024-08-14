@@ -5,7 +5,6 @@ import { auth } from '../../firebase';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/core';
 import { Ionicons } from '@expo/vector-icons';
-import { sendPasswordResetEmail } from 'firebase/auth';
 
 
 const logo = require('../../assets/logo.png'); 
