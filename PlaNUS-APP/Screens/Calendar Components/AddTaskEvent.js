@@ -45,30 +45,31 @@ const AddTaskEventScreen = () => {
     setVenues(venuesList);
   }, []);
 
-  useEffect(() => {
-    registerForPushNotificationsAsync(); 
-  })
+  //ios changes for notifications dont seem to work 
+  // useEffect(() => {
+  //   registerForPushNotificationsAsync(); 
+  // })
 
-  const registerForPushNotificationsAsync = async () => {
-    let token;
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
+  // const registerForPushNotificationsAsync = async () => {
+  //   let token;
+  //   const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  //   let finalStatus = existingStatus;
 
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
+  //   if (existingStatus !== 'granted') {
+  //     const { status } = await Notifications.requestPermissionsAsync();
+  //     finalStatus = status;
+  //   }
 
-    if (finalStatus !== 'granted') {
-      Alert.alert('Failed to get push token for push notification!');
-      return;
-    }
+  //   if (finalStatus !== 'granted') {
+  //     Alert.alert('Failed to get push token for push notification!');
+  //     return;
+  //   }
 
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log("Notification Token:", token);
+  //   token = (await Notifications.getExpoPushTokenAsync()).data;
+  //   console.log("Notification Token:", token);
 
-    // Save the token to your server or use it to send notifications
-  };
+  //   // Save the token to your server or use it to send notifications
+  // };
 
   const filterVenues = (input) => {
     if (input.length > 0) {
