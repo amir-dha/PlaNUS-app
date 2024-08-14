@@ -5,6 +5,8 @@ import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/core';
 import { Ionicons } from '@expo/vector-icons';
+import { sendPasswordResetEmail } from 'firebase/auth';
+
 
 const logo = require('../../assets/logo.png'); 
 
@@ -55,6 +57,26 @@ const LoginScreen = () => {
     }
   };
 
+  // const handleForgetPassword = () => {
+  //   if (!isValidEmail(email)) {
+  //     alert('Invalid email. Not an NUS Student email.');
+  //     return;
+  //   }
+  //   sendPasswordResetEmail(auth, email)
+  //     .then(() => {
+  //       alert('Password reset email sent. Please check your inbox.');
+  //     })
+  //     .catch(error => {
+  //       console.error('Error sending password reset email:', error);
+  //       switch (error.code) {
+  //         case 'auth/user-not-found':
+  //           alert('The account does not exist.');
+  //           break;
+  //         default:
+  //           alert('Failed to send password reset email. Please try again.');
+  //       }
+  //     });
+  // };
   const handleForgetPassword = () => {
     if (!isValidEmail(email)) {
       alert('Invalid email. Not an NUS Student email.');
@@ -75,6 +97,7 @@ const LoginScreen = () => {
         }
       });
   };
+  
 
   return (
     <KeyboardAvoidingView
