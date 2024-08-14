@@ -10,7 +10,6 @@ import venuesList from './Utils/venuesList';
 import { addDoc, collection, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db, auth } from '../../firebase';
 import * as Notifications from 'expo-notifications';
-import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddTaskEventScreen = () => {
@@ -45,6 +44,32 @@ const AddTaskEventScreen = () => {
   useEffect(() => {
     setVenues(venuesList);
   }, []);
+
+  //ios changes for notifications dont seem to work 
+  // useEffect(() => {
+  //   registerForPushNotificationsAsync(); 
+  // })
+
+  // const registerForPushNotificationsAsync = async () => {
+  //   let token;
+  //   const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  //   let finalStatus = existingStatus;
+
+  //   if (existingStatus !== 'granted') {
+  //     const { status } = await Notifications.requestPermissionsAsync();
+  //     finalStatus = status;
+  //   }
+
+  //   if (finalStatus !== 'granted') {
+  //     Alert.alert('Failed to get push token for push notification!');
+  //     return;
+  //   }
+
+  //   token = (await Notifications.getExpoPushTokenAsync()).data;
+  //   console.log("Notification Token:", token);
+
+  //   // Save the token to your server or use it to send notifications
+  // };
 
   const filterVenues = (input) => {
     if (input.length > 0) {
