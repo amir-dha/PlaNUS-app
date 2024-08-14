@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { fetchCourseData } from './Utils/NUSModsAPI';
 import { db, auth } from '../../firebase';
@@ -20,6 +20,8 @@ const CourseSelectScreen = () => {
   const [showSeminarDropdown, setShowSeminarDropdown] = useState(false);
   const [showRecitationDropdown, setShowRecitationDropdown] = useState(false);
   const [selectedColor, setSelectedColor] = useState('#e2e2e2'); // default color for course border
+  const [isAddingCourse, setIsAddingCourse] = useState(false);
+
   const colorOptions = ['#C8D79E', '#FFFBCB', '#FFC498', '#F8A5A5', '#A7A0C3', '#BEEEEC'];
 
   const semesterStartDate = new Date('2024-08-12');
@@ -166,6 +168,7 @@ const CourseSelectScreen = () => {
       console.error("Error adding course: ", error);
     }
   };
+  
 
   const renderSlotDropdown = (slots, selectedSlot, setSelectedSlot, placeholder, showDropdown, setShowDropdown) => (
     <View>
@@ -233,7 +236,6 @@ const CourseSelectScreen = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
