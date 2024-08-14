@@ -19,6 +19,7 @@
     "@react-native-picker/picker": "^2.7.5",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
+    "@wdio/cli": "^7.16.4",
     "data-fns": "^1.1.0",
     "date-fns": "^3.6.0",
     "expo": "^51.0.17",
@@ -33,7 +34,8 @@
     "expo-updates": "~0.25.18",
     "firebase": "^10.12.2",
     "moment-timezone": "^0.5.45",
-    "react": "18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.3.1",
     "react-native": "0.74.2",
     "react-native-autocomplete-input": "^5.4.0",
     "react-native-calendars": "^1.1305.0",
@@ -41,14 +43,21 @@
     "react-native-paper": "^5.12.3",
     "react-native-safe-area-context": "^4.10.1",
     "react-native-screens": "^3.31.1",
-    "react-native-vector-icons": "^10.1.0"
+    "react-native-vector-icons": "^10.1.0",
+    "react-native-web": "~0.19.10"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^12.5.1",
+    "@wdio/local-runner": "^8.40.2",
+    "@wdio/mocha-framework": "^8.40.2",
+    "@wdio/spec-reporter": "^8.39.0",
+    "chromedriver": "^127.0.3",
+    "cypress": "^13.13.2",
     "jest": "^29.7.0",
-    "jest-expo": "^51.0.3"
+    "jest-expo": "^51.0.3",
+    "wdio-chromedriver-service": "^8.1.1"
   },
   "private": true
 }
