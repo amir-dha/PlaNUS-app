@@ -1,0 +1,98 @@
+[
+    {
+        "merged": "com.planusapp-merged_res-4:/drawable-xxhdpi_splashscreen_image.png.flat",
+        "source": "com.planusapp-main-6:/drawable-xxhdpi/splashscreen_image.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/drawable-mdpi_splashscreen_image.png.flat",
+        "source": "com.planusapp-main-6:/drawable-mdpi/splashscreen_image.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/drawable-xxxhdpi_splashscreen_image.png.flat",
+        "source": "com.planusapp-main-6:/drawable-xxxhdpi/splashscreen_image.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/drawable_splashscreen.xml.flat",
+        "source": "com.planusapp-main-6:/drawable/splashscreen.xml"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/drawable_rn_edit_text_material.xml.flat",
+        "source": "com.planusapp-main-6:/drawable/rn_edit_text_material.xml"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/drawable-hdpi_splashscreen_image.png.flat",
+        "source": "com.planusapp-main-6:/drawable-hdpi/splashscreen_image.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-xxxhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/drawable-xhdpi_splashscreen_image.png.flat",
+        "source": "com.planusapp-main-6:/drawable-xhdpi/splashscreen_image.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.planusapp-main-6:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-xxhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-hdpi_ic_launcher_foreground.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-hdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-mdpi_ic_launcher_foreground.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-mdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.planusapp-main-6:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.planusapp-merged_res-4:/mipmap-xhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.planusapp-main-6:/mipmap-xhdpi/ic_launcher_foreground.png"
+    }
+]
